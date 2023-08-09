@@ -17,6 +17,7 @@ export default function GoogleLoginButton() {
                     name:userOb.name,
                     link:userOb.picture,
                     id:userOb.exp,
+                    email:userOb.email,
                     loggedIn:true
                 })
                 console.log(user)

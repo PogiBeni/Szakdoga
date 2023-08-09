@@ -30,7 +30,8 @@
 }
 .ProfilePicture{
   border-radius: 30%;
-  margin: 0.5rem;
+  width:"5.2rem" ;
+  height:"5.2rem";
 }
 .MainBody{
   height: 85vh;

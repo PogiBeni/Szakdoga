@@ -6,11 +6,11 @@ export const UserProvider = props => {
 
     const [user,setUser] = useState(
         {
-            id:0,
+            id:null,
             loggedIn: false,
-            name:"",
-            link:"",
-            email:""
+            name:null,
+            link:null,
+            email:null
         })
 
     return(

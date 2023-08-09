@@ -8,7 +8,6 @@ export default function TopNav() {
     const [user, setUser] = useContext(UserContext)
 
     useEffect(() => {
-        console.log(user);
     }, [user])
 
     return (
