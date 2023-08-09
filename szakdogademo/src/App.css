@@ -1,0 +1,49 @@
+.App {
+  background:white;
+  height: 100vh;
+}
+.TopNav{
+  height: 15vh;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 0.3vh solid gray;
+}
+.TopNavMain
+{
+  width: 50vw;
+  font-size: 1.5vw;
+}
+.TopNavUser{
+  width: 50vw;
+}
+.TopNavUserSignedIn, .TopNavUserSignedOut{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+.TopNavUserSignedIn, .TopNavUserSignedOut > *{
+  margin-left:1vw;
+  margin-right:2vw;
+}
+.ProfilePicture{
+  border-radius: 30%;
+  margin: 0.5rem;
+}
+.MainBody{
+  height: 85vh;
+  display: flex;
+  flex-direction: row;
+}
+.MainBodySideBar{
+  width: 10vw;
+  border-right: 0.3vh solid gray;
+  padding: 0.5vw;
+  font-size: 1.2vw;
+} 
+.MainBodyContent{
+  width: 85vw;
+  padding: 1vw;
+}
