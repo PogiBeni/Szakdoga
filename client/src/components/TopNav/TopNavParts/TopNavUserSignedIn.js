@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { UserContext } from "../../Context/UserContext"
-import { googleLogout } from '@react-oauth/google'
+import LogoutModal from "../Modals/LogoutModal"
 
 export default function TopNavuserSignedIn() {
 
@@ -9,26 +9,16 @@ export default function TopNavuserSignedIn() {
     useEffect(() => {
     }, [user])
 
-    function signOut() {
-        setUser({})
-        googleLogout()
-    }
-
     return (
         <div className="TopNavUserSignedIn">
             <div >
-                {
-                    user.link ?
-                        <img src={user.link} alt="profilePicture" className="ProfilePicture me-3" />
-                        :
-                        <img src="/icons/personSquare.svg" alt="profilePicture" className="ProfilePicture me-3" />
-                }
-
+                <img src={user.link ? user.link  : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3" />          
             </div>
             <div>
                 <h1 className="h3">{user.name}</h1>
-                <button type="button" className="btn btn-warning btn-sm" onClick={signOut}>Sign out</button>
+                <button type="button" className="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#logoutModal" >Logout</button>
             </div>
+            <LogoutModal/>
         </div>
     )
 }

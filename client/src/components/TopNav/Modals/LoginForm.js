@@ -48,7 +48,7 @@ export default function LoginForm() {
             <input type="password" value={userLogin.password} onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })} className="form-control m-2" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" />
 
             <div className="d-flex align-items-center mt-4 ">
-                <button type="button" className="btn btn-light me-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" className="btn btn-light border bg-white me-2" data-bs-dismiss="modal">Close</button>
                 <button type="button" className="btn btn-warning me-2" data-bs-target="#registerForm" data-bs-toggle="modal">Register</button>
                 <button type="submit" className="btn btn-warning ">Login</button>
             </div>

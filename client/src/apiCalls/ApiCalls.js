@@ -22,8 +22,8 @@ export async function fetchUserData(email, password) {
   }
 }
 
-export async function pushUserData(email, password, fullName) {
-  const userData = { email: email, password: password, fullName: fullName };
+export async function pushUserData(email, password, fullName, linkToPicture) {
+  const userData = { email: email, password: password, fullName: fullName, linkToPicture: linkToPicture };
 
   try {
     const response = await fetch('http://localhost:3001/api/register', {

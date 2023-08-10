@@ -19,13 +19,10 @@ export default function RegisterForm() {
         e.preventDefault();
         if (userLogin.email && userLogin.password && userLogin.rePassword && userLogin.fullName) {
             if (userLogin.password == userLogin.rePassword) {
-                var registered
                 isUserRegistered(userLogin.email).then((res => {
-                    alert(res)
-                    if (res ==="true") { alert("in error") ;seterrorMSG("Email already taken!") }
+                    if (res === "true") { seterrorMSG("Email already taken!") }
                     else {
-                        alert("in push")
-                        pushUserData(userLogin.email, userLogin.password, userLogin.fullName)
+                        pushUserData(userLogin.email, userLogin.password, userLogin.fullName,"")
                             .then((data) => {
                                 setUser({
                                     name: data.fullName,
@@ -35,10 +32,6 @@ export default function RegisterForm() {
                                     loggedIn: true
                                 })
                             })
-                            .catch((error) => {
-                              console.error('Error pushing user data:', error);
-                              // Handle error if needed
-                            });
                         seterrorMSG(null);
                         document.querySelector('#btnCloseRegister').click()
                     }
@@ -62,7 +55,7 @@ export default function RegisterForm() {
             <input type="password" value={userLogin.rePassword} onChange={(e) => setUserLogin({ ...userLogin, rePassword: e.target.value })} className="form-control m-2" placeholder="Re password" aria-label="Password" aria-describedby="addon-wrapping" />
 
             <div className="d-flex align-items-center mt-5 ">
-                <button type="button" id="btnCloseRegister" className="btn btn-light me-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" className="btn btn-light border bg-white me-2" id="btnCloseRegister" data-bs-dismiss="modal">Close</button>
                 <button type="button" className="btn btn-warning me-2" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
                 <button type="submit" className="btn btn-warning ">Register</button>
             </div>

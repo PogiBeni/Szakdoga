@@ -4,9 +4,11 @@ const app = express();
 const PORT = 3001;
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const crypto = require('crypto');
 
 app.use(cors());
 app.use(bodyParser.json());
+const salt = crypto.randomBytes(16).toString('hex');
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -26,8 +28,9 @@ connection.connect((err) => {
 app.post('/api/login', (req, res) => {
   const userData = req.body
   console.log('Received data:', userData);
-
-  connection.query("SELECT * FROM user where email like '"+ userData.email + "' and password like '"+ userData.password+"' limit 1", (err, results) => {
+  const hash = crypto.pbkdf2Sync(userData.password, salt, 100000, 64, 'sha256').toString('hex');
+    
+  connection.query("SELECT * FROM user where email like '"+ userData.email + "' and password like '"+ hash +"'", (err, results) => {
     if (err) {
       console.error('Error executing query:', err)
       return
@@ -46,7 +49,7 @@ app.post('/api/isRegistered', (req, res) => {
       return
     }
     console.log(results)
-    if(results[0]) { console.log("true"); res.send(true)}
+    if(results[0]) res.send(true)
     else return res.send(false)
   })
 })
@@ -55,17 +58,20 @@ app.post('/api/register', (req, res) => {
   const userData = req.body
   console.log('Received data:', userData);
   if(!userData) return
+  const hash = crypto.pbkdf2Sync(userData.password, salt, 100000, 64, 'sha256').toString('hex');
 
-  connection.query("INSERT INTO user VALUES ('','"+ userData.email +"','"+ userData.password+"','"+userData.fullName+"','')", (err, results) => {
+  connection.query("INSERT INTO user VALUES ('','"+ userData.email +"','"+ hash +"','"+userData.fullName+"','"+userData.linkToPicture+"')", (err, results) => {
     if (err) {
       console.error('Error executing query:', err)
       return
     }
-    connection.query("SELECT * FROM user where email like '"+ userData.email + "' and password like '"+ userData.password+"'", (err, results) => {
+    console.log(hash)
+    connection.query("SELECT * FROM user where email like '"+ userData.email + "' and password like '"+ hash+"'", (err, results) => {
       if (err) {
         console.error('Error executing query:', err)
         return
       }
+      console.log(results[0].email)
       res.json(results[0])
     })
   })
