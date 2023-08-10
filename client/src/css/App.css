@@ -29,9 +29,9 @@
   margin-right:2vw;
 }
 .ProfilePicture{
-  border-radius: 30%;
-  width:"5.2rem" ;
-  height:"5.2rem";
+  border-radius: 0.5rem;
+  width:4.6rem;
+  height:4.6rem;
 }
 .MainBody{
   height: 85vh;

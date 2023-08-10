@@ -23,7 +23,7 @@ connection.connect((err) => {
   console.log('Connected to MySQL database')
 })
 
-app.post('/api/data', (req, res) => {
+app.post('/api/login', (req, res) => {
   const userData = req.body
   console.log('Received data:', userData);
 
@@ -32,8 +32,42 @@ app.post('/api/data', (req, res) => {
       console.error('Error executing query:', err)
       return
     }
-    console.log('Sent data:', results[0]);
     res.json(results[0])
+  })
+})
+
+app.post('/api/isRegistered', (req, res) => {
+  const userData = req.body
+  console.log('Received data:', userData);
+
+  connection.query("SELECT * FROM user where email like '"+ userData.email +"'", (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err)
+      return
+    }
+    console.log(results)
+    if(results[0]) { console.log("true"); res.send(true)}
+    else return res.send(false)
+  })
+})
+
+app.post('/api/register', (req, res) => {
+  const userData = req.body
+  console.log('Received data:', userData);
+  if(!userData) return
+
+  connection.query("INSERT INTO user VALUES ('','"+ userData.email +"','"+ userData.password+"','"+userData.fullName+"','')", (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err)
+      return
+    }
+    connection.query("SELECT * FROM user where email like '"+ userData.email + "' and password like '"+ userData.password+"'", (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err)
+        return
+      }
+      res.json(results[0])
+    })
   })
 })
 
