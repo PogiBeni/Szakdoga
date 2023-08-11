@@ -6,7 +6,7 @@ import { UserProvider } from './Context/UserContext';
 function App() {
   return (
     <UserProvider>
-      <div className="App">
+      <div className="App bg-body">
         <TopNav />
         <MainBody />
       </div>

@@ -1,5 +1,4 @@
 .App {
-  background:white;
   height: 100vh;
 }
 .TopNav{
@@ -29,9 +28,9 @@
   margin-right:2vw;
 }
 .ProfilePicture{
-  border-radius: 0.5rem;
-  width:4.6rem;
-  height:4.6rem;
+  border-radius: 1rem;
+  width:4rem;
+  height:4rem;
 }
 .MainBody{
   height: 85vh;

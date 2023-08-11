@@ -11,16 +11,16 @@ export default function TopNav() {
     }, [user])
 
     return (
-        <div className="TopNav">
+        <nav  className="navbar bg-warning">
             <div className="TopNavMain">
                 <h1>Calendar app</h1>
             </div>
-            <div className="TopNavUser">
+            <div className="justify-content-end">
                 {user.loggedIn
                     ? (<TopNavUserSignedIn />)
                     : (<TopNavUserSignedOut />)
                 }
             </div>
-        </div>
+        </nav >
     )
 }

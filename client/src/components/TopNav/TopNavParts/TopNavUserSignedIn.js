@@ -10,15 +10,16 @@ export default function TopNavuserSignedIn() {
     }, [user])
 
     return (
-        <div className="TopNavUserSignedIn">
-            <div >
-                <img src={user.link ? user.link  : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3" />          
-            </div>
-            <div>
-                <h1 className="h3">{user.name}</h1>
-                <button type="button" className="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#logoutModal" >Logout</button>
-            </div>
-            <LogoutModal/>
+        <div className="btn-group d-flex align-items-center ">
+            < img src={user.link ? user.link : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-warning p-1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"/>
+
+            <ul class="dropdown-menu dropdown-menu-sm-end">
+                <li><span class="dropdown-item me-3">{user.name}</span></li>
+                
+                <li><hr class="dropdown-divider"/></li>
+                <li><button class="dropdown-item btn btn-warning btn-sm  text-end" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal" >Logout</button></li>
+            </ul>
+            <LogoutModal />
         </div>
     )
 }
