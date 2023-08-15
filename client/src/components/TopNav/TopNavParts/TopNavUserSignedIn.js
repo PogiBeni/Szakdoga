@@ -10,7 +10,7 @@ export default function TopNavuserSignedIn() {
     }, [user])
 
     return (
-        <div className="btn-group d-flex align-items-center ">
+        <div className="d-flex justify-content-end">
             < img src={user.link ? user.link : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-warning p-1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"/>
 
             <ul class="dropdown-menu dropdown-menu-sm-end">
