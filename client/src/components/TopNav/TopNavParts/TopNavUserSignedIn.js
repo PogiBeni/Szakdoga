@@ -11,13 +11,13 @@ export default function TopNavuserSignedIn() {
 
     return (
         <div className="d-flex justify-content-end">
-            < img src={user.link ? user.link : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-warning p-1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"/>
+            < img src={user.link ? user.link : "/icons/personSquare.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-secondary   p-1" data-bs-toggle="dropdown" data-bs-display="static"/>
 
             <ul class="dropdown-menu dropdown-menu-sm-end">
                 <li><span class="dropdown-item me-3">{user.name}</span></li>
                 
                 <li><hr class="dropdown-divider"/></li>
-                <li><button class="dropdown-item btn btn-warning btn-sm  text-end" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal" >Logout</button></li>
+                <li ><button class="dropdown-item btn btn-danger btn-sm " type="button" data-bs-toggle="modal" data-bs-target="#logoutModal" >< img src="/icons/logOut.svg" className="me-1" alt="logOut pic" />Logout</button></li>
             </ul>
             <LogoutModal />
         </div>

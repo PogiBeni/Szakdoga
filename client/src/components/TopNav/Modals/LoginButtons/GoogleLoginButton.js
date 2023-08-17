@@ -14,14 +14,14 @@ export default function GoogleLoginButton() {
             onSuccess={credentialResponse => {
                 var userOb = jwt_decode(credentialResponse.credential);
                 isUserRegistered(userOb.email).then((res => {
-                    if (res === "true") {
-                        setUser({
-                            name: userOb.name,
-                            link: userOb.picture,
-                            id: userOb.id,
-                            email: userOb.email,
-                            loggedIn: true
-                        })
+                    if (res.exists) {
+                      setUser({
+                        name: userOb.name,
+                        link: userOb.picture,
+                        id: userOb.id,
+                        email: userOb.email,
+                        loggedIn: true
+                      });
                     }
                     else {
                         pushUserData(userOb.email, null, userOb.name, userOb.picture)

@@ -22,7 +22,7 @@ export default function RegisterForm() {
                 isUserRegistered(userLogin.email).then((res => {
                     if (res === "true") { seterrorMSG("Email already taken!") }
                     else {
-                        pushUserData(userLogin.email, userLogin.password, userLogin.fullName,"")
+                        pushUserData(userLogin.email, userLogin.password, userLogin.fullName, "")
                             .then((data) => {
                                 setUser({
                                     name: data.fullName,
@@ -55,10 +55,11 @@ export default function RegisterForm() {
             <input type="password" value={userLogin.rePassword} onChange={(e) => setUserLogin({ ...userLogin, rePassword: e.target.value })} className="form-control m-2" placeholder="Re password" aria-label="Password" aria-describedby="addon-wrapping" />
 
             <div className="d-flex align-items-center mt-5 ">
-                <button type="button" className="btn btn-light border bg-white me-2" id="btnCloseRegister" data-bs-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-warning me-2" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
-                <button type="submit" className="btn btn-warning ">Register</button>
+                <button type="button" className="btn alert alert-light me-2 p-2" id="btnCloseRegister" data-bs-dismiss="modal">Close</button>
+                <button type="button" className="btn alert alert-light me-5 p-2" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
+                <button type="submit" className="btn alert alert-success me-2 p-2">Register</button>
             </div>
+
         </form>
     )
 }

@@ -11,7 +11,7 @@ export default function TopNav() {
     }, [user])
 
     return (
-        <nav  className="navbar bg-warning">
+        <nav  className="navbar bg-dark">
             <div className="TopNavMain">
                 <h1>Calendar app</h1>
             </div>

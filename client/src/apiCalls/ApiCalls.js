@@ -1,44 +1,37 @@
-export async function fetchUserData(email, password) {
-  const userData = { email: email, password: password };
+import axios from 'axios';
+
+export async function login(email, password) {
+  const userData = { email, password };
 
   try {
-    const response = await fetch('http://localhost:3001/api/login', {
-      method: 'POST',
+    const response = await axios.post('http://localhost:3001/api/login', userData, {
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
+      }
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
+    if (error.response && error.response.status === 401) {
+      throw new Error('Invalid credentials');
+    } else {
+      throw new Error('Error in API call:'+ error);
+    }
   }
 }
 
 export async function pushUserData(email, password, fullName, linkToPicture) {
-  const userData = { email: email, password: password, fullName: fullName, linkToPicture: linkToPicture };
+  const userData = { email, password, fullName, linkToPicture };
 
   try {
-    const response = await fetch('http://localhost:3001/api/register', {
-      method: 'POST',
+    const response = await axios.post('http://localhost:3001/api/register', userData, {
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
+      }
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error) {
     console.error('Error pushing data:', error);
@@ -47,21 +40,18 @@ export async function pushUserData(email, password, fullName, linkToPicture) {
 }
 
 export async function isUserRegistered(email) {
-  const userData = { email: email};
-  var registered
+  const userData = { email };
+
   try {
-    const response = await fetch('http://localhost:3001/api/isRegistered', {
-      method: 'POST',
+    const response = await axios.post('http://localhost:3001/api/isRegistered', userData, {
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
+      }
     });
 
-    const registered = await response.text();
+    const registered = response.data;
     return registered;
-  } 
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
   }

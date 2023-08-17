@@ -1,8 +1,8 @@
 .App {
-  height: 100vh;
+  height: 100%;
 }
 .TopNav{
-  height: 15vh;
+  height: 15%;
   color: black;
   display: flex;
   flex-direction: row;
@@ -11,6 +11,7 @@
 }
 .TopNavMain
 {
+  color: white;
   width: 50vw;
   font-size: 1.5vw;
 }
@@ -22,6 +23,8 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  width:3.8rem;
+  height:3.8rem;
 }
 .TopNavUserSignedIn, .TopNavUserSignedOut > *{
   margin-left:1vw;
@@ -29,11 +32,10 @@
 }
 .ProfilePicture{
   border-radius: 1rem;
-  width:4rem;
-  height:4rem;
+  width:3.8rem;
+  height:3.8rem;
 }
 .MainBody{
-  height: 85vh;
   display: flex;
   flex-direction: row;
 }

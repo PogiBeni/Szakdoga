@@ -5,11 +5,11 @@ export default function TopNavUserSignedOut() {
 
     return (
         <div className="TopNavUserSignedOut">
-            <button type="button" className="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <button type="button" className="btn btn-secondary btn-lg me-3 " data-bs-toggle="modal" data-bs-target="#loginModal">
                 Login
             </button>
             <LoginModal/>
             <RegisterModal/>
         </div>
     )
-}
+}   
