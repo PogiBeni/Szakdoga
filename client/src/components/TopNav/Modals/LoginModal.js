@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 export default function LoginModal() {
     return (
         <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div className="modal-dialog">
+            <div className="modal-dialog ">
                 <div className="modal-content">
                     <div className="modal-header  bg-dark text-white" data-bs-theme="dark">
                         <h1 className="modal-title fs-5 " id="loginModalLabel">Login</h1>

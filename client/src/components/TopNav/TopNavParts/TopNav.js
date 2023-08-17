@@ -13,6 +13,7 @@ export default function TopNav() {
     return (
         <nav  className="navbar bg-dark">
             <div className="TopNavMain">
+                <img src="/icons/calendar.svg" className="MainIcon"/>
                 <h1>Calendar app</h1>
             </div>
             <div className="justify-content-end">

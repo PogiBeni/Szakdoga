@@ -13,7 +13,7 @@ export default function LogoutModal() {
     }
     return (
         <div className="modal fade" id="logoutModal" aria-hidden="true" aria-labelledby="logoutModalLabel" tabIndex="-1">
-            <div className="modal-dialog ">
+            <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header bg-dark text-white" data-bs-theme="dark">
                         <h1 className="modal-title fs-5" id="logoutModalLabel">Do you want to logout?</h1>
