@@ -81,11 +81,14 @@
 }
 .event{
   background: red;
-  min-width: 6.5rem;
+  min-width: 7rem;
   border-radius: 0.5rem;
   padding: 0.2rem 0.2rem 0.2rem  0.5rem ;
   font-size: 0.8rem;
   margin: 0.2rem;
   font-weight: bold;
   color: white;
+}
+.eventHeader{
+  background-color: #f5f5f5;
 }

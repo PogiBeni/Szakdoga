@@ -1,36 +1,41 @@
 import React, { useState, useRef } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
+import EventPopover from './Popovers/EventPopover';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const events = [
-        { title: 'Event 1', color: 'red', start: new Date(), end: new Date() },
-        { title: 'Kutya séta', color: 'red', start: new Date(), end: new Date() },
-        { title: 'Kutya séta', color: 'red', start: new Date(), end: new Date() },
-        { title: 'Test', color: 'red', start: new Date(2023, 7, 9), end: new Date(2023, 8, 9) },
-        { title: 'Kutya séta', color: 'red', start: new Date(2023, 6, 9), end: new Date(2023, 8, 9) },
-        { title: '911', color: 'red', start: new Date(2023, 8, 11), end: new Date(2023, 8, 9) },
-        { title: 'test', color: 'red', start: new Date(2023, 8, 11), end: new Date(2023, 8, 9) },
-        { title: 'test2', color: 'red', start: new Date(2023, 8, 11), end: new Date(2023, 8, 9) },
+        { title: 'Event 1', color: 'red', start: new Date() },
+        { title: 'Kutya séta', color: 'red', start: new Date() },
+        { title: 'Kutya séta', color: 'red', start: new Date() },
+        { title: 'Test', color: 'red', start: new Date(2023, 7, 9) },
+        { title: 'Kutya séta', color: 'red', start: new Date(2023, 6, 9) },
+        { title: '911', color: 'red', start: new Date(2023, 8, 11) },
+        { title: 'test', color: 'red', start: new Date(2023, 8, 11) },
+        { title: 'test2', color: 'red', start: new Date(2023, 8, 11) },
 
     ];
-    const [show, setShow] = useState(false);
-    const [clickedDay, setClickedDay] = useState(null);
-    const target = useRef(null);
+    const [showEvent, setShowEvent] = useState(false)
+    const [clickedDay, setClickedDay] = useState(null)
+    const [target, setTarget] = useState(null)
+    const ref = useRef(null)
 
 
-    const prevMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-    };
+    function prevMonth(){
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
+    }
 
-    const nextMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-    };
-
+    function nextMonth(){
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
+    }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
+    function handleShowEvents(day,e)
+    {
+        setShowEvent(!showEvent)
+        setClickedDay(day) 
+        setTarget(e.target)
+    }
 
     return (
         <div>
@@ -46,7 +51,8 @@ export default function Calendar() {
                         <div >{format(day, 'd')}</div>
                         <div>
                             {events.filter((event) => isSameDay(event.start, day)).length > 2 ?
-                                <div key={day} className="event" ref={target} onClick={() => { setShow(!show); setClickedDay(day) }}>
+
+                                <div className="event" ref={target} onClick={(e) => handleShowEvents(day,e)}>
                                     {events.filter((event) => isSameDay(event.start, day)).length} events
                                 </div>
                                 :
@@ -62,19 +68,7 @@ export default function Calendar() {
                     </div>
                 ))}
             </div>
-            <Overlay target={target.current} show={show} placement="right">
-                {(props) => (
-                    <Tooltip id="overlay-example" {...props}>
-                        {events.map((event) => (
-                            isSameDay(event.start, clickedDay) && (
-                                <div key={event.title} className="event">
-                                    {event.title}
-                                </div>
-                            )
-                        ))}
-                    </Tooltip>
-                )}
-            </Overlay>
+            <EventPopover events={events} clickedDay={clickedDay} show={showEvent} target={target} ref={ref} onHide={() => setShowEvent(false)}/>
         </div>
     );
 }
