@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import EventPopover from './Popovers/EventPopover';
+import AddEventModal from './Modals/AddEventModal';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -18,7 +19,6 @@ export default function Calendar() {
     const [showEvent, setShowEvent] = useState(false)
     const [clickedDay, setClickedDay] = useState(null)
     const [target, setTarget] = useState(null)
-    const ref = useRef(null)
 
 
     function prevMonth(){
@@ -42,7 +42,11 @@ export default function Calendar() {
             <div className="calendarHeader">
                 <button className='btn btn-dark' onClick={prevMonth}>Previous</button>
                 <h2>{format(currentDate, 'MMMM yyyy')}</h2>
-                <button className='btn btn-dark' onClick={nextMonth}>Next</button>
+                 <div>
+                    
+                    <button className='btn btn-success me-1'  data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
+                    <button className='btn btn-dark' onClick={nextMonth}>Next</button>
+                 </div>
             </div>
 
             <div className="calendarGrid">
@@ -52,7 +56,7 @@ export default function Calendar() {
                         <div>
                             {events.filter((event) => isSameDay(event.start, day)).length > 2 ?
 
-                                <div className="event" ref={target} onClick={(e) => handleShowEvents(day,e)}>
+                                <div className="event" onClick={(e) => handleShowEvents(day,e)}>
                                     {events.filter((event) => isSameDay(event.start, day)).length} events
                                 </div>
                                 :
@@ -68,7 +72,8 @@ export default function Calendar() {
                     </div>
                 ))}
             </div>
-            <EventPopover events={events} clickedDay={clickedDay} show={showEvent} target={target} ref={ref} onHide={() => setShowEvent(false)}/>
+            <AddEventModal/>
+            <EventPopover events={events} clickedDay={clickedDay} show={showEvent} target={target} onHide={() => setShowEvent(false)}/>
         </div>
     );
 }

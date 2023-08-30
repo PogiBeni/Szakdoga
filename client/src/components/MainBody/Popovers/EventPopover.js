@@ -1,13 +1,24 @@
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { isSameDay } from 'date-fns';
-export default function EventPopover({ events, clickedDay, show, target, ref , onHide }) {
+export default function EventPopover({ events, clickedDay, show, target, onHide }) {
+    
+    
+    var placementVar
+    if(clickedDay)
+    {
+        if(clickedDay.getDate() > 28){
+            placementVar = "top"
+        }
+        else placementVar = "bottom"
+    }
     return (
+
+
         <Overlay
             show={show}
             target={target}
-            placement="bottom"
-            container={ref}
+            placement={placementVar}
             containerPadding={20}
             rootClose="true"
             onHide={onHide}

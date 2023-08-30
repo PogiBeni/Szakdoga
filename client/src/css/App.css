@@ -92,3 +92,16 @@
 .eventHeader{
   background-color: #f5f5f5;
 }
+.miniCalendarDay{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 0.5rem;
+  height: 1.8rem;
+  cursor: pointer;
+}
+.DatePicker{
+  width: 50rem;
+}
