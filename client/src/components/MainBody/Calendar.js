@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import EventPopover from './Popovers/EventPopover';
 import AddEventModal from './Modals/AddEventModal';
@@ -14,39 +14,28 @@ export default function Calendar() {
         { title: '911', color: 'red', start: new Date(2023, 8, 11) },
         { title: 'test', color: 'red', start: new Date(2023, 8, 11) },
         { title: 'test2', color: 'red', start: new Date(2023, 8, 11) },
+        { title: 'test3', color: 'red', start: new Date(2023, 8, 11) },
 
     ];
-    const [showEvent, setShowEvent] = useState(false)
-    const [clickedDay, setClickedDay] = useState(null)
-    const [target, setTarget] = useState(null)
-
-
-    function prevMonth(){
+    function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
     }
 
-    function nextMonth(){
+    function nextMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
-    function handleShowEvents(day,e)
-    {
-        setShowEvent(!showEvent)
-        setClickedDay(day) 
-        setTarget(e.target)
-    }
-
     return (
         <div>
             <div className="calendarHeader">
-                <button className='btn btn-dark' onClick={prevMonth}>Previous</button>
+                <div>
+                    <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
+                    <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
+                    <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
+                </div>
                 <h2>{format(currentDate, 'MMMM yyyy')}</h2>
-                 <div>
-                    
-                    <button className='btn btn-success me-1'  data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
-                    <button className='btn btn-dark' onClick={nextMonth}>Next</button>
-                 </div>
+                <div />
             </div>
 
             <div className="calendarGrid">
@@ -56,9 +45,7 @@ export default function Calendar() {
                         <div>
                             {events.filter((event) => isSameDay(event.start, day)).length > 2 ?
 
-                                <div className="event" onClick={(e) => handleShowEvents(day,e)}>
-                                    {events.filter((event) => isSameDay(event.start, day)).length} events
-                                </div>
+                                <EventPopover events={events} clickedDay={day}  />
                                 :
                                 events.map((event) => (
                                     isSameDay(event.start, day) && (
@@ -72,8 +59,8 @@ export default function Calendar() {
                     </div>
                 ))}
             </div>
-            <AddEventModal/>
-            <EventPopover events={events} clickedDay={clickedDay} show={showEvent} target={target} onHide={() => setShowEvent(false)}/>
+            <AddEventModal />
+
         </div>
     );
 }

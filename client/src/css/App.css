@@ -105,3 +105,13 @@
 .DatePicker{
   width: 50rem;
 }
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.colorTemplate{
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+}

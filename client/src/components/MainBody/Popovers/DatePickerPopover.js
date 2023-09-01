@@ -3,10 +3,12 @@ import Popover from 'react-bootstrap/Popover';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import { useState } from 'react';
 
-export default function DatePickerPopover({ show, target,  onHide, placement ,onDateSelect}) {
+export default function DatePickerPopover({ show, target, onHide, placement, onDateSelect }) {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
+    const [latestSelectedDate, setLatestSelectedDate] = useState(null);
+
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
     }
@@ -42,12 +44,15 @@ export default function DatePickerPopover({ show, target,  onHide, placement ,on
 
                             daysInMonth.map((day) => (
 
-                                <div key={day}
-                                    className={`miniCalendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ""}`}
-                                    onClick={() => onDateSelect(day)}
+                                <div
+                                    key={day}
+                                    className={`miniCalendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''
+                                        } ${isSameDay(latestSelectedDate, day) ? 'bg-success text-white' : ''}`}
+                                    onClick={() => {onDateSelect(day); setLatestSelectedDate(day)}}
                                 >
                                     {format(day, 'd')}
                                 </div>
+
                             ))}
 
                     </div>
