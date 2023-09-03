@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2023 at 11:21 AM
+-- Generation Time: Sep 03, 2023 at 08:07 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -26,6 +26,32 @@ USE `calendarapp`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `id` int(11) NOT NULL,
+  `creatorId` int(11) NOT NULL,
+  `taskName` varchar(255) NOT NULL,
+  `color` varchar(7) NOT NULL,
+  `startDate` date NOT NULL,
+  `startTime` varchar(5) NOT NULL,
+  `endDate` date NOT NULL,
+  `endTime` varchar(5) NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `creatorId`, `taskName`, `color`, `startDate`, `startTime`, `endDate`, `endTime`, `description`) VALUES
+(17, 47, 'Kutya séta', '#4169E1', '2023-09-03', '12:00', '2023-09-03', '13:00', 'Kutya séta'),
+(18, 47, 'Kutya séta', '#4169E1', '2023-09-03', '12:00', '2023-09-03', '13:00', 'Kutya séta');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -42,13 +68,25 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `fullName`, `linkToPicture`) VALUES
-(23, 'poganybenedek@gmail.com', 'null', 'Pogány Beni', 'https://lh3.googleusercontent.com/a/AAcHTteHDGjuQwV_rEooeUFbGp8ImaqQmunx_xB4SXxCNYr0zQ=s96-c'),
-(29, 'drago2162@gmail.com', 'null', 'Benedek Pogány', 'https://lh3.googleusercontent.com/a/AAcHTtelUx0OvW1Dn7oGsh6kQ48it1G9pvle9YTzPPb9eeGeRA=s96-c'),
-(37, 'a@a', '1801b9d549bd9fb5db40e5cd8fc2fe4d31ced4e6a79813a61d3fa643a5dfafa897987aec7876b3a25e1afffd477fa197ec24d62d2e3f407d1b41fb92d984fc43', 'a', '');
+(45, 'a@a', '$2b$10$1tMyjZg5qmZJF42xQN.LYe8wOFo3NjiEW6LG1vvd9JtnzegH5HklS', 'a', ''),
+(47, 'poganybenedek@gmail.com', '', 'Pogány Beni', 'https://lh3.googleusercontent.com/a/AAcHTteHDGjuQwV_rEooeUFbGp8ImaqQmunx_xB4SXxCNYr0zQ=s96-c'),
+(48, 'b@b', '$2b$10$R70k7qKKOm57my2z1nu3Wei/twbU6MXZtAWOfNuSLMcEwBmw7YWpK', 'b', ''),
+(49, 'c@c', '$2b$10$gWs8phxbgcwdVBKwYitUZO0mAaqpZRtFmjEEbivdJ06b9.8ldRCzu', 'c', ''),
+(50, 'd@d', '$2b$10$2CpVZY7AZrOULpPpUTc05ek239n9t2owaoW2mIoANmiKnEg4eVjIS', 'd', ''),
+(51, 'k@k', '$2b$10$kXCNMRfNgYTQ.GaR1pAFOu7o4rJmFw.D.6HNVc83eU/HHevZr/oGC', 'k', ''),
+(52, 'f@f', '$2b$10$s/.MYAOYVVwZsvj/0/MoK.KkFAwww1iAuE944kJKUBXExPwkTkEE6', 'f', ''),
+(53, 'k@k', '$2b$10$oY5curr1aIoEwroi.WsvWOMoBCqH2fFRcTmkmdlcee0u0afrHIpy2', 'k', ''),
+(54, 'drago2162@gmail.com', '', 'Benedek Pogány', 'https://lh3.googleusercontent.com/a/AAcHTtelUx0OvW1Dn7oGsh6kQ48it1G9pvle9YTzPPb9eeGeRA=s96-c');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
@@ -61,10 +99,16 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
