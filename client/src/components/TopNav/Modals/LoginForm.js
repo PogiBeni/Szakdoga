@@ -22,7 +22,7 @@ export default function LoginForm() {
             .then((data) => {
                 async function fetchTasks() {
                     try {
-                        const fetchedTasks = await getTasks();
+                        const fetchedTasks = await getTasks(data.id);
                         setUser({
                             name: data.fullName,
                             link: data.linkToPicture,

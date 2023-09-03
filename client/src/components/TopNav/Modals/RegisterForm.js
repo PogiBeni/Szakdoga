@@ -25,6 +25,7 @@ export default function RegisterForm() {
                         pushUserData(userLogin.email, userLogin.password, userLogin.fullName, "")
                             .then((data) => {
                                 setUser({
+                                    ...user,
                                     name: data.fullName,
                                     link: data.linkToPicture,
                                     id: data.id,
