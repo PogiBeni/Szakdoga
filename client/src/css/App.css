@@ -80,7 +80,6 @@
   height: 5.5rem;
 }
 .event{
-  background: red;
   min-width: 7rem;
   border-radius: 0.5rem;
   padding: 0.2rem 0.2rem 0.2rem  0.5rem ;
@@ -114,4 +113,17 @@
   height: 2rem;
   width: 2rem;
   cursor: pointer;
+}
+.blur {
+  filter: blur(0.3rem); /* Apply a blur effect */
+  pointer-events: none; /* Disable interactions with blurred elements */
+}
+.notLoggedInText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0);
+  padding: 10px;
+  border-radius: 5px;
 }

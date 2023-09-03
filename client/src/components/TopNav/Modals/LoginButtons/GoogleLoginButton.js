@@ -2,7 +2,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useContext } from "react";
 import { UserContext } from '../../../Context/UserContext';
 import jwt_decode from 'jwt-decode';
-import { isUserRegistered, pushUserData } from '../../../../apiCalls/ApiCalls';
+import { getTasks, isUserRegistered, pushUserData } from '../../../../apiCalls/ApiCalls';
 
 
 export default function GoogleLoginButton() {
@@ -15,18 +15,28 @@ export default function GoogleLoginButton() {
                 var userOb = jwt_decode(credentialResponse.credential);
                 isUserRegistered(userOb.email).then((res => {
                     if (res.exists) {
-                      setUser({
-                        name: userOb.name,
-                        link: userOb.picture,
-                        id: userOb.id,
-                        email: userOb.email,
-                        loggedIn: true
-                      });
+                        async function fetchTasks() {
+                            try {
+                                const fetchedTasks = await getTasks(res.id);
+                                setUser({ 
+                                    name: userOb.name,
+                                    link: userOb.picture,
+                                    id: res.id,
+                                    email: userOb.email,
+                                    loggedIn: true,
+                                    tasks: fetchedTasks});
+                            } catch (error) {
+                                console.error('Error fetching tasks:', error);
+                            }
+                        }
+
+                        fetchTasks();
                     }
                     else {
                         pushUserData(userOb.email, null, userOb.name, userOb.picture)
                             .then((data) => {
                                 setUser({
+                                    ...user,
                                     name: data.fullName,
                                     link: data.linkToPicture,
                                     id: data.id,

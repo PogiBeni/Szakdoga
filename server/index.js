@@ -35,7 +35,7 @@ app.post('/api/isRegistered', (req, res) => {
     }
     console.log(results)
     if (results[0]) {
-      res.json({ exists: true });
+      res.json({ exists: true, id: results[0].id });
     } else {
       res.json({ exists: false });
     }
@@ -109,6 +109,48 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+
+app.post('/api/addTask', async (req, res) => {
+  const task = req.body.task;
+  console.log('Received data:', task);
+
+  try {
+    connection.query(
+      "INSERT INTO tasks ( creatorId, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [task.creatorId, task.taskName, task.color, task.startDate, task.startTime,task.endDate,task.endTime,task.desc],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          return;
+        }
+        res.json(true);
+      }
+    );
+  } catch (error) {
+    console.error('Error adding task', error);
+    res.status(500).json({ error: 'Error adding task' });
+  }
+});
+
+app.post('/api/getTasks', async (req, res) => {
+  console.log("In getTasks:")
+  const id = req.body.id;
+  try {
+    connection.query("SELECT * FROM tasks where creatorId = ? ",[id], (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err)
+        return
+      }
+      console.log(results)
+      res.json(results)
+    })
+  } catch (error) {
+    console.error('Error getting task', error);
+    res.status(500).json({ error: 'Error getting task' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)
 })
+

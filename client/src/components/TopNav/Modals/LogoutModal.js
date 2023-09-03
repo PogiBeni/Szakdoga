@@ -7,7 +7,14 @@ export default function LogoutModal() {
     const [user, setUser] = useContext(UserContext)
 
     function signOut() {
-        setUser({})
+        setUser({
+            id: null,
+            loggedIn: false,
+            name: null,
+            link: null,
+            email: null,
+            tasks: []
+        })
         googleLogout()
         document.querySelector('.btn-close ').click()
     }

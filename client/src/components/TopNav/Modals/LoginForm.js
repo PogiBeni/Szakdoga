@@ -1,5 +1,5 @@
 import { useState, useContext } from "react"
-import { login } from "../../../apiCalls/ApiCalls"
+import { getTasks, login } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
 
 export default function LoginForm() {
@@ -16,17 +16,28 @@ export default function LoginForm() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        if (!userLogin.email && !userLogin.password) {seterrorMSG("Email or password empty!"); return}
+        if (!userLogin.email && !userLogin.password) { seterrorMSG("Email or password empty!"); return }
 
         login(userLogin.email, userLogin.password)
             .then((data) => {
-                setUser({
-                    name: data.fullName,
-                    link: data.linkToPicture,
-                    id: data.id,    
-                    email: data.email,
-                    loggedIn: true
-                })
+                async function fetchTasks() {
+                    try {
+                        const fetchedTasks = await getTasks();
+                        setUser({
+                            name: data.fullName,
+                            link: data.linkToPicture,
+                            id: data.id,
+                            email: data.email,
+                            loggedIn: true, 
+                            tasks: fetchedTasks
+                        });
+                        console.log(fetchedTasks)
+                    } catch (error) {
+                        console.error('Error fetching tasks:', error);
+                    }
+                }
+
+                fetchTasks();
                 seterrorMSG(null);
                 document.querySelector('.btn-close').click()
             })

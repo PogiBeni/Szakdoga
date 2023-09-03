@@ -1,4 +1,4 @@
-import { useState,createContext } from "react"
+import { useState,useEffect,createContext } from "react"
 
 export const UserContext = createContext();
 
@@ -10,9 +10,9 @@ export const UserProvider = props => {
             loggedIn: false,
             name:null,
             link:null,
-            email:null
+            email:null,
+            tasks:[]
         })
-
     return(
         <UserContext.Provider value={[user,setUser]}>
              {props.children}

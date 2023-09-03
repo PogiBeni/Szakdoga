@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
-import EventPopover from './Popovers/EventPopover';
-import AddEventModal from './Modals/AddEventModal';
+import TaskPopover from './Popovers/TaskPopover';
+import AddTaskModal from './Modals/AddTaskModal';
+import { UserContext } from '../Context/UserContext';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const events = [
-        { title: 'Event 1', color: 'red', start: new Date() },
-        { title: 'Kutya séta', color: 'red', start: new Date() },
-        { title: 'Kutya séta', color: 'red', start: new Date() },
-        { title: 'Test', color: 'red', start: new Date(2023, 7, 9) },
-        { title: 'Kutya séta', color: 'red', start: new Date(2023, 6, 9) },
-        { title: '911', color: 'red', start: new Date(2023, 8, 11) },
-        { title: 'test', color: 'red', start: new Date(2023, 8, 11) },
-        { title: 'test2', color: 'red', start: new Date(2023, 8, 11) },
-        { title: 'test3', color: 'red', start: new Date(2023, 8, 11) },
+    const [user, setUser] = useContext(UserContext)
+    var tasks = user.tasks
 
-    ];
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
     }
@@ -27,40 +19,50 @@ export default function Calendar() {
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
     return (
-        <div>
-            <div className="calendarHeader">
-                <div>
-                    <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
-                    <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
-                    <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
-                </div>
-                <h2>{format(currentDate, 'MMMM yyyy')}</h2>
-                <div />
-            </div>
-
-            <div className="calendarGrid">
-                {daysInMonth.map((day) => (
-                    <div key={day} className={`calendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''}`}>
-                        <div >{format(day, 'd')}</div>
-                        <div>
-                            {events.filter((event) => isSameDay(event.start, day)).length > 2 ?
-
-                                <EventPopover events={events} clickedDay={day}  />
-                                :
-                                events.map((event) => (
-                                    isSameDay(event.start, day) && (
-                                        <div key={event.title} className="event">
-                                            {event.title}
-                                        </div>
-                                    )
-                                ))
-                            }
-                        </div>
+        <>
+            <div className={`${user.loggedIn === false ? "blur" : ""}`}>
+                <div className="calendarHeader" >
+                    <div>
+                        <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
+                        <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
+                        <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
                     </div>
-                ))}
-            </div>
-            <AddEventModal />
+                    <h2>{format(currentDate, 'MMMM yyyy')}</h2>
+                    <div />
+                </div>
 
-        </div>
+                <div className="calendarGrid">
+                    {daysInMonth.map((day) => (
+                        <div key={day} className={`calendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''}`}>
+                            <div >{format(day, 'd')}</div>
+                            <div>
+                                {
+                                    tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
+
+                                        <TaskPopover tasks={tasks} day={day} />
+                                        :
+                                        tasks.map((task) => (
+                                            isSameDay(task.startDate, day) && (
+                                                <div
+                                                    key={task.taskName}
+                                                    className="event"
+                                                    style={{ backgroundColor: task.color }}
+                                                >
+                                                    {task.taskName}
+                                                </div>
+                                            )
+                                        ))
+                                }
+                            </div>
+                        </div>
+                    ))}
+
+                    <AddTaskModal />
+                </div>
+            </div>
+            {!user.loggedIn && (
+                <h2 className="notLoggedInText">Please log in to view your calendar!</h2>
+            )}
+        </>
     );
 }
