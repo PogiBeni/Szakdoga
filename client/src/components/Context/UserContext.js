@@ -11,7 +11,8 @@ export const UserProvider = props => {
             name:null,
             link:null,
             email:null,
-            tasks:[]
+            tasks:[],
+            groups:[]
         })
     return(
         <UserContext.Provider value={[user,setUser]}>

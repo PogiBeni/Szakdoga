@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
@@ -20,12 +20,12 @@ export default function Calendar() {
 
     return (
         <>
-            <div className={`${user.loggedIn === false ? "blur" : ""}`}>
+            <div>
                 <div className="calendarHeader" >
                     <div>
                         <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
                         <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
-                        <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addEventModal">+</button>
+                        <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
                     </div>
                     <h2>{format(currentDate, 'MMMM yyyy')}</h2>
                     <div />
@@ -44,7 +44,7 @@ export default function Calendar() {
                                         tasks.map((task) => (
                                             isSameDay(task.startDate, day) && (
                                                 <div
-                                                    key={task.taskName}
+                                                    key={task.id}
                                                     className="event"
                                                     style={{ backgroundColor: task.color }}
                                                 >
@@ -60,9 +60,7 @@ export default function Calendar() {
                     <AddTaskModal />
                 </div>
             </div>
-            {!user.loggedIn && (
-                <h2 className="notLoggedInText">Please log in to view your calendar!</h2>
-            )}
+            
         </>
     );
 }

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
-import { UserContext } from "../../Context/UserContext"
-import LogoutModal from "../Modals/LogoutModal"
+import { UserContext } from "../Context/UserContext"
+import LogoutModal from "./ModalParts/LogoutModal"
 
 export default function TopNavuserSignedIn() {
 

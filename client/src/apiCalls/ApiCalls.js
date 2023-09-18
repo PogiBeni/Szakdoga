@@ -11,13 +11,24 @@ export async function login(email, password) {
       }
     });
 
-    const data = response.data;
+    const tasks = response.data.tasks.map(task => ({
+      ...task,
+      startDate: parseISO(task.startDate),
+      endDate: parseISO(task.endDate)
+    }));
+
+    const data = {
+      ...response.data,
+      tasks: tasks 
+    };
+
+    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
       throw new Error('Invalid credentials');
     } else {
-      throw new Error('Error in API call:'+ error);
+      throw new Error('Error in API call: ' + error);
     }
   }
 }
@@ -82,12 +93,29 @@ export async function getTasks(userId) {
         'Content-Type': 'application/json'
       }
     });
-    const tasksWithParsedDates = response.data.map(task => ({
+    console.log(response.data)
+    const getTasks = response.data.map(task => ({
       ...task,
       startDate: parseISO(task.startDate),
       endDate: parseISO(task.endDate)
     }));
-    return tasksWithParsedDates;
+    return getTasks;
+  } catch (error) {
+    console.error('Error adding task:', error);
+    throw error;
+  }
+}
+
+export async function addGroup(group) {
+  console.log(group)
+  try {
+    const response = await axios.post('http://localhost:3001/api/addGroup',group, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
   } catch (error) {
     console.error('Error adding task:', error);
     throw error;

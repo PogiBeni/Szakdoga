@@ -42,38 +42,93 @@ app.post('/api/isRegistered', (req, res) => {
   })
 })
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const userData = req.body;
-  console.log('Received data:', userData);
 
-  connection.query("SELECT * FROM user WHERE email = ?", [userData.email], (err, results) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      return;
-    }
+  try {
+    const results = await new Promise((resolve, reject) => {
+       // Query for user data
+      connection.query("SELECT * FROM user WHERE email = ?", [userData.email], (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          reject(err);
+          return;
+        }
+
+        if (results.length === 0) {
+          res.status(401).json({ message: 'User not found' });
+          resolve([]);
+          return;
+        }
+
+        const storedHashedPassword = results[0].password;
+        bcrypt.compare(userData.password, storedHashedPassword, (compareErr, isMatch) => {
+          if (compareErr) {
+            console.error('Error comparing passwords:', compareErr);
+            res.status(500).json({ message: 'Error comparing passwords' });
+            resolve([]);
+            return;
+          }
+
+          if (!isMatch) {
+            res.status(401).json({ message: 'Invalid password' });
+            resolve([]);
+            return;
+          }
+
+          resolve(results);
+        });
+      });
+    });
 
     if (results.length === 0) {
-      res.status(401).json({ message: 'User not found' });
       return;
     }
 
-    const storedHashedPassword = results[0].password;
+    const user = {
+      id: results[0].id,
+      loggedIn: true,
+      name: results[0].fullName,
+      link: results[0].linkToPicture,
+      email: results[0].email,
+      tasks: [],
+      groups:[]
+    };
 
-    bcrypt.compare(userData.password, storedHashedPassword, (compareErr, isMatch) => {
-      if (compareErr) {
-        console.error('Error comparing passwords:', compareErr);
-        res.status(500).json({ message: 'Error comparing passwords' });
-        return;
-      }
-
-      if (!isMatch) {
-        res.status(401).json({ message: 'Invalid password' });
-        return;
-      }
-
-      res.json(results[0]);
+    // Query for tasks
+    const tasksResults = await new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM tasks where creatorId = ? ", [user.id], (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          reject(err);
+          return;
+        }
+        resolve(results);
+      });
     });
-  });
+    user.tasks = tasksResults;
+    
+    // Query for groups
+    const groupsResults = await new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM groups where creatorUserId = ? ", [user.id], (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          reject(err);
+          return;
+        }
+        resolve(results);
+      });
+    });
+
+    user.groups = groupsResults;
+    console.log("User:");
+    console.log(user);
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error in login:', error);
+    res.status(500).json({ message: 'An error occurred during login' });
+  }
 });
 
 app.post('/api/register', async (req, res) => {
@@ -82,7 +137,7 @@ app.post('/api/register', async (req, res) => {
 
   try {
     var hashedPassword
-    if(userData.password == null) hashedPassword = ""
+    if (userData.password == null) hashedPassword = ""
     else hashedPassword = await bcrypt.hash(userData.password, 10);
 
     connection.query(
@@ -117,7 +172,7 @@ app.post('/api/addTask', async (req, res) => {
   try {
     connection.query(
       "INSERT INTO tasks ( creatorId, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [task.creatorId, task.taskName, task.color, task.startDate, task.startTime,task.endDate,task.endTime,task.desc],
+      [task.creatorId, task.taskName, task.color, task.startDate, task.startTime, task.endDate, task.endTime, task.desc],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -132,21 +187,24 @@ app.post('/api/addTask', async (req, res) => {
   }
 });
 
-app.post('/api/getTasks', async (req, res) => {
-  console.log("In getTasks:")
-  const id = req.body.id;
+app.post('/api/addGroup', async (req, res) => {
+  const group = req.body;
+  console.log('Received data:', req.body);
   try {
-    connection.query("SELECT * FROM tasks where creatorId = ? ",[id], (err, results) => {
-      if (err) {
-        console.error('Error executing query:', err)
-        return
+    connection.query(
+      "INSERT INTO groups ( groupName, color, creatorUserId) VALUES (?, ?, ?)",
+      [group.groupName, group.groupColor, group.creatorUserId],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          return;
+        }
+        res.json(true);
       }
-      console.log(results)
-      res.json(results)
-    })
+    );
   } catch (error) {
-    console.error('Error getting task', error);
-    res.status(500).json({ error: 'Error getting task' });
+    console.error('Error adding group', error);
+    res.status(500).json({ error: 'Error adding task' });
   }
 });
 

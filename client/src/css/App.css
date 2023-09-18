@@ -43,7 +43,7 @@
   flex-direction: row;
 }
 .MainBodyContent{
-  width: 85vw;
+  width:fill;
   padding: 1vw;
 }
 .SideIcon{

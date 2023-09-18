@@ -1,6 +1,8 @@
 import { useState, useContext } from "react"
 import { getTasks, login } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
+import ErrorMsg from "../../basicComponents/ErrorMsg"
+import InputWithLabel from "../../basicComponents/InputWithLabel"
 
 export default function LoginForm() {
 
@@ -20,24 +22,16 @@ export default function LoginForm() {
 
         login(userLogin.email, userLogin.password)
             .then((data) => {
-                async function fetchTasks() {
-                    try {
-                        const fetchedTasks = await getTasks(data.id);
-                        setUser({
-                            name: data.fullName,
-                            link: data.linkToPicture,
-                            id: data.id,
-                            email: data.email,
-                            loggedIn: true, 
-                            tasks: fetchedTasks
-                        });
-                        console.log(fetchedTasks)
-                    } catch (error) {
-                        console.error('Error fetching tasks:', error);
-                    }
-                }
-
-                fetchTasks();
+                setUser({
+                    name: data.fullName,
+                    link: data.link,
+                    id: data.id,
+                    email: data.email,
+                    loggedIn: true,
+                    tasks: data.tasks,
+                    groups: data.groups
+                });
+                console.log(data)
                 seterrorMSG(null);
                 document.querySelector('.btn-close').click()
             })
@@ -55,17 +49,23 @@ export default function LoginForm() {
     return (
         <form onSubmit={handleSubmit} className="d-flex align-items-center flex-column mt-3" >
             <p>Or</p>
-            {errorMSG ?
-                <div className="alert alert-danger form-control p-2" role="alert">
-                    {errorMSG}
-                </div>
-                : ""}
-            <input type="email" value={userLogin.email} onChange={(e) => setUserLogin({ ...userLogin, email: e.target.value })} className="form-control m-2" placeholder="Email" aria-label="Email" aria-describedby="addon-wrapping" />
-            <input type="password" value={userLogin.password} onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })} className="form-control m-2" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" />
+            <ErrorMsg errorMSG={errorMSG} />
+            <InputWithLabel label={"Email:"} addClassName={"w-100"}>
+                <input type="email"
+                    value={userLogin.email}
+                    onChange={(e) => setUserLogin({ ...userLogin, email: e.target.value })}
+                    className="form-control" placeholder="Email" aria-label="Email" />
+            </InputWithLabel>
+            <InputWithLabel label={"Password:"} addClassName={"w-100 mt-2"}>
+                <input type="password"
+                    value={userLogin.password}
+                    onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
+                    className="form-control" placeholder="Password" aria-label="Password" />
+            </InputWithLabel>
 
             <div className="d-flex align-items-center mt-5 ">
                 <button type="button" className="btn alert alert-light me-2 p-2" data-bs-dismiss="modal">Close</button>
-                <button type="button" className="btn alert alert-light me-5 p-2" data-bs-target="#registerForm" data-bs-toggle="modal">Register</button>
+                <button type="button" className="btn alert alert-light me-5 p-2" data-bs-target="#registerModal" data-bs-toggle="modal">Register</button>
                 <button type="submit" className="btn alert alert-success me-2 p-2">Login</button>
             </div>
         </form>
