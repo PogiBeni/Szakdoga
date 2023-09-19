@@ -171,7 +171,7 @@ app.post('/api/addTask', async (req, res) => {
 
   try {
     connection.query(
-      "INSERT INTO tasks ( creatorId, groupId, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO tasks ( creatorId, groupId, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [task.creatorId, task.groupId, task.taskName, task.color, task.startDate, task.startTime, task.endDate, task.endTime, task.desc],
       (err, results) => {
         if (err) {
