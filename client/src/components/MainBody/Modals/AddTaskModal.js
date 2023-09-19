@@ -12,9 +12,7 @@ import BasicModal from "../../basicComponents/BasicModal";
 
 export default function AddTaskModal() {
     const [user, setUser] = useContext(UserContext)
-    const [task, setTask] = useState(
-        {
-
+    const [task, setTask] = useState({
             creatorId: "",
             taskName: "",
             color: '#4169E1',
@@ -47,13 +45,24 @@ export default function AddTaskModal() {
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
         if (task.endTime === "") { setErrorMSG("Set an end time!"); return }
         if (task.startDate > task.endDate) { setErrorMSG("Start date must be before the end date!"); return }
-        if (isSameDay(task.startDate, task.endDate) && task.startTime < task.endTime) { setErrorMSG("Start time must be before the end time!"); return }
+        if (isSameDay(task.startDate, task.endDate) && task.startTime > task.endTime) { setErrorMSG("Start time must be before the end time!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
         addTask(task)
         setErrorMSG(null)
         document.querySelector('#dismissAddTaskModal').click()
         setUser({ ...user, tasks: [...user.tasks, task] })
+        setTask({
+            ...task,
+            taskName: "",
+            color: '#4169E1',
+            groupId:0,
+            startDate: new Date(),
+            startTime: "",
+            endDate: new Date(),
+            endTime: "",
+            desc: ""
+        })
     }
 
     return (
@@ -77,7 +86,7 @@ export default function AddTaskModal() {
                         <select class="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value })}>
                             <option value="0">None</option>
                             {user.groups.map(group => (
-                                <option style={{ background: group.color }} value={group.id}>{group.groupName}</option>
+                                <option value={group.id}>{group.groupName}</option>
                             ))}
                         </select>
                     </InputWithLabel>

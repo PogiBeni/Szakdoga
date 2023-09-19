@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { parseISO } from 'date-fns';
+const nodeServerUrl = ""
 
 export async function login(email, password) {
   const userData = { email, password };
@@ -70,10 +71,10 @@ export async function isUserRegistered(email) {
 }
 
 export async function addTask(task) {
-  const taskData = { task };
+
 
   try {
-    const response = await axios.post('http://localhost:3001/api/addTask', taskData, {
+    const response = await axios.post('http://localhost:3001/api/addTask', task, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -86,28 +87,8 @@ export async function addTask(task) {
   }
 }
 
-export async function getTasks(userId) {
-  try {
-    const response = await axios.post('http://localhost:3001/api/getTasks',{ id: userId }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    console.log(response.data)
-    const getTasks = response.data.map(task => ({
-      ...task,
-      startDate: parseISO(task.startDate),
-      endDate: parseISO(task.endDate)
-    }));
-    return getTasks;
-  } catch (error) {
-    console.error('Error adding task:', error);
-    throw error;
-  }
-}
-
 export async function addGroup(group) {
-  console.log(group)
+
   try {
     const response = await axios.post('http://localhost:3001/api/addGroup',group, {
       headers: {
@@ -117,7 +98,7 @@ export async function addGroup(group) {
 
     return response.data;
   } catch (error) {
-    console.error('Error adding task:', error);
+    console.error('Error adding group:', error);
     throw error;
   }
 }
