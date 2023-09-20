@@ -3,6 +3,9 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from '
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
 import { UserContext } from '../Context/UserContext';
+import BasicModal from '../basicComponents/BasicModal';
+import AddGroupForm from './Modals/AddGroupForm';
+import Select from 'react-select';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -18,49 +21,64 @@ export default function Calendar() {
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
+    const options = user.groups.map((group) => ({
+        value: group.id,
+        label: group.groupName
+    }))
+
     return (
-        <>
-            <div>
-                <div className="calendarHeader" >
-                    <div>
-                        <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
-                        <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
-                        <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
-                    </div>
-                    <h2>{format(currentDate, 'MMMM yyyy')}</h2>
-                    <div />
+        <div className='w-100 '>
+            <div className="d-flex justify-content-between m-3" >
+                <div className="w-25">
+                    <button className='btn btn-dark btn-sm me-1' onClick={prevMonth}>&lt;</button>
+                    <button className='btn btn-dark btn-sm me-1 ' onClick={nextMonth}>&gt;</button>
+                    <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
+                    <button className='btn btn-light me-1' data-bs-toggle="modal" data-bs-target="#addGroupModal"><img src="/icons/group.svg" /></button>
                 </div>
 
-                <div className="calendarGrid">
-                    {daysInMonth.map((day) => (
-                        <div key={day} className={`calendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''}`}>
-                            <div >{format(day, 'd')}</div>
-                            <div>
-                                {
-                                    tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
-
-                                        <TaskPopover tasks={tasks} day={day} />
-                                        :
-                                        tasks.map((task) => (
-                                            isSameDay(task.startDate, day) && (
-                                                <div
-                                                    key={task.id}
-                                                    className="event"
-                                                    style={{ backgroundColor: task.color }}
-                                                >
-                                                    {task.taskName}
-                                                </div>
-                                            )
-                                        ))
-                                }
-                            </div>
-                        </div>
-                    ))}
-
-                    <AddTaskModal />
+                <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
+                
+                <div className='w-25'>
+                    <Select
+                        isMulti
+                        name="groups"
+                        options={options}
+                        className="basic-multi-select "
+                        classNamePrefix="Groups"
+                    />
                 </div>
             </div>
-            
-        </>
+
+            <div className="calendarGrid m-3">
+                {daysInMonth.map((day) => (
+                    <div key={day} className={`calendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''}`}>
+                        <div >{format(day, 'd')}</div>
+                        <div>
+                            {
+                                tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
+
+                                    <TaskPopover tasks={tasks} day={day} />
+                                    :
+                                    tasks.map((task) => (
+                                        isSameDay(task.startDate, day) && (
+                                            <div
+                                                key={task.id}
+                                                className="event"
+                                                style={{ backgroundColor: task.color }}
+                                            >
+                                                {task.taskName}
+                                            </div>
+                                        )
+                                    ))
+                            }
+                        </div>
+                    </div>
+                ))}
+                <BasicModal name={"addGroupModal"} title={"Create a group:"} >
+                    <AddGroupForm />
+                </BasicModal>
+                <AddTaskModal />
+            </div>
+        </div>
     );
 }

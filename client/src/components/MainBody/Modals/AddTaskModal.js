@@ -45,7 +45,9 @@ export default function AddTaskModal() {
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
         if (task.endTime === "") { setErrorMSG("Set an end time!"); return }
         if (task.startDate > task.endDate) { setErrorMSG("Start date must be before the end date!"); return }
-        if (isSameDay(task.startDate, task.endDate) && task.startTime > task.endTime) { setErrorMSG("Start time must be before the end time!"); return }
+        if (isSameDay(task.startDate, task.endDate) && task.startTime.split(':')[0] > task.endTime.split(':')[0]) { setErrorMSG("Start time must be before the end time!"); return }
+        if (task.startTime.split(':')[0] > 25 || task.endTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
+        if (task.startTime.split(':')[1] > 60 || task.endTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
         addTask(task)
@@ -56,7 +58,6 @@ export default function AddTaskModal() {
             ...task,
             taskName: "",
             color: '#4169E1',
-            groupId:0,
             startDate: new Date(),
             startTime: "",
             endDate: new Date(),
