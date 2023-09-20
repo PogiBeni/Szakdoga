@@ -6,11 +6,21 @@ import { UserContext } from '../Context/UserContext';
 import BasicModal from '../basicComponents/BasicModal';
 import AddGroupForm from './Modals/AddGroupForm';
 import Select from 'react-select';
+import BasicDay from '../basicComponents/BasicDay';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
     var tasks = user.tasks
+
+    const handleSelectChange = (selectedValues) => {
+        setSelectedOptions(selectedValues);
+        console.log(selectedOptions)
+    };
+    const selectedValues = selectedOptions.map((option) => option.value);
+    const filteredTasks = tasks.filter((task) => selectedValues.includes(task.groupId));
 
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
@@ -37,7 +47,7 @@ export default function Calendar() {
                 </div>
 
                 <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
-                
+
                 <div className='w-25'>
                     <Select
                         isMulti
@@ -45,18 +55,21 @@ export default function Calendar() {
                         options={options}
                         className="basic-multi-select "
                         classNamePrefix="Groups"
+                        onChange={handleSelectChange}
+                        value={selectedOptions}
                     />
+                    <p>Selected Values: {selectedValues.join(', ')}</p>
                 </div>
             </div>
 
             <div className="calendarGrid m-3">
-                {daysInMonth.map((day) => (
-                    <div key={day} className={`calendarDay ${isSameDay(day, new Date()) ? 'bg-dark text-white' : ''}`}>
-                        <div >{format(day, 'd')}</div>
-                        <div>
+                {selectedOptions.length == 0
+                    ?
+                    daysInMonth.map((day) => (
+                        <BasicDay day={day}>
+
                             {
                                 tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
-
                                     <TaskPopover tasks={tasks} day={day} />
                                     :
                                     tasks.map((task) => (
@@ -70,10 +83,33 @@ export default function Calendar() {
                                             </div>
                                         )
                                     ))
+
                             }
-                        </div>
-                    </div>
-                ))}
+                        </BasicDay>
+                    ))
+                    : daysInMonth.map((day) => (
+                        filteredTasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
+                            <BasicDay day={day}>
+                                <TaskPopover tasks={filteredTasks} day={day} />
+                            </BasicDay>
+                            :
+                            tasks.map((task) => (
+                                isSameDay(task.startDate, day) && (
+                                    <BasicDay day={day}>
+                                        <div
+                                            key={task.id}
+                                            className="event"
+                                            style={{ backgroundColor: task.color }}
+                                        >
+                                            {task.taskName}
+                                        </div>
+
+                                    </BasicDay>
+                                )
+                            ))
+
+
+                    ))}
                 <BasicModal name={"addGroupModal"} title={"Create a group:"} >
                     <AddGroupForm />
                 </BasicModal>

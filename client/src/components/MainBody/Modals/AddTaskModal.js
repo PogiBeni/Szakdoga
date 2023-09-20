@@ -84,15 +84,15 @@ export default function AddTaskModal() {
 
                 <div className="d-flex align-items-center mt-3">
                     <InputWithLabel label={"Select group:"} addClassName={"me-2 w-50"}>
-                        <select class="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value })}>
+                        <select className="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value })}>
                             <option value="0">None</option>
                             {user.groups.map(group => (
-                                <option value={group.id}>{group.groupName}</option>
+                                <option key={group.id} value={group.id}>{group.groupName}</option>
                             ))}
                         </select>
                     </InputWithLabel>
                     <InputWithLabel label={"Select tag:"} addClassName={"me-2 w-50"}>
-                        <input class="form-select" list="datalistOptions" />
+                        <input className="form-select" list="datalistOptions" />
 
 
                         <datalist id="datalistOptions">

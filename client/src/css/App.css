@@ -112,3 +112,6 @@
   margin-top: 3vh;
   margin-left: 0.5vw;
 }
+.modal-backdrop {
+  background-color: transparent;
+}

@@ -9,11 +9,15 @@ export default function MainBody() {
 
     return (
         <>
-            <Calendar className={` ${user.loggedIn === false ? "blur" : ""}`} />
+
+            <div className={` ${user.loggedIn === false ? "blur" : ""}`}>
+                <Calendar />
+
+            </div>
             {!user.loggedIn && (
                 <h2 className="notLoggedInText">Please log in to view your calendar!</h2>
             )}
-        </>
 
+        </>
     )
 }
