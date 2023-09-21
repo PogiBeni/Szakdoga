@@ -35,10 +35,10 @@ export default function TaskPopover({ tasks, day }) {
                             isSameDay(task.startDate, day) && (
                                 <div
                                     key={task.id}
-                                    className="event d-flex justify-content-between"
+                                    className="event d-flex justify-content-between text-truncate"
                                     style={{ backgroundColor: task.color }}
                                 >
-                                    <div>{task.taskName}</div> <div>{task.startTime}    </div>
+                                    <div>{task.startTime}    </div><div>{task.taskName}</div> 
                                 </div>
                             )
                         ))}

@@ -10,12 +10,12 @@ export default function TopNavUserSignedOut() {
             <button type="button" className="btn btn-secondary btn-lg me-3 " data-bs-toggle="modal" data-bs-target="#loginModal">
                 Login
             </button>
-            <BasicModal name={"loginModal"} title={"Login"}>
+            <BasicModal name={"loginModal"} title={"Login"} centered={true}>
                 <GoogleLoginButton className="mb-5" />
                 <LoginForm />
             </BasicModal>
 
-            <BasicModal name={"registerModal"} title={"Register"}>
+            <BasicModal name={"registerModal"} title={"Register"} centered={true}>
                 <RegisterForm/>
             </BasicModal>
         </div>

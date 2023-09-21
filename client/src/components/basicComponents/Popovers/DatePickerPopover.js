@@ -32,12 +32,12 @@ export default function DatePickerPopover({ show, target, onHide, placement, onD
             <Popover className='DatePicker'>
                 <Popover.Header className='eventHeader' as="h3">{`Pick a date:`}</Popover.Header>
                 <Popover.Body>
-                    <div className="calendarHeader">
-                        <button className='btn btn-dark btn-sm me-3' onClick={prevMonth}>&lt;</button>
+                    <div className="d-flex justify-content-between mb-3">
+                        <button className='btn btn-dark btn-sm ' onClick={prevMonth}>&lt;</button>
 
                         <h5>{format(currentDate, 'MMMM yyyy')}</h5>
 
-                        <button className='btn btn-dark btn-sm ms-3' onClick={nextMonth}>&gt;</button>
+                        <button className='btn btn-dark btn-sm ' onClick={nextMonth}>&gt;</button>
                     </div>
                     <div className='calendarGrid'>
                         {

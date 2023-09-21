@@ -1,7 +1,6 @@
 import { useState, useContext,useEffect } from "react"
 import { UserContext } from "../../Context/UserContext"
 import ErrorMsg from "../../basicComponents/ErrorMsg";
-import ColorPicker from "../../basicComponents/ColorPicker";
 import InputWithLabel from "../../basicComponents/InputWithLabel";
 import { addGroup } from "../../../apiCalls/ApiCalls";
 
@@ -13,11 +12,12 @@ export default function AddGroupForm() {
         {
             groupName: "",
             creatorUserId: "",
-            groupColor: "#4169E1",
+            creatorName: "",
+            description:""
         })
 
     useEffect(() => {
-        setGroup({ ...group, creatorUserId: user.id })
+        setGroup({ ...group, creatorUserId: user.id,creatorName:user.name })
     }, [user])
 
     function handleSubmit(e) {
@@ -32,20 +32,16 @@ export default function AddGroupForm() {
         setGroup({
             groupName: "",
             creatorUserId: user.id,
-            groupColor: "#4169E1",
+            creatorName:user.name,
+            description:""
         })
 
     }
-    function handleColorPickerPickerSelection(selectedColor) {
-        setGroup({ ...group, groupColor: selectedColor })
-    }
 
     return (
-        <form onSubmit={handleSubmit} className="d-flex  flex-column mt-3" >
+        <form onSubmit={handleSubmit} className="d-flex  flex-column" >
             <ErrorMsg errorMSG={errorMSG} />
-
-            <div className="d-flex ">
-                <ColorPicker color={group.groupColor} setTaskColor={handleColorPickerPickerSelection} className="d-flex" />
+                
                 <InputWithLabel label={"Group name:"} addClassName={"mb-1 w-100"}>
                     <input type="text"
                         className="form-control "
@@ -53,7 +49,9 @@ export default function AddGroupForm() {
                         onChange={(e) => setGroup({ ...group, groupName: e.target.value })}
                         placeholder="Group name:" aria-label="Group name:" />
                 </InputWithLabel>
-            </div>
+                <InputWithLabel label={"Description:"} addClassName={"w-100"}>
+                    <textarea className="form-control" value={group.description} onChange={(e) => setGroup({ ...group, description: e.target.value })} placeholder="Description" aria-label="Description" />
+                </InputWithLabel>
             <div className="d-flex align-items-center mt-5 ">
                 <button type="button" className="btn alert alert-light me-2 p-2" id="dissmissGroupModal" data-bs-dismiss="modal">Close</button>
                 <button type="submit" className="btn alert alert-success me-2 p-2">Add</button>

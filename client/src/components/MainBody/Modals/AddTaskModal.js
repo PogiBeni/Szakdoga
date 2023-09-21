@@ -67,7 +67,7 @@ export default function AddTaskModal() {
     }
 
     return (
-        <BasicModal name={"addTaskModal"} title={"Add task:"}>
+        <BasicModal name={"addTaskModal"} title={"Add task:"} centered={true}>
 
             <form onSubmit={handleTaskSubmit} className="d-flex  flex-column mt-3" >
                 <ErrorMsg errorMSG={errorMSG} />
@@ -125,7 +125,6 @@ export default function AddTaskModal() {
 
                 <InputWithLabel label={"Description:"} addClassName={"w-100"}>
                     <textarea className="form-control" value={task.desc} onChange={(e) => setTask({ ...task, desc: e.target.value })} placeholder="Description" aria-label="Description" />
-                    <label htmlFor="desc">Description</label>
                 </InputWithLabel>
 
                 <div className="d-flex align-items-center mt-5 ">

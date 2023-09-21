@@ -47,7 +47,7 @@ app.post('/api/login', async (req, res) => {
 
   try {
     const results = await new Promise((resolve, reject) => {
-       // Query for user data
+      // Query for user data
       connection.query("SELECT * FROM user WHERE email = ?", [userData.email], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -92,7 +92,7 @@ app.post('/api/login', async (req, res) => {
       link: results[0].linkToPicture,
       email: results[0].email,
       tasks: [],
-      groups:[]
+      groups: []
     };
 
     // Query for tasks
@@ -107,7 +107,7 @@ app.post('/api/login', async (req, res) => {
       });
     });
     user.tasks = tasksResults;
-    
+
     // Query for groups
     const groupsResults = await new Promise((resolve, reject) => {
       connection.query("SELECT * FROM groups where creatorUserId = ? ", [user.id], (err, results) => {
@@ -192,8 +192,8 @@ app.post('/api/addGroup', async (req, res) => {
   console.log('Received data:', req.body);
   try {
     connection.query(
-      "INSERT INTO groups ( groupName, color, creatorUserId) VALUES (?, ?, ?)",
-      [group.groupName, group.groupColor, group.creatorUserId],
+      "INSERT INTO groups ( groupName, creatorUserId, creatorName, description) VALUES (?, ?, ?, ?)",
+      [group.groupName, group.creatorUserId, group.creatorName, group.description],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -205,6 +205,31 @@ app.post('/api/addGroup', async (req, res) => {
   } catch (error) {
     console.error('Error adding group', error);
     res.status(500).json({ error: 'Error adding task' });
+  }
+});
+
+app.post('/api/getUsers', async (req, res) => {
+  console.log(req.body)
+  const userSearchData = req.body;
+  const searchTerm = `%${userSearchData.query}%`;
+  try {
+    const searchTerm = `%${userSearchData.query}%`; // Add % around the search term
+    
+    connection.query(
+      "SELECT * FROM user WHERE fullName LIKE ? OR email = ?",
+      [searchTerm, userSearchData.query], // Pass the searchTerm as a parameter
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error executing query' });
+          return;
+        }
+        res.json(results);
+      }
+    );
+  } catch (error) {
+    console.error('Error getting users group', error);
+    res.status(500).json({ error: 'Error getting users group' });
   }
 });
 

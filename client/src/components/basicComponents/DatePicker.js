@@ -1,5 +1,5 @@
 import { useState } from "react"
-import DatePickerPopover from "../MainBody/Popovers/DatePickerPopover"
+import DatePickerPopover from "./Popovers/DatePickerPopover"
 import { format } from 'date-fns';
 
 export default function Datepicker({date,handleDatePickerSelection}) {

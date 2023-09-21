@@ -3,10 +3,9 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from '
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
 import { UserContext } from '../Context/UserContext';
-import BasicModal from '../basicComponents/BasicModal';
-import AddGroupForm from './Modals/AddGroupForm';
 import Select from 'react-select';
 import BasicDay from '../basicComponents/BasicDay';
+import GroupModal from './Modals/GroupModal';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -17,7 +16,6 @@ export default function Calendar() {
 
     const handleSelectChange = (selectedValues) => {
         setSelectedOptions(selectedValues);
-        console.log(selectedOptions)
     };
     const selectedValues = selectedOptions.map((option) => option.value);
     const filteredTasks = tasks.filter((task) => selectedValues.includes(task.groupId));
@@ -58,7 +56,6 @@ export default function Calendar() {
                         onChange={handleSelectChange}
                         value={selectedOptions}
                     />
-                    <p>Selected Values: {selectedValues.join(', ')}</p>
                 </div>
             </div>
 
@@ -66,7 +63,7 @@ export default function Calendar() {
                 {selectedOptions.length == 0
                     ?
                     daysInMonth.map((day) => (
-                        <BasicDay day={day}>
+                        <BasicDay key={day} day={day}>
 
                             {
                                 tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
@@ -88,17 +85,18 @@ export default function Calendar() {
                         </BasicDay>
                     ))
                     : daysInMonth.map((day) => (
-                        filteredTasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
+                        filteredTasks.filter((task) => isSameDay(task.startDate, day)).length > 2
+                            ?
                             <BasicDay day={day}>
                                 <TaskPopover tasks={filteredTasks} day={day} />
                             </BasicDay>
                             :
-                            tasks.map((task) => (
+                            filteredTasks.map((task) => (
                                 isSameDay(task.startDate, day) && (
                                     <BasicDay day={day}>
                                         <div
                                             key={task.id}
-                                            className="event"
+                                            className="event text-truncate"
                                             style={{ backgroundColor: task.color }}
                                         >
                                             {task.taskName}
@@ -110,9 +108,7 @@ export default function Calendar() {
 
 
                     ))}
-                <BasicModal name={"addGroupModal"} title={"Create a group:"} >
-                    <AddGroupForm />
-                </BasicModal>
+                <GroupModal />
                 <AddTaskModal />
             </div>
         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2023 at 03:09 PM
+-- Generation Time: Sep 21, 2023 at 03:37 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -33,23 +33,18 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `groupName` varchar(100) NOT NULL,
-  `color` varchar(7) NOT NULL,
-  `creatorUserId` int(11) NOT NULL
+  `creatorUserId` int(11) NOT NULL,
+  `creatorName` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`id`, `groupName`, `color`, `creatorUserId`) VALUES
-(0, 'None', '', -1),
-(3, 'sasdfdsf', 'green', 54),
-(4, 'asdadas', '#EE4B2B', 54),
-(5, 'Alma', 'green', 45),
-(6, 'Alma', '#4169E1', 72),
-(7, 'Almoo', '#EE4B2B', 72),
-(8, 'Almbbaa', '#ffe135', 72),
-(9, 'Almbbaa', '#ffe135', 72);
+INSERT INTO `groups` (`id`, `groupName`, `creatorUserId`, `creatorName`, `description`) VALUES
+(14, 'Csoport', 72, 'Pogány Beni', ''),
+(15, 'Alma', 72, 'Pogány Beni', 'A group for alma people');
 
 -- --------------------------------------------------------
 
@@ -83,7 +78,12 @@ INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `taskName`, `color`, `startDa
 (21, 47, 0, 'Alma', '#4169E1', '2023-09-11', '1:00', '2023-09-11', '2:00', 'Alma'),
 (22, 45, 0, 'Szakdoga', '#EE4B2B', '2023-09-18', '1:00', '2023-09-18', '16:00', 'Csinálom a szakdogát\n'),
 (23, 45, 0, 'Szakdoga', '#EE4B2B', '2023-09-18', '1:00', '2023-09-18', '16:00', 'Csinálom a szakdogát\n'),
-(24, 72, 0, 'tht', 'green', '2023-09-16', '2:00', '2023-09-18', '3:00', '4324');
+(24, 72, 0, 'tht', 'green', '2023-09-16', '2:00', '2023-09-18', '3:00', '4324'),
+(25, 72, 6, 'adsadsadsadas', '#4169E1', '2023-09-20', '1:00', '2023-09-20', '2:00', 'addsada'),
+(26, 72, 6, 'asdasdad', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '25:00', 'sada'),
+(27, 72, 6, 'fdfrsg', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '26:00', 'fddrh'),
+(28, 72, 6, 'sadasdad', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '26:00', 'asda'),
+(29, 72, 6, 'adada', '#4169E1', '2023-09-19', '23:00', '2023-09-20', '23:00', 'dsadasd');
 
 -- --------------------------------------------------------
 
@@ -164,13 +164,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `user`

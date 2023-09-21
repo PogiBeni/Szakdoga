@@ -103,3 +103,22 @@ export async function addGroup(group) {
   }
 }
 
+export async function getUsers(searchData) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/getUsers',searchData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data.map((user) => ({
+      value: user.id,       // Adjust this based on your data
+      label: user.fullName // Adjust this based on your data
+    }));
+  } catch (error) {
+    console.error('Error getting users:', error);
+    throw error;
+  }
+}
+
