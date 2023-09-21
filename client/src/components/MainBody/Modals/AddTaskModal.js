@@ -13,16 +13,17 @@ import BasicModal from "../../basicComponents/BasicModal";
 export default function AddTaskModal() {
     const [user, setUser] = useContext(UserContext)
     const [task, setTask] = useState({
-            creatorId: "",
-            taskName: "",
-            color: '#4169E1',
-            groupId:0,
-            startDate: new Date(),
-            startTime: "",
-            endDate: new Date(),
-            endTime: "",
-            desc: ""
-        })
+        id: null,
+        creatorId: "",
+        taskName: "",
+        color: '#4169E1',
+        groupId: 0,
+        startDate: new Date(),
+        startTime: "",
+        endDate: new Date(),
+        endTime: "",
+        desc: ""
+    })
     useEffect(() => {
         setTask({ ...task, creatorId: user.id })
     }, [user])
@@ -50,19 +51,20 @@ export default function AddTaskModal() {
         if (task.startTime.split(':')[1] > 60 || task.endTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
-        addTask(task)
-        setErrorMSG(null)
-        document.querySelector('#dismissAddTaskModal').click()
-        setUser({ ...user, tasks: [...user.tasks, task] })
-        setTask({
-            ...task,
-            taskName: "",
-            color: '#4169E1',
-            startDate: new Date(),
-            startTime: "",
-            endDate: new Date(),
-            endTime: "",
-            desc: ""
+        addTask(task).then((data) => {
+            const updatedTask = { ...task, id: data, groupId: parseInt(task.groupId) };
+            setErrorMSG(null);
+            document.querySelector('#dismissAddTaskModal').click();
+            setUser({ ...user, tasks: [...user.tasks, updatedTask] });
+            
+            setTask({
+                ...task,
+                id: null,
+                taskName: "",
+                startTime: "",
+                endTime: "",
+                desc: ""
+            });
         })
     }
 
@@ -84,7 +86,7 @@ export default function AddTaskModal() {
 
                 <div className="d-flex align-items-center mt-3">
                     <InputWithLabel label={"Select group:"} addClassName={"me-2 w-50"}>
-                        <select className="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value })}>
+                        <select className="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value})}>
                             <option value="0">None</option>
                             {user.groups.map(group => (
                                 <option key={group.id} value={group.id}>{group.groupName}</option>

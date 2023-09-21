@@ -30,11 +30,6 @@ export default function GroupModal() {
         setShowPeoplePopover(!showPeoplePopover)
         setTarget(e.target)
     }
-    const renderTooltip = (props) => (
-        <div>
-            Alma
-        </div>
-      );
 
 
     return (

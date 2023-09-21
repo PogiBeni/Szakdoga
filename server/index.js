@@ -178,7 +178,7 @@ app.post('/api/addTask', async (req, res) => {
           console.error('Error executing query:', err);
           return;
         }
-        res.json(true);
+        res.json(results.insertId);
       }
     );
   } catch (error) {
