@@ -114,7 +114,9 @@ export async function getUsers(searchData) {
 
     return response.data.map((user) => ({
       value: user.id,       // Adjust this based on your data
-      label: user.fullName // Adjust this based on your data
+      name: user.fullName, // Adjust this based on your data
+      email: user.email,
+      url: user.linkToPicture
     }));
   } catch (error) {
     console.error('Error getting users:', error);
@@ -122,3 +124,34 @@ export async function getUsers(searchData) {
   }
 }
 
+export async function addUserToGroup(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/addUserToGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error adding group:', error);
+    throw error;
+  }
+}
+
+export async function getUsersOfGroup(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/getUsersOfGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}

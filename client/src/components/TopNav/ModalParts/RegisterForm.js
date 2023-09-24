@@ -5,8 +5,6 @@ import ErrorMsg from "../../basicComponents/ErrorMsg"
 import InputWithLabel from "../../basicComponents/InputWithLabel"
 
 export default function RegisterForm() {
-
-
     const [errorMSG, seterrorMSG] = useState(null)
     const [user, setUser] = useContext(UserContext)
     const [userLogin, setUserLogin] = useState(

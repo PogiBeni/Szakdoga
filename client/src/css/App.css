@@ -120,3 +120,31 @@
   height: 1.5rem;
   cursor: pointer;
 }
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-picture img {
+  width: 2rem; 
+  height: 2rem; 
+  border-radius: 1rem;
+  margin-right: 1rem; 
+}
+
+.user-details {
+  font-size: 0.9rem;
+}
+
+.user-name {
+  font-weight: bold;
+}
+.user-email {
+  color: #888;
+}
+.addUserPopover{
+  width: 20rem;
+}
+.popover{
+  max-width: fit-content;
+}

@@ -14,7 +14,8 @@ export default function LogoutModal() {
             name: null,
             link: null,
             email: null,
-            tasks: []
+            tasks: [],
+            groups: []
         })
         googleLogout()
         document.querySelector('.btn-close ').click()

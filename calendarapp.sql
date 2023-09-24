@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 21, 2023 at 03:37 PM
+-- Generation Time: Sep 25, 2023 at 12:21 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,8 +43,8 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `groupName`, `creatorUserId`, `creatorName`, `description`) VALUES
-(14, 'Csoport', 72, 'Pogány Beni', ''),
-(15, 'Alma', 72, 'Pogány Beni', 'A group for alma people');
+(19, 'Alma', 74, 'Pogány Beni', 'Alma csoport, alma embereknek!!!'),
+(20, 'fgbhde', 74, 'Pogány Beni', 'rhte');
 
 -- --------------------------------------------------------
 
@@ -66,25 +66,6 @@ CREATE TABLE `tasks` (
   `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tasks`
---
-
-INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `taskName`, `color`, `startDate`, `startTime`, `endDate`, `endTime`, `description`) VALUES
-(17, 47, 0, 'Kutya séta', '#4169E1', '2023-09-03', '12:00', '2023-09-03', '13:00', 'Kutya séta'),
-(18, 47, 0, 'Kutya séta', '#4169E1', '2023-09-03', '12:00', '2023-09-03', '13:00', 'Kutya séta'),
-(19, 45, 0, 'a', '#4169E1', '2023-09-04', '14:00', '2023-09-04', '15:00', 'adadsa'),
-(20, 47, 0, 'Szakdogát csinálni', '#EE4B2B', '2023-09-13', '10:00', '2023-09-13', '14:00', 'Szakdogát csinálni'),
-(21, 47, 0, 'Alma', '#4169E1', '2023-09-11', '1:00', '2023-09-11', '2:00', 'Alma'),
-(22, 45, 0, 'Szakdoga', '#EE4B2B', '2023-09-18', '1:00', '2023-09-18', '16:00', 'Csinálom a szakdogát\n'),
-(23, 45, 0, 'Szakdoga', '#EE4B2B', '2023-09-18', '1:00', '2023-09-18', '16:00', 'Csinálom a szakdogát\n'),
-(24, 72, 0, 'tht', 'green', '2023-09-16', '2:00', '2023-09-18', '3:00', '4324'),
-(25, 72, 6, 'adsadsadsadas', '#4169E1', '2023-09-20', '1:00', '2023-09-20', '2:00', 'addsada'),
-(26, 72, 6, 'asdasdad', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '25:00', 'sada'),
-(27, 72, 6, 'fdfrsg', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '26:00', 'fddrh'),
-(28, 72, 6, 'sadasdad', '#4169E1', '2023-09-20', '25:00', '2023-09-20', '26:00', 'asda'),
-(29, 72, 6, 'adada', '#4169E1', '2023-09-19', '23:00', '2023-09-20', '23:00', 'dsadasd');
-
 -- --------------------------------------------------------
 
 --
@@ -105,22 +86,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `fullName`, `linkToPicture`) VALUES
-(45, 'a@a', '$2b$10$1tMyjZg5qmZJF42xQN.LYe8wOFo3NjiEW6LG1vvd9JtnzegH5HklS', 'a', ''),
-(48, 'b@b', '$2b$10$R70k7qKKOm57my2z1nu3Wei/twbU6MXZtAWOfNuSLMcEwBmw7YWpK', 'b', ''),
-(49, 'c@c', '$2b$10$gWs8phxbgcwdVBKwYitUZO0mAaqpZRtFmjEEbivdJ06b9.8ldRCzu', 'c', ''),
-(50, 'd@d', '$2b$10$2CpVZY7AZrOULpPpUTc05ek239n9t2owaoW2mIoANmiKnEg4eVjIS', 'd', ''),
-(51, 'k@k', '$2b$10$kXCNMRfNgYTQ.GaR1pAFOu7o4rJmFw.D.6HNVc83eU/HHevZr/oGC', 'k', ''),
-(52, 'f@f', '$2b$10$s/.MYAOYVVwZsvj/0/MoK.KkFAwww1iAuE944kJKUBXExPwkTkEE6', 'f', ''),
-(53, 'k@k', '$2b$10$oY5curr1aIoEwroi.WsvWOMoBCqH2fFRcTmkmdlcee0u0afrHIpy2', 'k', ''),
-(56, '', '$2b$10$AZQMTPoLJQZNPmYbgQpkHON1CLTzTXCm4kGQ/fPmWIv8F51uaBsne', '', ''),
-(57, '', '$2b$10$NhQhM7l6bQr.u910iV2pce5twYheU9pNVuguqiW3YUKDb5gZqH0gm', 'a', ''),
-(65, 'h@h', '$2b$10$ufaRKk1CQPG73yJWmqE6WON4s3R/dXEM9qGcRCs76BvtHN5GzqCmC', 'a', ''),
-(66, 'sda@adsad', '$2b$10$KDsWOGZgg/9Mwh5LeMzf3.pH1yj7zc1bumgkX3l2934IuxzLWMTCK', 'sada', ''),
-(67, 'hgfhasdafg@dsfgsdgf', '$2b$10$p3UujXYA8QPK0xYc1GRfQOjFK6I5RAcA4iH0R9NvNrv.NepXY1uau', 'srawsfsd', ''),
-(68, 'asdasdasdad@asdas', '$2b$10$jcHfXZJIPMcUF0CyNDPfWeNupufobQWYrtCjUEOdkQM3Y4QjIndFC', 'sadasd', ''),
-(69, 'd@a', '$2b$10$5SZ01aJA6ljs1YWEWptmguaSJHvRqZJsBwDANxtrQr/to43z2VnfC', 'dsfvsdfg', ''),
-(70, 'asd@asd', '$2b$10$bDvYYCxkY.Uro9uRVVVOM.IM1KZM78i3j6miVqTuS72WpryB7U/hW', 'asdsadad', ''),
-(72, 'poganybenedek@gmail.com', '$2b$10$TiAuw6gbJDBhrha.kaW/i.qNW1W2bKi.OLdPMmabFdDex2kFONsOq', 'Pogány Beni', 'https://lh3.googleusercontent.com/a/ACg8ocJ6oz78vjv5TeM_VPwz1QRLzBAsr5HACpsIbJixo0ElLw=s96-c');
+(74, 'poganybenedek@gmail.com', '$2b$10$L3rWYLjSrB5Mk0mH4/5n5uWVn3wBdpOdoRPnry4bnq3lmoEkhf0c6', 'Pogány Beni', 'https://lh3.googleusercontent.com/a/ACg8ocJ6oz78vjv5TeM_VPwz1QRLzBAsr5HACpsIbJixo0ElLw=s96-c'),
+(75, 'kisjanos@alma.com', '$2b$10$3mmWegV36yckmgB68/i2gevF2Qxn1LpAFF8UHXIyuEIzxA5SDlGMa', 'Kis János', ''),
+(76, 'kamuelek@kamuelek.hu', '$2b$10$pQYatLWtIPnbQQeGW/H5zuIkoI2HU5KAnLCaDbDCmtfaDyJXFtV2K', 'Kamu Elek', ''),
+(77, 'alma@alma.hu', '$2b$10$mUkxVM9Ak8uBtVzYrizxTOUZGnm/CdyauquBSiIwz.q8gaG/22FxO', 'Alma man', '');
 
 -- --------------------------------------------------------
 
@@ -130,9 +99,21 @@ INSERT INTO `user` (`id`, `email`, `password`, `fullName`, `linkToPicture`) VALU
 
 DROP TABLE IF EXISTS `usertogroup`;
 CREATE TABLE `usertogroup` (
-  `userId` int(11) NOT NULL,
-  `groupId` int(11) NOT NULL
+  `id` int(11) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `usertogroup`
+--
+
+INSERT INTO `usertogroup` (`id`, `groupId`, `userId`) VALUES
+(7, 19, 74),
+(8, 19, 76),
+(9, 19, 75),
+(10, 20, 74),
+(11, 19, 77);
 
 --
 -- Indexes for dumped tables
@@ -157,6 +138,12 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `usertogroup`
+--
+ALTER TABLE `usertogroup`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -164,19 +151,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
+-- AUTO_INCREMENT for table `usertogroup`
+--
+ALTER TABLE `usertogroup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

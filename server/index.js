@@ -192,8 +192,67 @@ app.post('/api/addGroup', async (req, res) => {
   console.log('Received data:', req.body);
   try {
     connection.query(
-      "INSERT INTO groups ( groupName, creatorUserId, creatorName, description) VALUES (?, ?, ?, ?)",
+      "INSERT INTO groups (groupName, creatorUserId, creatorName, description) VALUES (?, ?, ?, ?)",
       [group.groupName, group.creatorUserId, group.creatorName, group.description],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error adding group' });
+          return;
+        }
+        connection.query(
+          "INSERT INTO usertogroup ( userId, groupId) VALUES (?, ?)",
+          [group.creatorUserId, results.insertId],
+          (err, results) => {
+            if (err) {
+              console.error('Error executing query:', err);
+              res.status(500).json({ error: 'Error adding data to another table' });
+              return;
+            }
+            res.json(true);
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.error('Error adding group', error);
+    res.status(500).json({ error: 'Error adding task' });
+  }
+});
+
+app.post('/api/getUsers', async (req, res) => {
+  console.log(req.body)
+  const userSearchData = req.body;
+  console.log(userSearchData.groupId)
+  try {
+    const searchTerm = `%${userSearchData.query}%`;
+
+    connection.query(
+      "SELECT user.id as id,email,fullName,linkToPicture FROM user left JOIN usertogroup ON usertogroup.userId = user.id WHERE (fullName LIKE ? OR email like ?) AND (usertogroup.groupId IS NULL OR usertogroup.groupId != ?)",
+      [searchTerm, searchTerm, userSearchData.groupId],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error executing query' });
+          return;
+        }
+        console.log(results)
+        res.json(results);
+      }
+    );
+  } catch (error) {
+    console.error('Error getting users group', error);
+    res.status(500).json({ error: 'Error getting users group' });
+  }
+});
+
+app.post('/api/addUserToGroup', async (req, res) => {
+  const data = req.body;
+  console.log('Received data:', req.body);
+  try {
+    connection.query(
+      "INSERT INTO usertogroup ( userId, groupId) VALUES (?, ?)",
+      [data.userId, data.groupId],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -208,28 +267,24 @@ app.post('/api/addGroup', async (req, res) => {
   }
 });
 
-app.post('/api/getUsers', async (req, res) => {
-  console.log(req.body)
-  const userSearchData = req.body;
-  const searchTerm = `%${userSearchData.query}%`;
+app.post('/api/getUsersOfGroup', async (req, res) => {
+  const data = req.body;
+  console.log('Received data:', req.body);
   try {
-    const searchTerm = `%${userSearchData.query}%`; // Add % around the search term
-    
     connection.query(
-      "SELECT * FROM user WHERE fullName LIKE ? OR email = ?",
-      [searchTerm, userSearchData.query], // Pass the searchTerm as a parameter
+      "SELECT * FROM `usertogroup` INNER JOIN user on user.id = usertogroup.userId WHERE groupId = ?",
+      [data.value],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
-          res.status(500).json({ error: 'Error executing query' });
           return;
         }
         res.json(results);
       }
     );
   } catch (error) {
-    console.error('Error getting users group', error);
-    res.status(500).json({ error: 'Error getting users group' });
+    console.error('Error getting group', error);
+    res.status(500).json({ error: 'Error getting group' });
   }
 });
 
