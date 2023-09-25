@@ -50,8 +50,10 @@ export default function AddTaskModal() {
         if (task.startTime.split(':')[0] > 25 || task.endTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
         if (task.startTime.split(':')[1] > 60 || task.endTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
-
+        console.log("Adding task:")
+        console.log(task)
         addTask(task).then((data) => {
+            
             const updatedTask = { ...task, id: data, groupId: parseInt(task.groupId) };
             setErrorMSG(null);
             document.querySelector('#dismissAddTaskModal').click();
@@ -59,8 +61,8 @@ export default function AddTaskModal() {
             
             setTask({
                 ...task,
-                id: null,
                 taskName: "",
+                groupId:0,
                 startTime: "",
                 endTime: "",
                 desc: ""
@@ -87,7 +89,7 @@ export default function AddTaskModal() {
                 <div className="d-flex align-items-center mt-3">
                     <InputWithLabel label={"Select group:"} addClassName={"me-2 w-50"}>
                         <select className="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value})}>
-                            <option value="0">None</option>
+                            <option value={0} key={0}>None</option>
                             {user.groups.map(group => (
                                 <option key={group.id} value={group.id}>{group.groupName}</option>
                             ))}

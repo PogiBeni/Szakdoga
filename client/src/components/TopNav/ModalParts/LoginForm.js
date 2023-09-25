@@ -23,7 +23,7 @@ export default function LoginForm() {
         login(userLogin.email, userLogin.password)
             .then((data) => {
                 setUser({
-                    name: data.fullName,
+                    name: data.name,
                     link: data.link,
                     id: data.id,
                     email: data.email,

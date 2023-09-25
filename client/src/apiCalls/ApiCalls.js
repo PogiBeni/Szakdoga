@@ -72,13 +72,13 @@ export async function isUserRegistered(email) {
 export async function addTask(task) {
 
 
+  console.log(task)
   try {
     const response = await axios.post('http://localhost:3001/api/addTask', task, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error adding task:', error);

@@ -16,7 +16,7 @@ export default function TaskPopover({ tasks, day }) {
     }
     return (
         <>
-            <div className="event" ref={target} onClick={() => setShow(!show)} style={{ backgroundColor: "red" }}>
+            <div className="event" ref={target}  onClick={() => setShow(!show)} style={{ backgroundColor: "red" }}>
                 {tasks.filter((task) => isSameDay(task.startDate, day)).length} events
             </div>
             <Overlay

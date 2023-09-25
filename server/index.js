@@ -97,7 +97,7 @@ app.post('/api/login', async (req, res) => {
 
     // Query for tasks
     const tasksResults = await new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM tasks where creatorId = ? ", [user.id], (err, results) => {
+      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId = 0) ", [user.id, user.id], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           reject(err);
@@ -110,7 +110,11 @@ app.post('/api/login', async (req, res) => {
 
     // Query for groups
     const groupsResults = await new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM groups where creatorUserId = ? ", [user.id], (err, results) => {
+      connection.query(`SELECT groups.id as id, groupName, creatorUserId, creatorName, description 
+                        FROM groups 
+                        inner join usertogroup on usertogroup.groupId = groups.id 
+                        WHERE usertogroup.userId = ? `, 
+                        [user.id], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           reject(err);
@@ -230,7 +234,7 @@ app.post('/api/getUsers', async (req, res) => {
     const searchTerm = `%${userSearchData.query}%`;
 
     connection.query(
-      `SELECT user.id as id, email, fullName, linkToPicture
+      `SELECT DISTINCT user.id as id, email, fullName, linkToPicture
       FROM user
       LEFT JOIN usertogroup ON usertogroup.userId = user.id
       WHERE (fullName LIKE ? OR email LIKE ?)
@@ -281,14 +285,14 @@ app.post('/api/addUserToGroup', async (req, res) => {
 
 app.post('/api/deleteUserFromGroup', async (req, res) => {
   const data = req.body;
-  
+
   console.log('Delete user from group:');
   console.log('Received data:', req.body);
   console.log(data.groupId);
   try {
     connection.query(
       "DELETE FROM usertogroup WHERE groupId = ? AND userId = ? ",
-      [ data.groupId, data.userId,],
+      [data.groupId, data.userId,],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -308,7 +312,7 @@ app.post('/api/deleteUserFromGroup', async (req, res) => {
 
 app.post('/api/getUsersOfGroup', async (req, res) => {
   const data = req.body;
-  
+
   console.log('getUsersOfGroup');
   console.log('Received data:', req.body);
   try {

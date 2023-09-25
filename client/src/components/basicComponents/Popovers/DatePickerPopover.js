@@ -41,7 +41,6 @@ export default function DatePickerPopover({ show, target, onHide, placement, onD
                     </div>
                     <div className='calendarGrid'>
                         {
-
                             daysInMonth.map((day) => (
 
                                 <div

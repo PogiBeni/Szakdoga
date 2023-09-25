@@ -11,7 +11,7 @@ export default function TopNavuserSignedIn() {
 
     return (
         <div className="d-flex justify-content-end">
-            < img src={user.link ? user.link : "/icons/personFill.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-secondary   p-1" data-bs-toggle="dropdown" data-bs-display="static"/>
+            < img src={user.link ? user.link : "/icons/person.svg"} alt="profilePicture" className="ProfilePicture me-3 btn btn-secondary   p-1" data-bs-toggle="dropdown" data-bs-display="static"/>
 
             <ul className="dropdown-menu dropdown-menu-sm-end">
                 <li><span className="dropdown-item me-3">{user.name}</span></li>

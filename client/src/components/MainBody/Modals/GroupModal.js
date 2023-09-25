@@ -45,7 +45,6 @@ export default function GroupModal() {
         } catch (error) {
             console.error('Error loading users:', error);
         }
-
     }
 
     function handleShowPeoplePopover(e) {
@@ -62,7 +61,7 @@ export default function GroupModal() {
     }
 
     return (
-        <BasicModal name={"addGroupModal"} title={"Groups:"} size={"modal"}>
+        <BasicModal name={"addGroupModal"} title={"Groups:"}  >
             <div >
                 <div className="d-flex justify-content mt-3">
                     <Select
