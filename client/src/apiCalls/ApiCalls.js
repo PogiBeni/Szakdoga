@@ -23,7 +23,6 @@ export async function login(email, password) {
       tasks: tasks 
     };
 
-    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
@@ -144,6 +143,22 @@ export async function getUsersOfGroup(data) {
 
   try {
     const response = await axios.post('http://localhost:3001/api/getUsersOfGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}
+
+export async function deleteUserFromGroup(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/deleteUserFromGroup',data, {
       headers: {
         'Content-Type': 'application/json'
       }

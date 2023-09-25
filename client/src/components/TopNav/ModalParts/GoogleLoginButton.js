@@ -13,7 +13,6 @@ export default function GoogleLoginButton() {
         <GoogleLogin
             onSuccess={credentialResponse => {
                 var userOb = jwt_decode(credentialResponse.credential);
-                console.log(userOb)
                 isUserRegistered(userOb.email).then((res => {
                     if (res.exists) {
                         login(userOb.email, userOb.sub)
@@ -27,7 +26,6 @@ export default function GoogleLoginButton() {
                                     tasks: data.tasks,
                                     groups: data.groups
                                 });
-                                console.log(data)
                                 document.querySelector('.btn-close').click()
                             })
                             .catch((error) => {

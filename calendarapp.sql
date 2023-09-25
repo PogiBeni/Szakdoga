@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2023 at 12:21 AM
+-- Generation Time: Sep 25, 2023 at 01:41 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,8 +43,8 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `groupName`, `creatorUserId`, `creatorName`, `description`) VALUES
-(19, 'Alma', 74, 'Pogány Beni', 'Alma csoport, alma embereknek!!!'),
-(20, 'fgbhde', 74, 'Pogány Beni', 'rhte');
+(37, 'Alma', 74, 'Pogány Beni', 'alma\n'),
+(38, 'Teszt', 74, 'Pogány Beni', 'teszt');
 
 -- --------------------------------------------------------
 
@@ -65,6 +65,13 @@ CREATE TABLE `tasks` (
   `endTime` varchar(5) NOT NULL,
   `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `taskName`, `color`, `startDate`, `startTime`, `endDate`, `endTime`, `description`) VALUES
+(76, 74, 37, 'Alma', 'green', '2023-09-25', '10:00', '2023-09-25', '12:00', 'alma szedés');
 
 -- --------------------------------------------------------
 
@@ -89,7 +96,8 @@ INSERT INTO `user` (`id`, `email`, `password`, `fullName`, `linkToPicture`) VALU
 (74, 'poganybenedek@gmail.com', '$2b$10$L3rWYLjSrB5Mk0mH4/5n5uWVn3wBdpOdoRPnry4bnq3lmoEkhf0c6', 'Pogány Beni', 'https://lh3.googleusercontent.com/a/ACg8ocJ6oz78vjv5TeM_VPwz1QRLzBAsr5HACpsIbJixo0ElLw=s96-c'),
 (75, 'kisjanos@alma.com', '$2b$10$3mmWegV36yckmgB68/i2gevF2Qxn1LpAFF8UHXIyuEIzxA5SDlGMa', 'Kis János', ''),
 (76, 'kamuelek@kamuelek.hu', '$2b$10$pQYatLWtIPnbQQeGW/H5zuIkoI2HU5KAnLCaDbDCmtfaDyJXFtV2K', 'Kamu Elek', ''),
-(77, 'alma@alma.hu', '$2b$10$mUkxVM9Ak8uBtVzYrizxTOUZGnm/CdyauquBSiIwz.q8gaG/22FxO', 'Alma man', '');
+(77, 'alma@alma.hu', '$2b$10$mUkxVM9Ak8uBtVzYrizxTOUZGnm/CdyauquBSiIwz.q8gaG/22FxO', 'Alma man', ''),
+(78, 'a@a', '$2b$10$4FwrKefZseLU44XR5irMteheybLf9FQYSDNM0UNtFxX6Fj2k1SmPa', 'aaa', '');
 
 -- --------------------------------------------------------
 
@@ -109,11 +117,12 @@ CREATE TABLE `usertogroup` (
 --
 
 INSERT INTO `usertogroup` (`id`, `groupId`, `userId`) VALUES
-(7, 19, 74),
-(8, 19, 76),
-(9, 19, 75),
-(10, 20, 74),
-(11, 19, 77);
+(50, 34, 75),
+(51, 37, 74),
+(52, 37, 77),
+(53, 38, 74),
+(54, 38, 76),
+(56, 38, 75);
 
 --
 -- Indexes for dumped tables
@@ -151,25 +160,25 @@ ALTER TABLE `usertogroup`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `usertogroup`
 --
 ALTER TABLE `usertogroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -95,15 +95,6 @@ export default function AddTaskModal() {
                     </InputWithLabel>
                     <InputWithLabel label={"Select tag:"} addClassName={"me-2 w-50"}>
                         <input className="form-select" list="datalistOptions" />
-
-
-                        <datalist id="datalistOptions">
-                            <option value="San Francisco" />
-                            <option value="New York" />
-                            <option value="Seattle" />
-                            <option value="Los Angeles" />
-                            <option value="Chicago" />
-                        </datalist>
                     </InputWithLabel>
                 </div>
 

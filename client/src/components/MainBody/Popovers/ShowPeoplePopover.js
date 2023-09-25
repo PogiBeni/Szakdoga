@@ -1,18 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import { deleteUserFromGroup } from "../../../apiCalls/ApiCalls";
 
-export default function ShowPeoplePopover({ show, target, onHide, group }) {
-    const [users, setUsers] = useState([]);
+export default function ShowPeoplePopover({ show, target, onHide, group, refresh }) {
+    const [user, setUser] = useContext(UserContext)
+
     if (!group || !group.users) {
         return null;
     }
-    
+    function deleteUser(groupId,userId) {
+        deleteUserFromGroup({groupId:groupId,userId:userId})
+        refresh({value: group.id, label: group.groupName})
+    }
     return (
         <Overlay
             show={show}
             target={target}
-            placement="bottom"
+            placement="left"
             containerPadding={20}
             rootClose="true"
             onHide={onHide}
@@ -21,16 +27,22 @@ export default function ShowPeoplePopover({ show, target, onHide, group }) {
         >
             <Popover >
                 <Popover.Header as="h3">{`Users in this group:`}</Popover.Header>
-                <Popover.Body className="scrollable-div" style={{ maxHeight: "30vh", overflowY: "scroll" }}>
+                <Popover.Body className="scrollable-div" style={{ maxHeight: "25vh", overflowY: "scroll" }}>
                     {
-                        group.users.map((user) => (
-                            <div className="user-info" key={user.id}>
-                                <div className="profile-picture">
-                                    <img src={user.linkToPicture ? user.linkToPicture : "/icons/person.svg"} alt={user.label} />
+                        group.users.map((groupUser) => (
+                            <div className="user-info" key={groupUser.id}>
+                                <div className="profile-picture ">
+                                    <img src={groupUser.linkToPicture ? groupUser.linkToPicture : "/icons/person.svg"} alt={groupUser.fullName} />
                                 </div>
-                                <div className="user-details">
-                                    <div className="user-name">{user.fullName}</div>
-                                    <div className="user-email">{user.email}</div>
+                                <div className="user-details w-75">
+                                    <div className="user-name">{groupUser.fullName}</div>
+                                    <div className="user-email">{groupUser.email}</div>
+                                </div>
+                                <div className="ms-2" >
+                                    {user.id == group.creatorUserId && groupUser.id != user.id ?
+                                        <button className="btn btn-danger btn-sm" onClick={() => deleteUser(group.id,groupUser.id) }>
+                                            <img src="/icons/delete.svg" />
+                                        </button> : null}
                                 </div>
                             </div>
                         ))

@@ -17,15 +17,12 @@ export default function Calendar() {
 
     const handleSelectChange = (selectedValues) => {
         setSelectedOptions(selectedValues);
-        console.log(filteredTasks)
     };
 
     useEffect(() => {
         const updatedFilteredTasks = user.tasks.filter((task) =>
             selectedValues.includes(task.groupId)
         );
-        console.log(updatedFilteredTasks)
-        console.log(user.tasks)
         setFilteredTasks(updatedFilteredTasks);
     }, [user.tasks, selectedOptions]);
 
@@ -41,7 +38,6 @@ export default function Calendar() {
         value: group.id,
         label: group.groupName
     }))
-
 
     return (
         <div className='w-100 '>

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { getUsers,addUserToGroup } from '../../../apiCalls/ApiCalls';
 import ErrorMsg from '../../basicComponents/ErrorMsg';
 
-export default function AddPeoplePopover({ show, target, onHide, group }) {
+export default function AddPeoplePopover({ show, target, onHide, group, refresh }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [errorMSG, seterrorMSG] = useState(null)
 
@@ -37,7 +37,9 @@ export default function AddPeoplePopover({ show, target, onHide, group }) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        var id = {value: group.id, label: group.groupName}
         addUserToGroup({userId:selectedUser.value,groupId: group.id })
+        refresh(id)
         setSelectedUser(null)
         onHide()
         seterrorMSG(null);
@@ -48,7 +50,7 @@ export default function AddPeoplePopover({ show, target, onHide, group }) {
         <Overlay
             show={show}
             target={target}
-            placement={"bottom"}
+            placement={"right"}
             containerPadding={20}
             rootClose="true"
             onHide={onHide}
