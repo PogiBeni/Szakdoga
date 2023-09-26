@@ -30,6 +30,7 @@ export default function AddTaskModal() {
 
     function handleStartDatePickerSelection(selectedDate) {
         setTask({ ...task, startDate: selectedDate });
+        console.log(selectedDate)
     }
     function handleEndDatePickerSelection(selectedDate) {
         setTask({ ...task, endDate: selectedDate });
