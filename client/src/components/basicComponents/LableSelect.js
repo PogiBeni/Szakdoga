@@ -5,38 +5,44 @@ import { LabelContext } from '../Context/LabelContext';
 export default function LabelSelect({ setLabel }) {
     const [selectedOption, setSelectedOption] = useState(null);
     const [labels, setLabels] = useContext(LabelContext)
-    
+
     if (!labels) { return }
 
-    const options = labels.map((label) => ({
-        value: label,
-        label: label
-    }))
+    const options = labels
+        .filter((label) => label !== null)
+        .map((label) => ({
+            value: label,
+            label: label,
+        }));
+
     const handleCreateOption = (inputValue) => {
-        // Create a new option object
         const newOption = {
-          label: inputValue,
-          value: inputValue.toLowerCase().replace(/\W/g, ''),
+            label: inputValue,
+            value: inputValue
         };
-      
-        // Add the new option to the list of selected options
+
         setSelectedOption((prevSelected) => {
-          if (Array.isArray(prevSelected)) {
-            return [...prevSelected, newOption];
-          } else {
-            // If prevSelected is null or not an array, initialize it as an array with the newOption
-            return [newOption];
-          }
+            if (Array.isArray(prevSelected)) {
+                return [...prevSelected, newOption];
+            } else {
+                return [newOption];
+            }
         });
         setLabel(newOption.value)
         setLabels([...labels, newOption.value])
-      };
-      
+    };
 
-    function setValues(selected){
-        setLabel(selected.value)
-        console.log(selected)
-        setSelectedOption(selected)
+
+    function setValues(selected) {
+        if (selected) {
+            setLabel(selected.value)
+            setSelectedOption(selected)
+        }
+        else {
+
+            setLabel(null)
+            setSelectedOption(null)
+        }
     }
     return (
         <div>
@@ -45,11 +51,11 @@ export default function LabelSelect({ setLabel }) {
                 value={selectedOption}
                 onChange={setValues}
                 onCreateOption={handleCreateOption}
-                options={options} // Pass the selected options as options
+                options={options}
                 placeholder="Select tag:"
                 className='w-100'
-                menuPortalTarget={document.getElementById('addTaskModal')}
-                
+                isClearable
+
             />
         </div>
     );

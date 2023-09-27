@@ -58,6 +58,7 @@ export default function Calendar() {
                         isMulti
                         name="groups"
                         options={options}
+                        placeholder="Filter tasks:"
                         className="basic-multi-select "
                         classNamePrefix="Groups"
                         onChange={handleSelectChange}

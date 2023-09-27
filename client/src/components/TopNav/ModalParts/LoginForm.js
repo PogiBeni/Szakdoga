@@ -33,10 +33,10 @@ export default function LoginForm() {
                     tasks: data.tasks,
                     groups: data.groups
                 });
-                setLabels([...new Set(user.data.map(task => task.label))])
-                console.log(data)
+                
                 seterrorMSG(null);
-                document.querySelector('.btn-close').click()
+                setLabels([...new Set(data.tasks.map(task => task.label))])
+                document.querySelector('#closeLogin').click()
             })
             .catch((error) => {
                 if (error.message === 'Invalid credentials') {
@@ -67,7 +67,7 @@ export default function LoginForm() {
             </InputWithLabel>
 
             <div className="d-flex align-items-center mt-5 ">
-                <button type="button" className="btn alert alert-light me-2 p-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" className="btn alert alert-light me-2 p-2" data-bs-dismiss="modal" id="closeLogin">Close</button>
                 <button type="button" className="btn alert alert-light me-5 p-2" data-bs-target="#registerModal" data-bs-toggle="modal">Register</button>
                 <button type="submit" className="btn alert alert-success me-2 p-2">Login</button>
             </div>
