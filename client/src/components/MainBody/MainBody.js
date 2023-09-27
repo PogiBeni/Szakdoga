@@ -1,6 +1,7 @@
 import Calendar from "./Calendar";
 import { useContext } from 'react';
 import { UserContext } from "../Context/UserContext";
+import { LabelProvider } from "../Context/LabelContext";
 
 export default function MainBody() {
 
@@ -11,8 +12,7 @@ export default function MainBody() {
         <>
 
             <div className={` ${user.loggedIn === false ? "blur" : ""}`}>
-                <Calendar />
-
+                    <Calendar />
             </div>
             {!user.loggedIn && (
                 <h2 className="notLoggedInText">Please log in to view your calendar!</h2>

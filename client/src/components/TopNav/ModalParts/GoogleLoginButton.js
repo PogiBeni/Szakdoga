@@ -3,11 +3,12 @@ import { useContext } from "react";
 import { UserContext } from '../../Context/UserContext';
 import jwt_decode from 'jwt-decode';
 import { login, isUserRegistered, pushUserData } from '../../../apiCalls/ApiCalls';
-
+import { LabelContext } from "../../Context/LabelContext"
 
 export default function GoogleLoginButton() {
 
     const [user, setUser] = useContext(UserContext)
+    const [labels, setLabels] = useContext(LabelContext)
 
     return (
         <GoogleLogin
@@ -26,6 +27,8 @@ export default function GoogleLoginButton() {
                                     tasks: data.tasks,
                                     groups: data.groups
                                 });
+                                setLabels([...new Set(data.tasks.map(task => task.label))])
+                                
                                 document.querySelector('.btn-close').click()
                             })
                             .catch((error) => {

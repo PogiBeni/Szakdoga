@@ -97,7 +97,7 @@ app.post('/api/login', async (req, res) => {
 
     // Query for tasks
     const tasksResults = await new Promise((resolve, reject) => {
-      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId = 0) ", [user.id, user.id], (err, results) => {
+      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,label,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId = 0) ", [user.id, user.id], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           reject(err);
@@ -175,14 +175,14 @@ app.post('/api/addTask', async (req, res) => {
 
   try {
     connection.query(
-      "INSERT INTO tasks ( creatorId, groupId, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [task.creatorId, task.groupId, task.taskName, task.color, new Date(task.startDate), task.startTime, new Date(task.endDate), task.endTime, task.desc],
+      "INSERT INTO tasks ( creatorId, groupId, label, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, new Date(task.endDate), task.endTime, task.desc],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           return;
         }
-        res.json(results.insertId);
+        res.json({...task,id: results.insertId});
       }
     );
   } catch (error) {

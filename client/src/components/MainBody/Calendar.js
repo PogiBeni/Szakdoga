@@ -3,6 +3,7 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from '
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
 import { UserContext } from '../Context/UserContext';
+import { LabelContext } from '../Context/LabelContext';
 import Select from 'react-select';
 import BasicDay from '../basicComponents/BasicDay';
 import GroupModal from './Modals/GroupModal';
@@ -10,6 +11,7 @@ import GroupModal from './Modals/GroupModal';
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
+    const [labels,setLabels] = useContext(LabelContext)
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
 

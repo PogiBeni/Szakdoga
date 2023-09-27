@@ -1,12 +1,14 @@
 import { useState, useContext } from "react"
-import { getTasks, login } from "../../../apiCalls/ApiCalls"
+import { login } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
 import ErrorMsg from "../../basicComponents/ErrorMsg"
 import InputWithLabel from "../../basicComponents/InputWithLabel"
+import { LabelContext } from "../../Context/LabelContext"
 
 export default function LoginForm() {
 
 
+    const [labels, setLabels] = useContext(LabelContext)
     const [user, setUser] = useContext(UserContext)
     const [errorMSG, seterrorMSG] = useState(null)
     const [userLogin, setUserLogin] = useState(
@@ -31,6 +33,7 @@ export default function LoginForm() {
                     tasks: data.tasks,
                     groups: data.groups
                 });
+                setLabels([...new Set(user.data.map(task => task.label))])
                 console.log(data)
                 seterrorMSG(null);
                 document.querySelector('.btn-close').click()
