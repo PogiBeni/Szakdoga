@@ -7,27 +7,16 @@ import { LabelContext } from '../Context/LabelContext';
 import Select from 'react-select';
 import BasicDay from '../basicComponents/BasicDay';
 import GroupModal from './Modals/GroupModal';
+import GroupedSelect from './GroupedSelect';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
     const [labels,setLabels] = useContext(LabelContext)
-    const [selectedOptions, setSelectedOptions] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
-
-    const selectedValues = selectedOptions.map((option) => option.value);
-
-    const handleSelectChange = (selectedValues) => {
-        setSelectedOptions(selectedValues);
-    };
-
-    useEffect(() => {
-        const updatedFilteredTasks = user.tasks.filter((task) =>
-            selectedValues.includes(task.groupId)
-        );
-        setFilteredTasks(updatedFilteredTasks);
-    }, [user.tasks, selectedOptions]);
-
+    
+    const [selectedOptions, setSelectedOptions] = useState([]);
+   
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
     }
@@ -36,10 +25,6 @@ export default function Calendar() {
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
-    const options = user.groups.map((group) => ({
-        value: group.id,
-        label: group.groupName
-    }))
 
     return (
         <div className='w-100 '>
@@ -54,16 +39,7 @@ export default function Calendar() {
                 <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
 
                 <div className='w-25'>
-                    <Select
-                        isMulti
-                        name="groups"
-                        options={options}
-                        placeholder="Filter tasks:"
-                        className="basic-multi-select "
-                        classNamePrefix="Groups"
-                        onChange={handleSelectChange}
-                        value={selectedOptions}
-                    />
+                    <GroupedSelect filteredTasks={filteredTasks} setFilteredTasks={setFilteredTasks} />
                 </div>
             </div>
 
