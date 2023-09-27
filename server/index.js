@@ -97,7 +97,7 @@ app.post('/api/login', async (req, res) => {
 
     // Query for tasks
     const tasksResults = await new Promise((resolve, reject) => {
-      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,label,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId = 0) ", [user.id, user.id], (err, results) => {
+      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,label,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId is NULL) ", [user.id, user.id], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           reject(err);

@@ -4,10 +4,9 @@ import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
 import { UserContext } from '../Context/UserContext';
 import { LabelContext } from '../Context/LabelContext';
-import Select from 'react-select';
 import BasicDay from '../basicComponents/BasicDay';
 import GroupModal from './Modals/GroupModal';
-import GroupedSelect from './GroupedSelect';
+import FilterSelect from './FilterSelect';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -25,6 +24,7 @@ export default function Calendar() {
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
+    
 
     return (
         <div className='w-100 '>
@@ -39,7 +39,7 @@ export default function Calendar() {
                 <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
 
                 <div className='w-25'>
-                    <GroupedSelect filteredTasks={filteredTasks} setFilteredTasks={setFilteredTasks} />
+                    <FilterSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} setFilteredTasks={setFilteredTasks} />
                 </div>
             </div>
 

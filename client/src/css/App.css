@@ -152,3 +152,6 @@
 .groupModal{
   width: 20rem;
 }
+.form-floating>label {
+  z-index: 0;
+}

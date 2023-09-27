@@ -9,6 +9,7 @@ import Datepicker from "../../basicComponents/DatePicker";
 import TimeInput from "../../basicComponents/TimeInput";
 import BasicModal from "../../basicComponents/BasicModal";
 import LabelSelect from "../../basicComponents/LableSelect";
+import SelectGroupInput from "../SelectGroupInput";
 
 
 export default function AddTaskModal() {
@@ -19,7 +20,7 @@ export default function AddTaskModal() {
         creatorId: null,
         taskName: "",
         color: '#4169E1',
-        groupId: 0,
+        groupId: null,
         label: null,
         startDate: new Date(),
         startTime: "",
@@ -49,12 +50,12 @@ export default function AddTaskModal() {
 
             setErrorMSG(null);
             document.querySelector('#dismissAddTaskModal').click();
-            const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate) }
+            const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate), groupId: parseInt(data.groupId) }
             setUser({ ...user, tasks: [...user.tasks, newData] });
             setTask({
                 ...task,
                 taskName: "",
-                groupId: 0,
+                groupId: null,
                 startTime: "",
                 endTime: "",
                 desc: ""
@@ -97,14 +98,9 @@ export default function AddTaskModal() {
                     </InputWithLabel>
                 </div>
                 <div className="d-flex align-items-center ">
-                    <InputWithLabel label={"Select group:"} addClassName={"me-2 w-50"}>
-                        <select className="form-select" onChange={(e) => setTask({ ...task, groupId: e.target.value })}>
-                            <option value={0} key={0}>None</option>
-                            {user.groups.map(group => (
-                                <option key={group.id} value={group.id}>{group.groupName}</option>
-                            ))}
-                        </select>
-                    </InputWithLabel>
+                    <div className="w-50 me-2">
+                        <SelectGroupInput setVariable={(selected) => setTask({...task, groupId: selected.value})}/>
+                    </div>
                     <div className="w-50">
                         <LabelSelect setLabel={(selectedLabel) => setTask({ ...task, label: selectedLabel })} />
                     </div>
