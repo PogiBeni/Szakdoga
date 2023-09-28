@@ -97,14 +97,21 @@ app.post('/api/login', async (req, res) => {
 
     // Query for tasks
     const tasksResults = await new Promise((resolve, reject) => {
-      connection.query("SELECT DISTINCT  tasks.id as id,creatorId, tasks.groupId,label,taskName,color,startDate,startTime,endDate,endTime,description, usertogroup.userId as userId FROM `tasks` left join usertogroup on usertogroup.groupId = tasks.groupId WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId is NULL) ", [user.id, user.id], (err, results) => {
-        if (err) {
-          console.error('Error executing query:', err);
-          reject(err);
-          return;
-        }
-        resolve(results);
-      });
+      connection.query(`SELECT DISTINCT  
+                        tasks.id as id,creatorId, tasks.groupId,
+                        groups.groupName as groupName ,label,taskName,color,startDate,startTime,endDate,endTime,tasks.
+                        description, usertogroup.userId as userId 
+                        FROM tasks left join usertogroup on usertogroup.groupId = tasks.groupId 
+                        left join groups on groups.id = usertogroup.groupId 
+                        WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId is NULL)`
+        , [user.id, user.id], (err, results) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            reject(err);
+            return;
+          }
+          resolve(results);
+        });
     });
     user.tasks = tasksResults;
 
@@ -113,15 +120,15 @@ app.post('/api/login', async (req, res) => {
       connection.query(`SELECT groups.id as id, groupName, creatorUserId, creatorName, description 
                         FROM groups 
                         inner join usertogroup on usertogroup.groupId = groups.id 
-                        WHERE usertogroup.userId = ? `, 
-                        [user.id], (err, results) => {
-        if (err) {
-          console.error('Error executing query:', err);
-          reject(err);
-          return;
-        }
-        resolve(results);
-      });
+                        WHERE usertogroup.userId = ? `,
+        [user.id], (err, results) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            reject(err);
+            return;
+          }
+          resolve(results);
+        });
     });
 
     user.groups = groupsResults;
@@ -176,13 +183,13 @@ app.post('/api/addTask', async (req, res) => {
   try {
     connection.query(
       "INSERT INTO tasks ( creatorId, groupId, label, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, new Date(task.endDate), task.endTime, task.desc],
+      [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, new Date(task.endDate), task.endTime, task.description],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
           return;
         }
-        res.json({...task,id: results.insertId});
+        res.json({ ...task, id: results.insertId });
       }
     );
   } catch (error) {

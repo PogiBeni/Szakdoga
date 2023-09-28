@@ -8,7 +8,7 @@ import InputWithLabel from "../../basicComponents/InputWithLabel";
 import Datepicker from "../../basicComponents/DatePicker";
 import TimeInput from "../../basicComponents/TimeInput";
 import BasicModal from "../../basicComponents/BasicModal";
-import LabelSelect from "../../basicComponents/LableSelect";
+import LabelSelect from "../MainBodyComponents/LableSelect";
 import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
 
 
@@ -58,7 +58,7 @@ export default function AddTaskModal() {
                 groupId: null,
                 startTime: "",
                 endTime: "",
-                desc: ""
+                description: ""
             });
         })
     }
@@ -108,7 +108,7 @@ export default function AddTaskModal() {
 
 
                 <InputWithLabel label={"Description:"} addClassName={"w-100 mt-3"}>
-                    <textarea className="form-control" value={task.desc} onChange={(e) => setTask({ ...task, desc: e.target.value })} placeholder="Description" aria-label="Description" />
+                    <textarea className="form-control" value={task.desc} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />
                 </InputWithLabel>
 
                 <div className="d-flex align-items-center mt-5 ">

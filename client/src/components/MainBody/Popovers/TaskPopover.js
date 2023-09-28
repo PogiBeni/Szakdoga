@@ -2,6 +2,7 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { isSameDay } from 'date-fns';
 import { useState, useRef } from 'react';
+import TaskWithPopover from './TaskWithPopover';
 export default function TaskPopover({ tasks, day }) {
 
     const [show, setShow] = useState(false);
@@ -9,7 +10,7 @@ export default function TaskPopover({ tasks, day }) {
 
     var placementVar
     if (day) {
-        if (day.getDate() > 28) {
+        if (day.getDate() >= 21) {
             placementVar = "top"
         }
         else placementVar = "bottom"
@@ -29,17 +30,11 @@ export default function TaskPopover({ tasks, day }) {
                 transition={false}
             >
                 <Popover >
-                    <Popover.Header className='eventHeader' as="h3">{`Events:`}</Popover.Header>
+                    <Popover.Header style={{backgroundColor:"black",color:"white", fontWeight:"bold"}}>{`Events:`}</Popover.Header>
                     <Popover.Body>
                         {tasks.map((task) => (
                             isSameDay(task.startDate, day) && (
-                                <div
-                                    key={task.id}
-                                    className="event d-flex justify-content-between text-truncate"
-                                    style={{ backgroundColor: task.color }}
-                                >
-                                    <div>{task.startTime}    </div><div>{task.taskName}</div> 
-                                </div>
+                                <TaskWithPopover key={task.id}  task={task}/>  
                             )
                         ))}
                     </Popover.Body>

@@ -40,33 +40,21 @@ export default function FilterSelect({selectedOptions, setSelectedOptions, setFi
     const groupedOptions = [
       {
         label: 'Groups',
-        options: [
-          {
-            value: null,
-            label: 'None',
-          },
-          ...user.groups.map((group) => ({
-            value: group.id,
-            label: group.groupName,
-          })),
-        ],
+        options: user.groups.map((group) => ({
+          value: group.id,
+          label: group.groupName,
+        })),
       },
       {
         label: 'Labels',
-        options: [
-          {
-            value: null,
-            label: 'None',
-          },
-          ...(labels
-            ? labels
-                .filter((label) => label !== null)
-                .map((label) => ({
-                  value: label,
-                  label: label,
-                }))
-            : []),
-        ],
+        options: labels
+          ? labels
+              .filter((label) => label !== null)
+              .map((label) => ({
+                value: label,
+                label: label,
+              }))
+          : [], // Provide an empty array if labels is undefined
       },
     ];
     

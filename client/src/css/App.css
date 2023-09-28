@@ -155,3 +155,8 @@
 .form-floating>label {
   z-index: 0;
 }
+.FilteredDataDiv
+{
+  color:white;
+  background-color: black;
+}
