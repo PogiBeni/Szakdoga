@@ -3,15 +3,13 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from '
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
 import { UserContext } from '../Context/UserContext';
-import { LabelContext } from '../Context/LabelContext';
 import BasicDay from '../basicComponents/BasicDay';
 import GroupModal from './Modals/GroupModal';
-import FilterSelect from './FilterSelect';
+import FilterSelect from './MainBodyComponents/FilterSelect';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
-    const [labels,setLabels] = useContext(LabelContext)
     const [filteredTasks, setFilteredTasks] = useState([]);
     
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -60,7 +58,7 @@ export default function Calendar() {
                                                 className="event"
                                                 style={{ backgroundColor: task.color }}
                                             >
-                                                {task.taskName}
+                                                <small>{task.startTime}: </small> <strong>{task.taskName} </strong>
                                             </div>
                                         )
                                     ))
@@ -83,7 +81,7 @@ export default function Calendar() {
                                                 className="event text-truncate"
                                                 style={{ backgroundColor: task.color }}
                                             >
-                                                {task.taskName}
+                                                <small>{task.startTime}: </small> <strong>{task.taskName} </strong>
                                             </div>
                                         )
                                     ))}

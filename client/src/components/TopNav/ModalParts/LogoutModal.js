@@ -2,10 +2,12 @@ import { UserContext } from '../../Context/UserContext'
 import { googleLogout } from '@react-oauth/google'
 import { useContext } from "react"
 import BasicModal from "../../basicComponents/BasicModal"
+import { LabelContext } from '../../Context/LabelContext'
 
 export default function LogoutModal() {
 
     const [user, setUser] = useContext(UserContext)
+    const [labels,setLabels] = useContext(LabelContext)
 
     function signOut() {
         setUser({
@@ -17,6 +19,7 @@ export default function LogoutModal() {
             tasks: [],
             groups: []
         })
+        setLabels()
         googleLogout()
         document.querySelector('.btn-close ').click()
     }

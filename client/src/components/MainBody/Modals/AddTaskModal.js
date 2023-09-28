@@ -9,7 +9,7 @@ import Datepicker from "../../basicComponents/DatePicker";
 import TimeInput from "../../basicComponents/TimeInput";
 import BasicModal from "../../basicComponents/BasicModal";
 import LabelSelect from "../../basicComponents/LableSelect";
-import SelectGroupInput from "../SelectGroupInput";
+import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
 
 
 export default function AddTaskModal() {

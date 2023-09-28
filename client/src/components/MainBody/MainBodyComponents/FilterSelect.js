@@ -1,7 +1,7 @@
 import React, { useContext,useEffect } from 'react';
 import Select from 'react-select';
-import { UserContext } from '../Context/UserContext';
-import { LabelContext } from '../Context/LabelContext';
+import { UserContext } from '../../Context/UserContext';
+import { LabelContext } from '../../Context/LabelContext';
 
 export default function FilterSelect({selectedOptions, setSelectedOptions, setFilteredTasks}) {
     const [user, setUser] = useContext(UserContext)

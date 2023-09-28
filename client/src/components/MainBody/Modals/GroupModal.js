@@ -14,32 +14,34 @@ export default function GroupModal() {
     const [showPeoplePopover, setShowPeoplePopover] = useState(false)
     const [showAddPeoplePopover, setShowAddPeoplePopover] = useState(false)
     const [showAddGroupPopover, setShowAddGroupPopover] = useState(false)
-    const [options, setOptions] = useState(false)
+    const [options, setOptions] = useState()
     const [target, setTarget] = useState()
 
 
     useEffect(() => {
-        const loadOptions = user.groups.map((group) => ({
-            value: group.id,
-            label: group.groupName
-        }))
-        setOptions(loadOptions);
+        if (user.loggedIn) {
+            const loadOptions = user.groups.map((group) => ({
+              value: group.id,
+              label: group.groupName
+            }));
+            setOptions(loadOptions);
+          } else {
+            setOptions(null);
+            setSelectedGroup(null)
+            setSelectedOptions(null)
+          }
     }, [user.groups]);
 
     const handleSelectChange = (selectedValue) => {
-        console.log(selectedValue)
         refreshUsers(selectedValue)
     }
 
     function refreshUsers(option) {
-        console.log(option)
         setSelectedOptions(option)
         setSelectedGroup(user.groups.find((group) => group.id === option.value))
-        console.log(user.groups.find((group) => group.id === option.value))
         try {
             getUsersOfGroup(option).then((data) => {
 
-                console.log(data)
                 setSelectedGroup((prevGroup) => ({ ...prevGroup, users: data }));
             })
         } catch (error) {
