@@ -32,26 +32,26 @@ export default function TaskWithPopover({ task, day }) {
                     <Popover.Body>
                         <div className="d-flex align-items-center mb-1">
                             <img src="/icons/calendarDark.svg" className='me-2' />
-                            <div class="form-text mt-0">
+                            <div className="form-text mt-0">
                                 {format(task.startDate, 'MMMM dd')}: {task.startTime} - {task.endTime}
                             </div>
 
                         </div>
                         <div className="d-flex align-items-center mb-1">
                             <img src="/icons/group.svg" className='me-2' />
-                            <div class="form-text mt-0">
+                            <div className="form-text mt-0">
                                 {task.groupName ? task.groupName : "No group"}
                             </div>
                         </div>
                         <div className="d-flex align-items-center mb-1">
                             <img src="/icons/labels.svg" className='me-2' />
-                            <div class="form-text mt-0">
+                            <div className="form-text mt-0">
                                 {task.label ? task.label : "No label"}
                             </div>
                         </div>
                         <div className="d-flex align-items-center mb-2">
                             <img src="/icons/text.svg" className='me-2' />
-                            <div class="form-text mt-0">
+                            <div className="form-text mt-0">
                                 {task.description}
                             </div>
                         </div>

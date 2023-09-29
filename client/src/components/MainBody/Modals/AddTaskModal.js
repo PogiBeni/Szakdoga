@@ -26,7 +26,7 @@ export default function AddTaskModal() {
         startTime: "",
         endDate: new Date(),
         endTime: "",
-        desc: ""
+        description: ""
     })
 
     useEffect(() => {
@@ -108,7 +108,7 @@ export default function AddTaskModal() {
 
 
                 <InputWithLabel label={"Description:"} addClassName={"w-100 mt-3"}>
-                    <textarea className="form-control" value={task.desc} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />
+                    <textarea className="form-control" value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />
                 </InputWithLabel>
 
                 <div className="d-flex align-items-center mt-5 ">
