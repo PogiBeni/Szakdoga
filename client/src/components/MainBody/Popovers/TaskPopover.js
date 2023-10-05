@@ -34,7 +34,7 @@ export default function TaskPopover({ tasks, day }) {
                     <Popover.Body>
                         {tasks.map((task) => (
                             isSameDay(task.startDate, day) && (
-                                <TaskWithPopover key={task.id}  task={task}/>  
+                                <TaskWithPopover key={task.id}  task={task} />  
                             )
                         ))}
                     </Popover.Body>

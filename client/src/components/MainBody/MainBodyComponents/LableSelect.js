@@ -2,8 +2,7 @@ import { useState, useContext } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { LabelContext } from '../../Context/LabelContext';
 
-export default function LabelSelect({ setLabel }) {
-    const [selectedOption, setSelectedOption] = useState(null);
+export default function LabelSelect({ setLabel, selectedOption, setSelectedOption }) {
     const [labels, setLabels] = useContext(LabelContext)
 
     if (!labels) { return }

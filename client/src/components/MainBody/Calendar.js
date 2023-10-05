@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import TaskPopover from './Popovers/TaskPopover';
 import AddTaskModal from './Modals/AddTaskModal';
@@ -13,7 +13,6 @@ export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
     const [filteredTasks, setFilteredTasks] = useState([]);
-    const [selectedTask, setSelectedTask] = useState();
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     function prevMonth() {
@@ -43,10 +42,11 @@ export default function Calendar() {
                 </div>
             </div>
 
-            <div className="calendarGrid m-3">
-                {selectedOptions.length == 0
-                    ?
-                    daysInMonth.map((day) => (
+
+            {selectedOptions.length == 0
+                ?
+                <div className="calendarGrid m-3">
+                    {daysInMonth.map((day) => (
                         <BasicDay key={day} day={day}>
 
                             {
@@ -55,20 +55,24 @@ export default function Calendar() {
                                     :
                                     user.tasks.map((task) => (
                                         isSameDay(task.startDate, day) && (
-                                            <TaskWithPopover task={task} key={task.id}/>
+                                            <TaskWithPopover task={task} key={task.id} />
                                         )
                                     ))
 
                             }
                         </BasicDay>
                     ))
-                    : filteredTasks.map((task) => (
+                    }
+                </div>
+                : 
+                <div className="taskGrid m-3">
+                    {filteredTasks.map((task) => (
 
-                        <FilteredDataDiv task={task} key={task.id} />
+                    <FilteredDataDiv task={task} key={task.id} />
 
-                    ))
-                }
-            </div>
+                ))}
+                </div>
+            }
             <GroupModal />
             <AddTaskModal />
         </div>

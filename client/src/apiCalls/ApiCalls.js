@@ -69,12 +69,12 @@ export async function isUserRegistered(email) {
   }
 }
 
-export async function addTask(task) {
+export async function addTask(taskData) {
 
 
-  console.log(task)
+  console.log(taskData)
   try {
-    const response = await axios.post('http://localhost:3001/api/addTask', task, {
+    const response = await axios.post('http://localhost:3001/api/addTask', taskData, {
       headers: {
         'Content-Type': 'application/json'
       }

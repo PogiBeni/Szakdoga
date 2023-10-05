@@ -15,19 +15,27 @@ import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
 export default function AddTaskModal() {
     const [user, setUser] = useContext(UserContext)
     const [errorMSG, setErrorMSG] = useState(null)
+    const [selectedGroupOption, setSelectedGroupOption] = useState(null)
+    const [selectedLabelOption, setSelectedLabelOption] = useState(null)
     const [task, setTask] = useState({
         id: null,
         creatorId: null,
         taskName: "",
         color: '#4169E1',
         groupId: null,
+        groupName: null,
         label: null,
         startDate: new Date(),
         startTime: "",
-        endDate: new Date(),
-        endTime: "",
-        description: ""
+        description: "",
+        locationId: null
     })
+    const [location, setLocation] = useState({
+        country: "",
+        cityName: "",
+        streetName: "",
+    });
+
 
     useEffect(() => {
         setTask({ ...task, creatorId: user.id })
@@ -39,34 +47,49 @@ export default function AddTaskModal() {
         console.log(task)
         if (task.taskName === "") { setErrorMSG("Fill out the name!"); return }
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
-        if (task.endTime === "") { setErrorMSG("Set an end time!"); return }
         if (task.startDate > task.endDate) { setErrorMSG("Start date must be before the end date!"); return }
-        if (isSameDay(task.startDate, task.endDate) && task.startTime.split(':')[0] > task.endTime.split(':')[0]) { setErrorMSG("Start time must be before the end time!"); return }
-        if (task.startTime.split(':')[0] > 25 || task.endTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
-        if (task.startTime.split(':')[1] > 60 || task.endTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
+        if (task.startTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
+        if (task.startTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
-        addTask(task).then((data) => {
+        const isLocationFilled = location.country || location.cityName || location.streetName;
+
+        if (!isLocationFilled) {
+            setLocation(""); // Set location to null if none of the location data is filled out
+        } else {
+            if (!location.country || !location.cityName || !location.streetName) {
+                setErrorMSG("Fill out all location fields!");
+                return;
+            }
+        }
+
+
+        var taskData = { task: task, location: location }
+        console.log(taskData)
+        addTask(taskData).then((data) => {
 
             setErrorMSG(null);
             document.querySelector('#dismissAddTaskModal').click();
-            const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate), groupId: parseInt(data.groupId) }
+            const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate), groupId: parseInt(data.groupId), country: location.country, cityName: location.cityName, streetName: location.streetName }
             setUser({ ...user, tasks: [...user.tasks, newData] });
             setTask({
                 ...task,
                 taskName: "",
                 groupId: null,
+                groupName:null,
                 startTime: "",
-                endTime: "",
                 description: ""
             });
+            setLocation({ country: "", cityName: "", streetName: "" })
+            console.log(user)
+            setSelectedGroupOption(null)
         })
     }
 
     return (
-        <BasicModal name={"addTaskModal"} title={"Add task:"} centered={true}>
+        <BasicModal name={"addTaskModal"} title={"Add task:"} centered={true} size={"modal-dialog-scrollable"}>
 
-            <form onSubmit={handleTaskSubmit} className="d-flex  flex-column mt-3" >
+            <form onSubmit={handleTaskSubmit} className="d-flex  flex-column mt-1" style={{ width: "28rem" }}>
                 <ErrorMsg errorMSG={errorMSG} />
                 <div className="d-flex  mt-3">
                     <ColorPicker color={task.color} setTaskColor={(selectedColor) => setTask({ ...task, color: selectedColor })} className="d-flex" />
@@ -79,39 +102,80 @@ export default function AddTaskModal() {
                     </InputWithLabel>
                 </div>
 
-
                 <div className="d-flex align-items-center mt-3 mb-3">
-                    <InputWithLabel label={"Start date:"} addClassName={"me-2"}>
+                    <InputWithLabel label={"Start date:"} addClassName={"me-2 w-50"}>
                         <Datepicker date={task.startDate} handleDatePickerSelection={(selectedDate) => setTask({ ...task, startDate: selectedDate })} />
                     </InputWithLabel>
-                    <InputWithLabel label={"Start time:"}>
+                    <InputWithLabel label={"Start time:"} addClassName={"w-50"}>
                         <TimeInput placeholder={"Start time"} value={task.startTime} setVariable={(time) => setTask({ ...task, startTime: time })} />
                     </InputWithLabel>
                 </div>
 
-                <div className="d-flex align-items-center mb-3">
-                    <InputWithLabel label={"End date:"} addClassName={"me-2"}>
-                        <Datepicker date={task.endDate} handleDatePickerSelection={(selectedDate) => setTask({ ...task, endDate: selectedDate })} />
-                    </InputWithLabel>
-                    <InputWithLabel label={"End time:"}>
-                        <TimeInput placeholder={"End time"} value={task.endTime} setVariable={(time) => setTask({ ...task, endTime: time })} />
-                    </InputWithLabel>
-                </div>
                 <div className="d-flex align-items-center ">
                     <div className="w-50 me-2">
-                        <SelectGroupInput setVariable={(selected) => setTask({...task, groupId: selected.value})}/>
+                        <SelectGroupInput setVariable={(selected) => setTask({ ...task, groupId: selected.value, groupName: selected.label  })} selectedOptions={selectedGroupOption} setSelectedOptions={setSelectedGroupOption} />
                     </div>
                     <div className="w-50">
-                        <LabelSelect setLabel={(selectedLabel) => setTask({ ...task, label: selectedLabel })} />
+                        <LabelSelect setLabel={(selectedLabel) => setTask({ ...task, label: selectedLabel })} selectedOption={selectedLabelOption} setSelectedOption={setSelectedLabelOption} />
                     </div>
                 </div>
 
+                <div className="accordion mt-3" id="accordionExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Location data
+                            </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div className="accordion-body me-1 p-2 d-flex align-items-center w-100" >
+                                <InputWithLabel label={"Country:"} >
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={location.country}
+                                        onChange={(e) =>
+                                            setLocation({ ...location, country: e.target.value })
+                                        }
+                                        placeholder="Country"
+                                        aria-label="Country"
+                                    />
+                                </InputWithLabel>
+                                <InputWithLabel label={"City Name:"} addClassName={"ms-2"}>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={location.cityName}
+                                        onChange={(e) =>
+                                            setLocation({ ...location, cityName: e.target.value })
+                                        }
+                                        placeholder="City Name"
+                                        aria-label="City Name"
+                                    />
+                                </InputWithLabel>
+
+                                <InputWithLabel label={"Street Name:"} addClassName={"ms-2"}>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={location.streetName}
+                                        onChange={(e) =>
+                                            setLocation({ ...location, streetName: e.target.value })
+                                        }
+                                        placeholder="Street Name"
+                                        aria-label="Street Name"
+                                    />
+                                </InputWithLabel>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <InputWithLabel label={"Description:"} addClassName={"w-100 mt-3"}>
                     <textarea className="form-control" value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />
                 </InputWithLabel>
 
-                <div className="d-flex align-items-center mt-5 ">
+                <div className="d-flex align-items-center mt-3 ">
                     <button type="button" className="btn alert alert-light me-2 p-2" id="dismissAddTaskModal" data-bs-dismiss="modal">Close</button>
                     <button type="submit" className="btn alert alert-success me-2 p-2">Add</button>
                 </div>

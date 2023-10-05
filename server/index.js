@@ -99,10 +99,12 @@ app.post('/api/login', async (req, res) => {
     const tasksResults = await new Promise((resolve, reject) => {
       connection.query(`SELECT DISTINCT  
                         tasks.id as id,creatorId, tasks.groupId,
-                        groups.groupName as groupName ,label,taskName,color,startDate,startTime,endDate,endTime,tasks.
-                        description, usertogroup.userId as userId 
+                        groups.groupName as groupName ,label,taskName,color,startDate,startTime,tasks.
+                        description, usertogroup.userId as userId ,
+                        country, cityName, streetName
                         FROM tasks left join usertogroup on usertogroup.groupId = tasks.groupId 
                         left join groups on groups.id = usertogroup.groupId 
+                        left join locations on locationId = locations.id
                         WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId is NULL)`
         , [user.id, user.id], (err, results) => {
           if (err) {
@@ -177,26 +179,60 @@ app.post('/api/register', async (req, res) => {
 
 
 app.post('/api/addTask', async (req, res) => {
-  const task = req.body
-  console.log('Received data:', task);
+  const { task, location } = req.body;
+  console.log('Received data:', req.body);
 
   try {
-    connection.query(
-      "INSERT INTO tasks ( creatorId, groupId, label, taskName, color, startDate, startTime, endDate, endTime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, new Date(task.endDate), task.endTime, task.description],
-      (err, results) => {
-        if (err) {
-          console.error('Error executing query:', err);
-          return;
+    // Check if locationData is null
+    if (location.country === "") {
+      connection.query(
+        "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL)",
+        [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description],
+        (err, results) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ error: 'Error adding task' });
+            return;
+          }
+          res.json({ ...task, id: results.insertId, locationId: null });
         }
-        res.json({ ...task, id: results.insertId });
-      }
-    );
+      );
+    } else {
+      // Insert location into the locations table
+      connection.query(
+        "INSERT INTO locations (country, cityName, streetName) VALUES (?, ?, ?)",
+        [location.country, location.cityName, location.streetName],
+        (err, locationResults) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ error: 'Error adding location' });
+            return;
+          }
+
+          const locationId = locationResults.insertId;
+
+          // Insert task data into the tasks table with the locationId
+          connection.query(
+            "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, locationId],
+            (err, taskResults) => {
+              if (err) {
+                console.error('Error executing query:', err);
+                res.status(500).json({ error: 'Error adding task' });
+                return;
+              }
+              res.json({ ...task, id: taskResults.insertId, locationId });
+            }
+          );
+        }
+      );
+    }
   } catch (error) {
     console.error('Error adding task', error);
     res.status(500).json({ error: 'Error adding task' });
   }
 });
+
 
 app.post('/api/addGroup', async (req, res) => {
   const group = req.body;

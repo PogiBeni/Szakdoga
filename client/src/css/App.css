@@ -49,6 +49,11 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 0.5rem;
 }
+.taskGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.2rem;
+}
 
 .calendarDay {
   display: flex;
@@ -147,7 +152,8 @@
   width: 20rem;
 }
 .popover{
-  max-width: fit-content;
+  min-width: fit-content;
+  min-height: fit-content;
 }
 .groupModal{
   width: 20rem;
