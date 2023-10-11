@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2023 at 02:15 PM
+-- Generation Time: Oct 11, 2023 at 11:26 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,9 +43,7 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `groupName`, `creatorUserId`, `creatorName`, `description`) VALUES
-(37, 'Alma', 74, 'Pogány Beni', 'alma\n'),
-(38, 'Teszt', 74, 'Pogány Beni', 'teszt'),
-(39, 'Pogány Benedek group', 74, 'Pogány Beni', 'teszt');
+(52, 'Alma', 74, 'Pogány Beni', 'alma');
 
 -- --------------------------------------------------------
 
@@ -73,7 +71,8 @@ INSERT INTO `locations` (`id`, `country`, `cityName`, `streetName`) VALUES
 (15, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
 (16, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
 (17, '2', '2', '2'),
-(18, 'sad', 's', 's');
+(18, 'sad', 's', 's'),
+(19, 'Hungary', 'Kecskemét', 'Izsáki út 2.');
 
 -- --------------------------------------------------------
 
@@ -100,18 +99,8 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`) VALUES
-(145, 74, NULL, NULL, 'asd', '#4169E1', '2023-10-05 11:08:53', '1:00', 'ads', NULL),
-(146, 74, NULL, NULL, 'asd', '#4169E1', '2023-10-05 11:08:53', '2:00', 'asd', 11),
-(147, 74, NULL, NULL, 'asdasd', '#4169E1', '2023-10-05 11:16:15', '1:00', 'asdasd', 12),
-(148, 74, NULL, NULL, 'fgegw', '#4169E1', '2023-10-05 11:16:15', '1:00', 'weq', 13),
-(149, 74, NULL, NULL, 'sad', '#4169E1', '2023-10-05 22:00:00', '2:00', 'sad', 14),
-(150, 74, 37, NULL, 'Teszt', '#ffe135', '2023-10-05 22:00:00', '13:00', 'asd', 15),
 (151, 74, NULL, 'Fontos', 'ad', '#EE4B2B', '2023-10-05 22:00:00', '1:00', 'asd', 16),
-(152, 74, NULL, NULL, 'fff', '#4169E1', '2023-10-05 11:51:17', '1:00', 'fff', NULL),
-(153, 74, 38, '2', '2', '#4169E1', '2023-10-05 11:53:30', '2:00', '2', 17),
-(154, 74, 37, '2', 'asd', '#4169E1', '2023-10-05 11:56:25', '1:00', 'ss', 18),
-(155, 74, NULL, NULL, 'yes', '#4169E1', '2023-09-30 22:00:00', '1:00', 'yes', NULL),
-(156, 74, NULL, NULL, 'test', '#4169E1', '2023-10-07 22:00:00', '1:00', 'test', NULL);
+(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 09:23:00', '12:00', 'Banana', 19);
 
 -- --------------------------------------------------------
 
@@ -157,14 +146,7 @@ CREATE TABLE `usertogroup` (
 --
 
 INSERT INTO `usertogroup` (`id`, `groupId`, `userId`) VALUES
-(50, 34, 75),
-(51, 37, 74),
-(52, 37, 77),
-(53, 38, 74),
-(54, 38, 76),
-(56, 38, 75),
-(58, 38, 78),
-(59, 39, 74);
+(74, 52, 74);
 
 --
 -- Indexes for dumped tables
@@ -186,7 +168,8 @@ ALTER TABLE `locations`
 -- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `groupId` (`groupId`);
 
 --
 -- Indexes for table `user`
@@ -198,7 +181,8 @@ ALTER TABLE `user`
 -- Indexes for table `usertogroup`
 --
 ALTER TABLE `usertogroup`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `groupId` (`groupId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -208,19 +192,19 @@ ALTER TABLE `usertogroup`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -232,7 +216,23 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `usertogroup`
 --
 ALTER TABLE `usertogroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `usertogroup`
+--
+ALTER TABLE `usertogroup`
+  ADD CONSTRAINT `usertogroup_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

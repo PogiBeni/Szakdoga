@@ -171,3 +171,35 @@ export async function deleteUserFromGroup(data) {
     throw error;
   }
 }
+
+export async function deleteGroup(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/deleteGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}
+
+export async function deleteTask(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/deleteTask',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}

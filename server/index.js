@@ -377,6 +377,53 @@ app.post('/api/getUsersOfGroup', async (req, res) => {
   }
 });
 
+app.post('/api/deleteGroup', async (req, res) => {
+  const data = req.body;
+
+  try {
+    connection.query(
+      "DELETE FROM groups WHERE id = ?",
+      [data.id,],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error deleting group' });
+          return;
+        }
+        console.log(results)
+        res.json(true);
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting group', error);
+    res.status(500).json({ error: 'Error deleting group' });
+  }
+});
+
+app.post('/api/deleteTask', async (req, res) => {
+  const data = req.body;
+  console.log(data)
+  try {
+    connection.query(
+      "DELETE FROM tasks WHERE id = ?",
+      [data.id,],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error deleting group' });
+          return;
+        }
+        console.log(results)
+        res.json(true);
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting group', error);
+    res.status(500).json({ error: 'Error deleting group' });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)
 })
