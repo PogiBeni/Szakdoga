@@ -47,9 +47,8 @@ export default function AddTaskModal() {
         console.log(task)
         if (task.taskName === "") { setErrorMSG("Fill out the name!"); return }
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
-        if (task.startDate > task.endDate) { setErrorMSG("Start date must be before the end date!"); return }
         if (task.startTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
-        if (task.startTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-24!"); return }
+        if (task.startTime.split(':')[1] > 60) { setErrorMSG("Time minutes must be between 0-60!"); return }
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
         const isLocationFilled = location.country || location.cityName || location.streetName;
@@ -65,12 +64,11 @@ export default function AddTaskModal() {
 
 
         var taskData = { task: task, location: location }
-        console.log(taskData)
         addTask(taskData).then((data) => {
 
             setErrorMSG(null);
             document.querySelector('#dismissAddTaskModal').click();
-            const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate), groupId: parseInt(data.groupId), country: location.country, cityName: location.cityName, streetName: location.streetName }
+            const newData = { ...data, startDate: parseISO(data.startDate), groupId: parseInt(data.groupId), country: location.country, cityName: location.cityName, streetName: location.streetName }
             setUser({ ...user, tasks: [...user.tasks, newData] });
             setTask({
                 ...task,
@@ -81,7 +79,6 @@ export default function AddTaskModal() {
                 description: ""
             });
             setLocation({ country: "", cityName: "", streetName: "" })
-            console.log(user)
             setSelectedGroupOption(null)
         })
     }

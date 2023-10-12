@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2023 at 11:26 AM
+-- Generation Time: Oct 12, 2023 at 03:16 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,7 +43,7 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `groupName`, `creatorUserId`, `creatorName`, `description`) VALUES
-(52, 'Alma', 74, 'Pogány Beni', 'alma');
+(52, 'Alma1', 74, 'Pogány Beni', 'almasssdsda');
 
 -- --------------------------------------------------------
 
@@ -99,8 +99,13 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`) VALUES
-(151, 74, NULL, 'Fontos', 'ad', '#EE4B2B', '2023-10-05 22:00:00', '1:00', 'asd', 16),
-(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 09:23:00', '12:00', 'Banana', 19);
+(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 09:23:00', '12:00', 'Banana', 19),
+(158, 74, NULL, NULL, 'asd', '#9933FF', '2023-10-13 22:00:00', '14:00', 'asd', NULL),
+(159, 74, NULL, NULL, 'test', '#9933FF', '2023-10-12 20:00:00', '2:00', 'test', NULL),
+(160, 74, NULL, NULL, 'q', '#00A36C', '2023-10-11 22:00:00', '1:00', 'q', NULL),
+(161, 74, NULL, NULL, 'asd', '#00A36C', '2023-10-07 22:00:00', '2:00', 'asd', NULL),
+(162, 74, NULL, NULL, 'fg', '#00A36C', '2023-10-08 22:00:00', '2:00', 'asd', NULL),
+(163, 74, NULL, NULL, 'rreeee', '#EE4B2B', '2023-10-09 22:00:00', '2:00', 'reeee', NULL);
 
 -- --------------------------------------------------------
 
@@ -126,7 +131,8 @@ INSERT INTO `user` (`id`, `email`, `password`, `fullName`, `linkToPicture`) VALU
 (75, 'kisjanos@alma.com', '$2b$10$3mmWegV36yckmgB68/i2gevF2Qxn1LpAFF8UHXIyuEIzxA5SDlGMa', 'Kis János', ''),
 (76, 'kamuelek@kamuelek.hu', '$2b$10$pQYatLWtIPnbQQeGW/H5zuIkoI2HU5KAnLCaDbDCmtfaDyJXFtV2K', 'Kamu Elek', ''),
 (77, 'alma@alma.hu', '$2b$10$mUkxVM9Ak8uBtVzYrizxTOUZGnm/CdyauquBSiIwz.q8gaG/22FxO', 'Alma man', ''),
-(78, 'a@a', '$2b$10$4FwrKefZseLU44XR5irMteheybLf9FQYSDNM0UNtFxX6Fj2k1SmPa', 'aaa', '');
+(78, 'a@a', '$2b$10$4FwrKefZseLU44XR5irMteheybLf9FQYSDNM0UNtFxX6Fj2k1SmPa', 'aaa', ''),
+(79, 'drago2162@gmail.com', '$2b$10$bl3Hr3VSqFF6DHt2A1/mTeDDLEC60rCn2oEAn5dZIZ791D10h3NpS', 'Benedek Pogány', 'https://lh3.googleusercontent.com/a/ACg8ocI1C8IRgpCeUzDyu7PtXmol2qXG_s_fM8obi2UjE3DVGw=s96-c');
 
 -- --------------------------------------------------------
 
@@ -204,13 +210,13 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `usertogroup`

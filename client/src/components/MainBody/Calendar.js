@@ -25,8 +25,6 @@ export default function Calendar() {
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
-
-
     return (
         <div className='w-100 '>
             <div className="d-flex justify-content-between m-3" >
@@ -44,40 +42,34 @@ export default function Calendar() {
                 </div>
             </div>
 
-
             {selectedOptions.length == 0
                 ?
                 <div className="calendarGrid m-3">
                     {daysInMonth.map((day) => (
                         <BasicDay key={day} day={day}>
-
                             {
-                                user.tasks.filter((task) => isSameDay(task.startDate, day)).length > 2 ?
-                                    <TaskPopover tasks={user.tasks} day={day} />
-                                    :
-                                    user.tasks.map((task) => (
+                                user.tasks.filter((task) => isSameDay(task.startDate, day)).length > 2
+                                    ? <TaskPopover tasks={user.tasks} day={day} />
+                                    : user.tasks.map((task) => (
                                         isSameDay(task.startDate, day) && (
-                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={selectedTaskForEdit} />
+                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} />
                                         )
                                     ))
-
                             }
                         </BasicDay>
                     ))
                     }
                 </div>
-                : 
+                :
                 <div className="taskGrid m-3">
                     {filteredTasks.map((task) => (
-
-                    <FilteredDataDiv task={task} key={task.id} />
-
-                ))}
+                        <FilteredDataDiv task={task} key={task.id} />
+                    ))}
                 </div>
             }
             <GroupModal />
             <AddTaskModal />
-            {selectedTaskForEdit && <EditTaskModal editableTask={selectedTaskForEdit} /> }
+            <EditTaskModal selectedTaskForEdit={selectedTaskForEdit}/>
         </div>
     );
 }

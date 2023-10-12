@@ -5,7 +5,7 @@ import { useState, useRef, useContext } from 'react';
 import { deleteTask } from '../../../apiCalls/ApiCalls';
 import { UserContext } from '../../Context/UserContext';
 
-export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
+export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
 
     const [user, setUser] = useContext(UserContext);
     const [show, setShow] = useState(false);
@@ -14,7 +14,8 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
     if (!task) return
 
     var placement = "left"
-    if (task.startDate.getDate() % 7 < 4) placement = "right"
+    var helper = task.startDate.getDate() % 7
+    if ((helper > 4) || (helper !== 0)) placement = "right"
 
     function handleDelete() {
         deleteTask(task).then(() => {
@@ -23,6 +24,11 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
             setShow(false)
         })
     }
+    function handleEdit() {
+        setShow(false)
+        setSelectedTaskForEdit(task)
+    }
+
 
     return (
         <>
@@ -48,19 +54,17 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
                     <Popover.Header style={{ backgroundColor: task.color, color: "white", minWidth: "12rem", fontSize: "1.5rem", fontWeight: "bold" }} className='d-flex justify-content-between'>
                         {"" + task.taskName}
                         <div>
-
-                            <button
+                            <img style={{ cursor: "pointer" }} className='me-2' src='/icons/pencilSquareWhite.svg' alt="icon"
                                 data-bs-toggle="modal"
-                                data-bs-target="#editTaskModal" 
-                                onClick={() => setSelectedTaskForEdit(task)}>
-                                <img style={{ cursor: "pointer" }} className='me-2' src='/icons/pencilSquareWhite.svg' />
-                            </button>
-                            <img style={{ cursor: "pointer" }} src='/icons/delete.svg' onClick={handleDelete} />
+                                data-bs-target="#editTaskModal"
+                                onClick={handleEdit}
+                            />
+                            <img style={{ cursor: "pointer" }} src='/icons/delete.svg' onClick={handleDelete} alt="icon"/>
                         </div>
                     </Popover.Header>
                     <Popover.Body>
                         <div className="d-flex align-items-center mb-1">
-                            <img src="/icons/calendarDark.svg" className='me-2' />
+                            <img src="/icons/calendarDark.svg" className='me-2' alt="icon"/>
                             <div className="form-text mt-0">
                                 <strong>{format(task.startDate, 'MMMM dd')}:</strong> {task.startTime}
                             </div>
@@ -68,7 +72,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
 
                         {task.country &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/location.svg" className='me-2' />
+                                <img src="/icons/location.svg" className='me-2' alt="icon"/>
                                 <div className="form-text mt-0">
                                     {"" + task.country + ", " + task.cityName} <br />
                                     {task.streetName}
@@ -77,7 +81,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
 
                         {task.groupName &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/group.svg" className='me-2' />
+                                <img src="/icons/group.svg" className='me-2' alt="icon"/>
                                 <div className="form-text mt-0">
                                     {task.groupName}
                                 </div>
@@ -85,14 +89,14 @@ export default function TaskWithPopover({ setSelectedTaskForEdit,task }) {
 
                         {task.label &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/labels.svg" className='me-2' />
+                                <img src="/icons/labels.svg" className='me-2' alt="icon"/>
                                 <div className="form-text mt-0">
                                     {task.label}
                                 </div>
                             </div>}
 
                         <div className="d-flex align-items-center mb-2">
-                            <img src="/icons/text.svg" className='me-2' />
+                            <img src="/icons/text.svg" className='me-2' alt="icon"/>
                             <div className="form-text mt-0">
                                 {task.description}
                             </div>

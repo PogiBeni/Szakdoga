@@ -431,7 +431,7 @@ app.post('/api/editGroup', async (req, res) => {
       `UPDATE groups
       SET groupName = ?, description = ?
       WHERE id = ?`,
-      [data.groupName,data.description,data.id,],
+      [data.groupName, data.description, data.id,],
       (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -447,6 +447,60 @@ app.post('/api/editGroup', async (req, res) => {
     res.status(500).json({ error: 'Error deleting group' });
   }
 });
+
+app.post('/api/editTask', async (req, res) => {
+  const data = req.body;
+  console.log(data);
+
+  try {
+    connection.query(
+      `UPDATE tasks
+       SET groupId = ?, label = ?, taskName = ?, color = ?, startDate = ?, startTime = ?, description = ?, locationId = ?
+       WHERE id = ?`,
+      [
+        data.groupId,
+        data.label,
+        data.taskName,
+        data.color,
+        data.startDate,
+        data.startTime,
+        data.description,
+        data.locationId,
+        data.id,
+      ],
+      (err, results) => {
+        if (err) {
+          console.error('Error updating tasks table:', err);
+          res.status(500).json({ error: 'Error editing task' });
+          return;
+        }
+
+        if (data.country) {
+          connection.query(
+            `UPDATE locations
+             SET country = ?, cityName = ?, streetName = ?
+             WHERE id = ?`,
+            [data.country, data.cityName, data.streetName, data.locationId],
+            (err, locationResults) => {
+              if (err) {
+                console.error('Error updating locations table:', err);
+                res.status(500).json({ error: 'Error editing task' });
+                return;
+              }
+              res.json(true);
+            }
+          );
+        } else {
+          res.json(true);
+        }
+      }
+    );
+  } catch (error) {
+    console.error('Error editing task', error);
+    res.status(500).json({ error: 'Error editing task' });
+  }
+});
+
 
 
 app.listen(PORT, () => {

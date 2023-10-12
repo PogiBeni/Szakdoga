@@ -14,8 +14,7 @@ export async function login(email, password) {
 
     const tasks = response.data.tasks.map(task => ({
       ...task,
-      startDate: parseISO(task.startDate),
-      endDate: parseISO(task.endDate)
+      startDate: parseISO(task.startDate)
     }));
 
     const data = {
@@ -208,6 +207,22 @@ export async function editGroup(data) {
 
   try {
     const response = await axios.post('http://localhost:3001/api/editGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}
+
+export async function editTask(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/editTask',data, {
       headers: {
         'Content-Type': 'application/json'
       }
