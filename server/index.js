@@ -423,6 +423,31 @@ app.post('/api/deleteTask', async (req, res) => {
   }
 });
 
+app.post('/api/editGroup', async (req, res) => {
+  const data = req.body;
+  console.log(data)
+  try {
+    connection.query(
+      `UPDATE groups
+      SET groupName = ?, description = ?
+      WHERE id = ?`,
+      [data.groupName,data.description,data.id,],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error deleting group' });
+          return;
+        }
+        console.log(results)
+        res.json(true);
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting group', error);
+    res.status(500).json({ error: 'Error deleting group' });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)

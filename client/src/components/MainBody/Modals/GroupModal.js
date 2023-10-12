@@ -7,6 +7,7 @@ import AddPeoplePopover from "../Popovers/AddPeoplePopover";
 import { getUsersOfGroup } from "../../../apiCalls/ApiCalls";
 import AddGroupPopover from "../Popovers/AddGroupPopover";
 import DeleteGroupModal from "./DeleteGroupModal";
+import EditGroupPopover from "../Popovers/EditGroupPopover";
 
 export default function GroupModal() {
     const [user, setUser] = useContext(UserContext)
@@ -15,11 +16,13 @@ export default function GroupModal() {
     const [showPeoplePopover, setShowPeoplePopover] = useState(false)
     const [showAddPeoplePopover, setShowAddPeoplePopover] = useState(false)
     const [showAddGroupPopover, setShowAddGroupPopover] = useState(false)
+    const [showEditGroupPopover, setShowEditGroupPopover] = useState(false)
     const [options, setOptions] = useState()
     const [target, setTarget] = useState({
-        showPeoplePopover:null,
-        addPeoplePopover:null,
-        addGroupPopover:null
+        showPeoplePopover: null,
+        addPeoplePopover: null,
+        addGroupPopover: null,
+        editGroupPopover: null
     })
 
 
@@ -56,15 +59,19 @@ export default function GroupModal() {
 
     function handleShowPeoplePopover(e) {
         setShowPeoplePopover(!showPeoplePopover)
-        setTarget({...target, showPeoplePopover:e.target})
+        setTarget({ ...target, showPeoplePopover: e.target })
     }
     function handleShowAddPeoplePopover(e) {
         setShowAddPeoplePopover(!showAddPeoplePopover)
-        setTarget({...target, addPeoplePopover:e.target})
+        setTarget({ ...target, addPeoplePopover: e.target })
     }
     function handleShowAddGroupPopover(e) {
         setShowAddGroupPopover(!showAddGroupPopover)
-        setTarget({...target, addGroupPopover:e.target})
+        setTarget({ ...target, addGroupPopover: e.target })
+    }
+    function handleShowEditGroupPopover(e) {
+        setShowEditGroupPopover(!showEditGroupPopover)
+        setTarget({ ...target, editGroupPopover: e.target })
     }
 
     const deleteButton = selectedGroup && user.id === selectedGroup.creatorUserId ? (
@@ -75,9 +82,16 @@ export default function GroupModal() {
         />
     ) : null;
 
+    const editGroupButton = selectedGroup && user.id === selectedGroup.creatorUserId ? (
+        <img
+            className="icon ms-3"
+            src="/icons/pencilSquare.svg"
+            onClick={(e) => { handleShowEditGroupPopover(e) }} />
+    ) : null;
+
     const addPersonButton = selectedGroup && user.id === selectedGroup.creatorUserId ? (
         <img
-            className="icon ms-3" s
+            className="icon ms-3"
             src="/icons/addPerson.svg"
             onClick={(e) => { handleShowAddPeoplePopover(e) }} />
     ) : null;
@@ -105,6 +119,7 @@ export default function GroupModal() {
                     <div className="mt-4 ms-2"  >
                         <img className="icon" src="/icons/people.svg" onClick={(e) => { handleShowPeoplePopover(e) }} />
                         {addPersonButton}
+                        {editGroupButton}
                         {deleteButton}
                     </div>
                     {selectedGroup && selectedOptions ?
@@ -124,7 +139,7 @@ export default function GroupModal() {
                 <AddGroupPopover show={showAddGroupPopover} target={target.addGroupPopover} onHide={() => setShowAddGroupPopover(false)} />
                 <ShowPeoplePopover show={showPeoplePopover} target={target.showPeoplePopover} onHide={() => setShowPeoplePopover(false)} group={selectedGroup} refresh={refreshUsers} />
                 <AddPeoplePopover show={showAddPeoplePopover} target={target.addPeoplePopover} onHide={() => setShowAddPeoplePopover(false)} group={selectedGroup} refresh={refreshUsers} />
-
+                <EditGroupPopover show={showEditGroupPopover} target={target.editGroupPopover} onHide={()  => setShowEditGroupPopover(false)} selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} setSelectedOptions={setSelectedOptions}/>
             </BasicModal >
             <DeleteGroupModal selectedGroup={selectedGroup} onGroupRemoved={() => { setSelectedGroup(null); setSelectedOptions(null) }} />
         </>

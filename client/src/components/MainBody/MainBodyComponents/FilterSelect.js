@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from 'react';
+import React, { useContext,useEffect,useState } from 'react';
 import Select from 'react-select';
 import { UserContext } from '../../Context/UserContext';
 import { LabelContext } from '../../Context/LabelContext';
@@ -6,6 +6,7 @@ import { LabelContext } from '../../Context/LabelContext';
 export default function FilterSelect({selectedOptions, setSelectedOptions, setFilteredTasks}) {
     const [user, setUser] = useContext(UserContext)
     const [labels,setLabels] = useContext(LabelContext)
+    const [groupedOptions, setGroupedOptions] = useState([]);
 
     
     const selectedValues = selectedOptions.map((option) => option.value);
@@ -37,26 +38,31 @@ export default function FilterSelect({selectedOptions, setSelectedOptions, setFi
         setFilteredTasks(updatedFilteredTasks);
     }, [user.tasks, selectedOptions]);
 
-    const groupedOptions = [
-      {
-        label: 'Groups',
-        options: user.groups.map((group) => ({
-          value: group.id,
-          label: group.groupName,
-        })),
-      },
-      {
-        label: 'Labels',
-        options: labels
-          ? labels
-              .filter((label) => label !== null)
-              .map((label) => ({
-                value: label,
-                label: label,
-              }))
-          : [], // Provide an empty array if labels is undefined
-      },
-    ];
+    useEffect(() => {
+      const newGroupedOptions = [
+        {
+          label: 'Groups',
+          options: user.groups.map((group) => ({
+            value: group.id,
+            label: group.groupName,
+          })),
+        },
+        {
+          label: 'Labels',
+          options: labels
+            ? labels
+                .filter((label) => label !== null)
+                .map((label) => ({
+                  value: label,
+                  label: label,
+                }))
+            : [],
+        },
+      ];
+  
+      setGroupedOptions(newGroupedOptions);
+    }, [user.groups, labels]);
+  
     
 
     const handleChange = (selectedOption) => {

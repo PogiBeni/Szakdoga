@@ -203,3 +203,19 @@ export async function deleteTask(data) {
     throw error;
   }
 }
+
+export async function editGroup(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/editGroup',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}
