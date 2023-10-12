@@ -12,34 +12,19 @@ import LabelSelect from "../MainBodyComponents/LableSelect";
 import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
 
 
-export default function AddTaskModal() {
+export default function EditTaskModal({editableTask}) {
     const [user, setUser] = useContext(UserContext)
     const [errorMSG, setErrorMSG] = useState(null)
     const [selectedGroupOption, setSelectedGroupOption] = useState(null)
     const [selectedLabelOption, setSelectedLabelOption] = useState(null)
-    const [task, setTask] = useState({
-        id: null,
-        creatorId: null,
-        taskName: "",
-        color: '#4169E1',
-        groupId: null,
-        groupName: null,
-        label: null,
-        startDate: new Date(),
-        startTime: "",
-        description: "",
-        locationId: null
-    })
+    const [task, setTask] = useState()
     const [location, setLocation] = useState({
         country: "",
         cityName: "",
         streetName: "",
     });
 
-
-    useEffect(() => {
-        setTask({ ...task, creatorId: user.id })
-    }, [user]);
+    setTask(editableTask)
 
     function handleTaskSubmit(e) {
         e.preventDefault()
@@ -69,7 +54,7 @@ export default function AddTaskModal() {
         addTask(taskData).then((data) => {
 
             setErrorMSG(null);
-            document.querySelector('#dismissAddTaskModal').click();
+            document.querySelector('#dismissEditTaskModal').click();
             const newData = { ...data, startDate: parseISO(data.startDate), endDate: parseISO(data.endDate), groupId: parseInt(data.groupId), country: location.country, cityName: location.cityName, streetName: location.streetName }
             setUser({ ...user, tasks: [...user.tasks, newData] });
             setTask({
@@ -87,7 +72,7 @@ export default function AddTaskModal() {
     }
 
     return (
-        <BasicModal name={"addTaskModal"} title={"Add task:"} centered={true} size={"modal-dialog-scrollable"}>
+        <BasicModal name={"editTaskModal"} title={"Edit task:"} centered={true} size={"modal-dialog-scrollable"}>
 
             <form onSubmit={handleTaskSubmit} className="d-flex  flex-column mt-1" style={{ width: "28rem" }}>
                 <ErrorMsg errorMSG={errorMSG} />
@@ -176,7 +161,7 @@ export default function AddTaskModal() {
                 </InputWithLabel>
 
                 <div className="d-flex align-items-center mt-3 ">
-                    <button type="button" className="btn alert alert-light me-2 p-2" id="dismissAddTaskModal" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn alert alert-light me-2 p-2" id="dismissEditTaskModal" data-bs-dismiss="modal">Close</button>
                     <button type="submit" className="btn alert alert-success me-2 p-2">Add</button>
                 </div>
             </form>

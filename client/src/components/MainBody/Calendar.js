@@ -8,12 +8,14 @@ import GroupModal from './Modals/GroupModal';
 import FilterSelect from './MainBodyComponents/FilterSelect';
 import TaskWithPopover from './Popovers/TaskWithPopover';
 import FilteredDataDiv from './MainBodyComponents/FilteredDataDiv';
+import EditTaskModal from './Modals/EditTaskModal';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [user, setUser] = useContext(UserContext)
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedTaskForEdit, setSelectedTaskForEdit] = useState();
 
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
@@ -55,7 +57,7 @@ export default function Calendar() {
                                     :
                                     user.tasks.map((task) => (
                                         isSameDay(task.startDate, day) && (
-                                            <TaskWithPopover task={task} key={task.id} />
+                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={selectedTaskForEdit} />
                                         )
                                     ))
 
@@ -75,6 +77,7 @@ export default function Calendar() {
             }
             <GroupModal />
             <AddTaskModal />
+            {selectedTaskForEdit && <EditTaskModal editableTask={selectedTaskForEdit} /> }
         </div>
     );
 }

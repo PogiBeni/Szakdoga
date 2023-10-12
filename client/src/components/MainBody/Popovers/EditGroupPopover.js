@@ -31,7 +31,6 @@ export default function EditGroupPopover({ show, target, onHide, selectedGroup, 
             }
             return group;
           });
-          console.log(user.groups)
           return { ...prevUser, groups: updatedGroups };
         });
       };
@@ -40,8 +39,6 @@ export default function EditGroupPopover({ show, target, onHide, selectedGroup, 
     function handleSubmit(e) {
         e.preventDefault()
         if (!group.groupName) { seterrorMSG("Group name empty!"); return }
-        console.log(selectedGroup)
-        console.log(group)
         editGroup(group).then((data => {
             seterrorMSG(null)
             editLocalGroup(group.id,group)
@@ -50,7 +47,6 @@ export default function EditGroupPopover({ show, target, onHide, selectedGroup, 
             onHide()
         }))
     }
-
 
     return (
 
