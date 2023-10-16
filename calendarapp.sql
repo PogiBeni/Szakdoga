@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2023 at 03:16 PM
+-- Generation Time: Oct 16, 2023 at 01:27 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -72,7 +72,35 @@ INSERT INTO `locations` (`id`, `country`, `cityName`, `streetName`) VALUES
 (16, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
 (17, '2', '2', '2'),
 (18, 'sad', 's', 's'),
-(19, 'Hungary', 'Kecskemét', 'Izsáki út 2.');
+(19, 'Hungary', 'Kecskemét', 'Izsáki út 2.'),
+(20, '', '', ''),
+(21, '', '', ''),
+(22, '', '', ''),
+(23, '', '', ''),
+(24, '', '', ''),
+(25, '', '', ''),
+(26, '', '', ''),
+(27, '', '', ''),
+(28, '', '', ''),
+(29, '', '', ''),
+(30, '', '', ''),
+(31, '', '', ''),
+(32, '', '', ''),
+(33, '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subtasks`
+--
+
+DROP TABLE IF EXISTS `subtasks`;
+CREATE TABLE `subtasks` (
+  `id` int(11) NOT NULL,
+  `taskId` int(11) NOT NULL,
+  `subtaskName` varchar(255) NOT NULL,
+  `isCompleted` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -99,13 +127,17 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`) VALUES
-(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 09:23:00', '12:00', 'Banana', 19),
-(158, 74, NULL, NULL, 'asd', '#9933FF', '2023-10-13 22:00:00', '14:00', 'asd', NULL),
+(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 07:23:00', '12:00', 'Banana', NULL),
 (159, 74, NULL, NULL, 'test', '#9933FF', '2023-10-12 20:00:00', '2:00', 'test', NULL),
 (160, 74, NULL, NULL, 'q', '#00A36C', '2023-10-11 22:00:00', '1:00', 'q', NULL),
-(161, 74, NULL, NULL, 'asd', '#00A36C', '2023-10-07 22:00:00', '2:00', 'asd', NULL),
-(162, 74, NULL, NULL, 'fg', '#00A36C', '2023-10-08 22:00:00', '2:00', 'asd', NULL),
-(163, 74, NULL, NULL, 'rreeee', '#EE4B2B', '2023-10-09 22:00:00', '2:00', 'reeee', NULL);
+(175, 74, NULL, NULL, 'ff', '#4169E1', '2023-10-16 07:53:46', '1:00', 'ff', 24),
+(176, 74, NULL, 'Fontos', 'Alma', 'green', '2023-10-16 09:31:51', '12:00', 'Alma szüret', 25),
+(177, 74, NULL, 'Fontos', 'banán szüretelése', '#ffe135', '2023-10-16 09:31:51', '12:00', 'Le kell szüretelni a banánt', 26),
+(178, 74, NULL, NULL, 'alma1', '#4169E1', '2023-10-16 22:00:00', '1:00', '1', 27),
+(179, 74, NULL, NULL, 'alma1', '#4169E1', '2023-10-16 22:00:00', '1:00', 'a', 28),
+(180, 74, 52, NULL, 'Alma', '#4169E1', '2023-10-17 20:00:00', '23:00', 'ok', NULL),
+(182, 74, NULL, NULL, 'new Test', '#4169E1', '2023-10-21 20:00:00', '1:00', 'test', NULL),
+(184, 74, NULL, NULL, 'yes', '#4169E1', '2023-09-30 22:00:00', '1:00', 'scsa', 33);
 
 -- --------------------------------------------------------
 
@@ -171,6 +203,13 @@ ALTER TABLE `locations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `subtasks`
+--
+ALTER TABLE `subtasks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `taskId` (`taskId`);
+
+--
 -- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
@@ -204,13 +243,19 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `subtasks`
+--
+ALTER TABLE `subtasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -227,6 +272,12 @@ ALTER TABLE `usertogroup`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `subtasks`
+--
+ALTER TABLE `subtasks`
+  ADD CONSTRAINT `subtasks_ibfk_1` FOREIGN KEY (`taskId`) REFERENCES `tasks` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tasks`

@@ -10,6 +10,7 @@ import TimeInput from "../../basicComponents/TimeInput";
 import BasicModal from "../../basicComponents/BasicModal";
 import LabelSelect from "../MainBodyComponents/LableSelect";
 import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
+import TodoList from "../MainBodyComponents/TodoList";
 
 
 export default function AddTaskModal() {
@@ -35,7 +36,7 @@ export default function AddTaskModal() {
         cityName: "",
         streetName: "",
     });
-
+    const [subtasks, setSubtasks] = useState([]);
 
     useEffect(() => {
         setTask({ ...task, creatorId: user.id })
@@ -63,7 +64,7 @@ export default function AddTaskModal() {
         }
 
 
-        var taskData = { task: task, location: location }
+        var taskData = { task: task, location: location, subtasks:subtasks }
         addTask(taskData).then((data) => {
 
             setErrorMSG(null);
@@ -74,10 +75,11 @@ export default function AddTaskModal() {
                 ...task,
                 taskName: "",
                 groupId: null,
-                groupName:null,
+                groupName: null,
                 startTime: "",
                 description: ""
             });
+            setSubtasks([])
             setLocation({ country: "", cityName: "", streetName: "" })
             setSelectedGroupOption(null)
         })
@@ -110,7 +112,7 @@ export default function AddTaskModal() {
 
                 <div className="d-flex align-items-center ">
                     <div className="w-50 me-2">
-                        <SelectGroupInput setVariable={(selected) => setTask({ ...task, groupId: selected.value, groupName: selected.label  })} selectedOptions={selectedGroupOption} setSelectedOptions={setSelectedGroupOption} />
+                        <SelectGroupInput setVariable={(selected) => setTask({ ...task, groupId: selected.value, groupName: selected.label })} selectedOptions={selectedGroupOption} setSelectedOptions={setSelectedGroupOption} />
                     </div>
                     <div className="w-50">
                         <LabelSelect setLabel={(selectedLabel) => setTask({ ...task, label: selectedLabel })} selectedOption={selectedLabelOption} setSelectedOption={setSelectedLabelOption} />
@@ -166,7 +168,19 @@ export default function AddTaskModal() {
                             </div>
                         </div>
                     </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Sub tasks
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div className="accordion-body">
+                                <TodoList subTasks={subtasks} setSubtasks={setSubtasks}/></div>
+                        </div>
+                    </div>
                 </div>
+
 
                 <InputWithLabel label={"Description:"} addClassName={"w-100 mt-3"}>
                     <textarea className="form-control" value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />

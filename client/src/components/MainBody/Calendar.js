@@ -9,6 +9,7 @@ import FilterSelect from './MainBodyComponents/FilterSelect';
 import TaskWithPopover from './Popovers/TaskWithPopover';
 import FilteredDataDiv from './MainBodyComponents/FilteredDataDiv';
 import EditTaskModal from './Modals/EditTaskModal';
+import DeleteTaskVerification from './Modals/DeleteTaskVerification';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -16,6 +17,7 @@ export default function Calendar() {
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedTaskForEdit, setSelectedTaskForEdit] = useState();
+    const [selectedTaskForDelete, setSelectedTaskForDelete] = useState();
 
     function prevMonth() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
@@ -24,6 +26,7 @@ export default function Calendar() {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
+
 
     return (
         <div className='w-100 '>
@@ -49,10 +52,10 @@ export default function Calendar() {
                         <BasicDay key={day} day={day}>
                             {
                                 user.tasks.filter((task) => isSameDay(task.startDate, day)).length > 2
-                                    ? <TaskPopover tasks={user.tasks} day={day} />
+                                    ? <TaskPopover tasks={user.tasks} day={day} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
                                     : user.tasks.map((task) => (
                                         isSameDay(task.startDate, day) && (
-                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} />
+                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
                                         )
                                     ))
                             }
@@ -70,6 +73,7 @@ export default function Calendar() {
             <GroupModal />
             <AddTaskModal />
             <EditTaskModal selectedTaskForEdit={selectedTaskForEdit}/>
+            <DeleteTaskVerification task={selectedTaskForDelete}/>
         </div>
     );
 }

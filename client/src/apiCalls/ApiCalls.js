@@ -234,3 +234,18 @@ export async function editTask(data) {
     throw error;
   }
 }
+export async function changeSubtaskCompletion(data) {
+
+  try {
+    const response = await axios.post('http://localhost:3001/api/changeSubtaskCompletion',data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting members of group:', error);
+    throw error;
+  }
+}

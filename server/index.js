@@ -95,26 +95,64 @@ app.post('/api/login', async (req, res) => {
       groups: []
     };
 
-    // Query for tasks
-    const tasksResults = await new Promise((resolve, reject) => {
-      connection.query(`SELECT DISTINCT  
-                        tasks.id as id,creatorId, tasks.groupId,
-                        groups.groupName as groupName ,label,taskName,color,startDate,startTime,tasks.
-                        description, usertogroup.userId as userId ,
-                        country, cityName, streetName
-                        FROM tasks left join usertogroup on usertogroup.groupId = tasks.groupId 
-                        left join groups on groups.id = usertogroup.groupId 
-                        left join locations on locationId = locations.id
-                        WHERE (usertogroup.userId = ?) or (creatorId = ? and tasks.groupId is NULL)`
-        , [user.id, user.id], (err, results) => {
+    function fetchSubtasks(taskId) {
+      return new Promise((resolve, reject) => {
+        connection.query(
+          'SELECT id, subtaskName, isCompleted FROM subtasks WHERE taskId = ?',
+          [taskId],
+          (err, results) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(results);
+          }
+        );
+      });
+    }
+
+    // Fetch tasks
+    const tasksResults = await new Promise(async (resolve, reject) => {
+      connection.query(
+        `
+    SELECT
+      tasks.id as id,
+      creatorId,
+      tasks.groupId,
+      groups.groupName as groupName,
+      label,
+      taskName,
+      color,
+      startDate,
+      startTime,
+      tasks.description,
+      usertogroup.userId as userId,
+      country,
+      cityName,
+      streetName
+    FROM tasks
+    LEFT JOIN usertogroup ON usertogroup.groupId = tasks.groupId
+    LEFT JOIN groups ON groups.id = usertogroup.groupId
+    LEFT JOIN locations ON locationId = locations.id
+    WHERE (usertogroup.userId = ?) OR (creatorId = ? AND tasks.groupId IS NULL)
+  `,
+        [user.id, user.id],
+        async (err, results) => {
           if (err) {
             console.error('Error executing query:', err);
             reject(err);
             return;
           }
+
+          // Loop through tasks and fetch subtasks for each task
+          for (const task of results) {
+            task.subtasks = await fetchSubtasks(task.id);
+          }
+
           resolve(results);
-        });
+        }
+      );
     });
+
     user.tasks = tasksResults;
 
     // Query for groups
@@ -179,12 +217,13 @@ app.post('/api/register', async (req, res) => {
 
 
 app.post('/api/addTask', async (req, res) => {
-  const { task, location } = req.body;
-  console.log('Received data:', req.body);
+  const { task, location, subtasks } = req.body
+  console.log('Received data:', req.body)
+
 
   try {
     // Check if locationData is null
-    if (location.country === "") {
+    if (location == "") {
       connection.query(
         "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL)",
         [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description],
@@ -194,7 +233,16 @@ app.post('/api/addTask', async (req, res) => {
             res.status(500).json({ error: 'Error adding task' });
             return;
           }
-          res.json({ ...task, id: results.insertId, locationId: null });
+          const insertedTaskId = results.insertId;
+          
+          if (subtasks && Array.isArray(subtasks)) {
+            insertSubtasks(insertedTaskId, subtasks, (insertedSubtasks) => {
+              const response = { ...task, id: insertedTaskId, locationId: null, subtasks: insertedSubtasks };
+              res.json(response);
+            });
+          } else {
+            res.json({ ...task, id: insertedTaskId, locationId: null, subtasks: [] });
+          }
         }
       );
     } else {
@@ -221,18 +269,58 @@ app.post('/api/addTask', async (req, res) => {
                 res.status(500).json({ error: 'Error adding task' });
                 return;
               }
-              res.json({ ...task, id: taskResults.insertId, locationId });
+              const insertedTaskId = taskResults.insertId;
+          
+              if (subtasks && Array.isArray(subtasks)) {
+                insertSubtasks(insertedTaskId, subtasks, (insertedSubtasks) => {
+                  const response = { ...task, id: insertedTaskId, locationId: null, subtasks: insertedSubtasks };
+                  res.json(response);
+                });
+              } else {
+                res.json({ ...task, id: insertedTaskId, locationId: null, subtasks: [] });
+              }
             }
           );
         }
       );
     }
+
   } catch (error) {
     console.error('Error adding task', error);
     res.status(500).json({ error: 'Error adding task' });
   }
 });
 
+function insertSubtasks(taskId, subtasks, callback) {
+  const insertedSubtasks = [];
+
+  const insertSubtask = (index) => {
+    if (index < subtasks.length) {
+      const subtask = subtasks[index];
+      connection.query(
+        "INSERT INTO subtasks (taskId, subtaskName, isCompleted) VALUES (?, ?, ?)",
+        [taskId, subtask.subtaskName, subtask.isCompleted],
+        (err, results) => {
+          if (!err) {
+            const insertedSubtask = {
+              id: results.insertId,
+              subtaskName: subtask.subtaskName,
+              isCompleted: subtask.isCompleted
+            };
+            insertedSubtasks.push(insertedSubtask);
+            insertSubtask(index + 1);
+          } else {
+            console.error('Error executing subtask query:', err);
+          }
+        }
+      );
+    } else {
+      callback(insertedSubtasks);
+    }
+  }
+
+  insertSubtask(0);
+}
 
 app.post('/api/addGroup', async (req, res) => {
   const group = req.body;
@@ -501,7 +589,30 @@ app.post('/api/editTask', async (req, res) => {
   }
 });
 
-
+app.post('/api/changeSubtaskCompletion', async (req, res) => {
+  const data = req.body;
+  console.log(data)
+  try {
+    connection.query(
+      `UPDATE subtasks
+      SET isCompleted = ?
+      WHERE id = ?`,
+      [data.isCompleted, data.id],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error changing sibtask completion' });
+          return;
+        }
+        console.log(results)
+        res.json(true);
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting group', error);
+    res.status(500).json({ error: 'Error changing sibtask completion' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)

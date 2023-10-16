@@ -2,10 +2,10 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { format } from 'date-fns';
 import { useState, useRef, useContext } from 'react';
-import { deleteTask } from '../../../apiCalls/ApiCalls';
+import { changeSubtaskCompletion, deleteTask } from '../../../apiCalls/ApiCalls';
 import { UserContext } from '../../Context/UserContext';
 
-export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
+export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelectedTaskForDelete}) {
 
     const [user, setUser] = useContext(UserContext);
     const [show, setShow] = useState(false);
@@ -17,18 +17,26 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
     var helper = task.startDate.getDate() % 7
     if ((helper > 4) || (helper !== 0)) placement = "right"
 
-    function handleDelete() {
-        deleteTask(task).then(() => {
-            const updatedTasks = user.tasks.filter((oldTask) => oldTask.id !== task.id);
-            setUser((prevUser) => ({ ...prevUser, tasks: updatedTasks }));
-            setShow(false)
-        })
-    }
     function handleEdit() {
         setShow(false)
         setSelectedTaskForEdit(task)
     }
 
+    function handleCheckboxChange(id, isCompleted) {
+        console.log(isCompleted)
+        changeSubtaskCompletion({ id, isCompleted })
+        const updatedUser = { ...user };
+        updatedUser.tasks.forEach((task) => {
+            if (task.subtasks) {
+                task.subtasks.forEach((subtask) => {
+                    if (subtask.id === id) {
+                        subtask.isCompleted = isCompleted;
+                    }
+                });
+            }
+        });
+        setUser(updatedUser);
+    }
 
     return (
         <>
@@ -59,12 +67,16 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
                                 data-bs-target="#editTaskModal"
                                 onClick={handleEdit}
                             />
-                            <img style={{ cursor: "pointer" }} src='/icons/delete.svg' onClick={handleDelete} alt="icon"/>
+                            <img style={{ cursor: "pointer" }} src='/icons/delete.svg'
+                                data-bs-toggle="modal"
+                                data-bs-target="#DeleteTaskModal" 
+                                onClick={() => {setShow(false); setSelectedTaskForDelete(task)}}
+                                alt="icon" />
                         </div>
                     </Popover.Header>
                     <Popover.Body>
                         <div className="d-flex align-items-center mb-1">
-                            <img src="/icons/calendarDark.svg" className='me-2' alt="icon"/>
+                            <img src="/icons/calendarDark.svg" className='me-2' alt="icon" />
                             <div className="form-text mt-0">
                                 <strong>{format(task.startDate, 'MMMM dd')}:</strong> {task.startTime}
                             </div>
@@ -72,7 +84,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
 
                         {task.country &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/location.svg" className='me-2' alt="icon"/>
+                                <img src="/icons/location.svg" className='me-2' alt="icon" />
                                 <div className="form-text mt-0">
                                     {"" + task.country + ", " + task.cityName} <br />
                                     {task.streetName}
@@ -81,7 +93,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
 
                         {task.groupName &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/group.svg" className='me-2' alt="icon"/>
+                                <img src="/icons/group.svg" className='me-2' alt="icon" />
                                 <div className="form-text mt-0">
                                     {task.groupName}
                                 </div>
@@ -89,18 +101,44 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task }) {
 
                         {task.label &&
                             <div className="d-flex align-items-center mb-1">
-                                <img src="/icons/labels.svg" className='me-2' alt="icon"/>
+                                <img src="/icons/labels.svg" className='me-2' alt="icon" />
                                 <div className="form-text mt-0">
                                     {task.label}
                                 </div>
                             </div>}
 
-                        <div className="d-flex align-items-center mb-2">
-                            <img src="/icons/text.svg" className='me-2' alt="icon"/>
+                        <div className="d-flex align-items-center mb-1">
+                            <img src="/icons/text.svg" className='me-2' alt="icon" />
                             <div className="form-text mt-0">
                                 {task.description}
                             </div>
                         </div>
+                        {task.subtasks &&
+                            <div className='mb-1 mt-0'>
+                                <div className="d-flex align-items-center">
+                                    <img src="/icons/todo.svg" className='me-2' alt="icon" />
+                                    <div className="form-text mt-0">
+                                        Subtasks:
+                                    </div>
+                                </div>
+
+                                <ul>
+                                    {task.subtasks.map((subtask, index) => (
+                                        <li key={index} className="list-group-item d-flex justify-content-between">
+                                            <div>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={subtask.isCompleted}
+                                                    onChange={() => handleCheckboxChange(subtask.id, !subtask.isCompleted)}
+                                                />
+
+                                                <span className='ms-2' style={{ textDecoration: subtask.isCompleted ? 'line-through' : 'none' }}>
+                                                    {subtask.subtaskName}
+                                                </span>
+                                            </div>
+                                        </li>
+                                    ))}</ul> </div>
+                        }
                     </Popover.Body>
                 </Popover>
 

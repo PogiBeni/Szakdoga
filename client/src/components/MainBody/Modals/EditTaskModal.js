@@ -154,7 +154,7 @@ export default function EditTaskModal({ selectedTaskForEdit }) {
 
                     <div className="d-flex align-items-center mt-3 ">
                         <button type="button" className="btn alert alert-light me-2 p-2" id="dismissEditTaskModal" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn alert alert-success me-2 p-2">Add</button>
+                        <button type="submit" className="btn alert alert-success me-2 p-2">Change</button>
                     </div>
                 </form>}
         </BasicModal>

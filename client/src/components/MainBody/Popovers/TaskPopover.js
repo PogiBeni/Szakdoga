@@ -3,7 +3,7 @@ import Popover from 'react-bootstrap/Popover';
 import { isSameDay } from 'date-fns';
 import { useState, useRef } from 'react';
 import TaskWithPopover from './TaskWithPopover';
-export default function TaskPopover({ tasks, day }) {
+export default function TaskPopover({ tasks, day,setSelectedTaskForEdit,setSelectedTaskForDelete }) {
 
     const [show, setShow] = useState(false);
     const target = useRef(null);
@@ -34,7 +34,7 @@ export default function TaskPopover({ tasks, day }) {
                     <Popover.Body>
                         {tasks.map((task) => (
                             isSameDay(task.startDate, day) && (
-                                <TaskWithPopover key={task.id}  task={task} />  
+                                <TaskWithPopover key={task.id}  task={task} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>  
                             )
                         ))}
                     </Popover.Body>
