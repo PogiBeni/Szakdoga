@@ -47,7 +47,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelec
                 onClick={() => setShow(!show)}
                 ref={target}
             >
-                <small>{task.startTime}: </small> <strong>{task.taskName} </strong>
+                <small>{task.startTime}: </small> <strong >{task.taskName} </strong>
             </div>
             <Overlay
                 show={show}

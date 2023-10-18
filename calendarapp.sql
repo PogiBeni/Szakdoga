@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2023 at 01:27 PM
+-- Generation Time: Oct 18, 2023 at 06:56 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -64,29 +64,24 @@ CREATE TABLE `locations` (
 --
 
 INSERT INTO `locations` (`id`, `country`, `cityName`, `streetName`) VALUES
-(11, 'asd', 'asd', 'asd'),
-(12, 'sadas', 'sdad', 'asda'),
-(13, 'eq', 'wqe', 'eqw'),
-(14, 'sad', 'asd', 'sadas'),
-(15, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
-(16, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
-(17, '2', '2', '2'),
-(18, 'sad', 's', 's'),
-(19, 'Hungary', 'Kecskemét', 'Izsáki út 2.'),
-(20, '', '', ''),
-(21, '', '', ''),
-(22, '', '', ''),
-(23, '', '', ''),
-(24, '', '', ''),
-(25, '', '', ''),
-(26, '', '', ''),
-(27, '', '', ''),
-(28, '', '', ''),
-(29, '', '', ''),
-(30, '', '', ''),
-(31, '', '', ''),
-(32, '', '', ''),
-(33, '', '', '');
+(36, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
+(37, '', '', ''),
+(38, '', '', ''),
+(39, '', '', ''),
+(40, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
+(41, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
+(42, '', '', ''),
+(43, '', '', ''),
+(44, '', '', ''),
+(45, '', '', ''),
+(46, '', '', ''),
+(47, '', '', ''),
+(48, '', '', ''),
+(49, '', '', ''),
+(50, '', '', ''),
+(51, '', '', ''),
+(52, '', '', ''),
+(53, 'Hungary', 'Kecskemét', 'Czollner Köz 45.');
 
 -- --------------------------------------------------------
 
@@ -101,6 +96,13 @@ CREATE TABLE `subtasks` (
   `subtaskName` varchar(255) NOT NULL,
   `isCompleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subtasks`
+--
+
+INSERT INTO `subtasks` (`id`, `taskId`, `subtaskName`, `isCompleted`) VALUES
+(28, 204, 'Szüretelés', 1);
 
 -- --------------------------------------------------------
 
@@ -119,25 +121,18 @@ CREATE TABLE `tasks` (
   `startDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` varchar(5) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `locationId` int(11) DEFAULT NULL
+  `locationId` int(11) DEFAULT NULL,
+  `notify` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`) VALUES
-(157, 74, 52, 'Fontos', 'Banana', '#FFBF00', '2023-10-11 07:23:00', '12:00', 'Banana', NULL),
-(159, 74, NULL, NULL, 'test', '#9933FF', '2023-10-12 20:00:00', '2:00', 'test', NULL),
-(160, 74, NULL, NULL, 'q', '#00A36C', '2023-10-11 22:00:00', '1:00', 'q', NULL),
-(175, 74, NULL, NULL, 'ff', '#4169E1', '2023-10-16 07:53:46', '1:00', 'ff', 24),
-(176, 74, NULL, 'Fontos', 'Alma', 'green', '2023-10-16 09:31:51', '12:00', 'Alma szüret', 25),
-(177, 74, NULL, 'Fontos', 'banán szüretelése', '#ffe135', '2023-10-16 09:31:51', '12:00', 'Le kell szüretelni a banánt', 26),
-(178, 74, NULL, NULL, 'alma1', '#4169E1', '2023-10-16 22:00:00', '1:00', '1', 27),
-(179, 74, NULL, NULL, 'alma1', '#4169E1', '2023-10-16 22:00:00', '1:00', 'a', 28),
-(180, 74, 52, NULL, 'Alma', '#4169E1', '2023-10-17 20:00:00', '23:00', 'ok', NULL),
-(182, 74, NULL, NULL, 'new Test', '#4169E1', '2023-10-21 20:00:00', '1:00', 'test', NULL),
-(184, 74, NULL, NULL, 'yes', '#4169E1', '2023-09-30 22:00:00', '1:00', 'scsa', 33);
+INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`, `notify`) VALUES
+(201, 74, NULL, NULL, 'asd', '#4169E1', '2023-10-18 22:00:00', '1:00', 'asd', 50, 1),
+(203, 74, NULL, NULL, 'Asd', '#4169E1', '2023-10-18 16:31:06', '12:00', 'asd', 52, 0),
+(204, 74, 52, 'Fontos', 'Banana', '#ffe135', '2023-10-18 16:31:06', '13:00', 'Banán teszt', 53, 1);
 
 -- --------------------------------------------------------
 
@@ -184,7 +179,8 @@ CREATE TABLE `usertogroup` (
 --
 
 INSERT INTO `usertogroup` (`id`, `groupId`, `userId`) VALUES
-(74, 52, 74);
+(74, 52, 74),
+(75, 52, 76);
 
 --
 -- Indexes for dumped tables
@@ -237,25 +233,25 @@ ALTER TABLE `usertogroup`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `subtasks`
 --
 ALTER TABLE `subtasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -267,7 +263,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `usertogroup`
 --
 ALTER TABLE `usertogroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- Constraints for dumped tables

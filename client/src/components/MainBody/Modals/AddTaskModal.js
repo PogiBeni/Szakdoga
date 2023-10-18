@@ -29,7 +29,8 @@ export default function AddTaskModal() {
         startDate: new Date(),
         startTime: "",
         description: "",
-        locationId: null
+        locationId: null,
+        notify: true
     })
     const [location, setLocation] = useState({
         country: "",
@@ -55,7 +56,7 @@ export default function AddTaskModal() {
         const isLocationFilled = location.country || location.cityName || location.streetName;
 
         if (!isLocationFilled) {
-            setLocation(""); // Set location to null if none of the location data is filled out
+            setLocation("");
         } else {
             if (!location.country || !location.cityName || !location.streetName) {
                 setErrorMSG("Fill out all location fields!");
@@ -64,7 +65,7 @@ export default function AddTaskModal() {
         }
 
 
-        var taskData = { task: task, location: location, subtasks:subtasks }
+        var taskData = { task: task, location: location, subtasks: subtasks }
         addTask(taskData).then((data) => {
 
             setErrorMSG(null);
@@ -122,7 +123,7 @@ export default function AddTaskModal() {
                 <div className="accordion mt-3" id="accordionExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 Location data
                             </button>
                         </h2>
@@ -176,7 +177,7 @@ export default function AddTaskModal() {
                         </h2>
                         <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
-                                <TodoList subTasks={subtasks} setSubtasks={setSubtasks}/></div>
+                                <TodoList subTasks={subtasks} setSubtasks={setSubtasks} /></div>
                         </div>
                     </div>
                 </div>
@@ -185,6 +186,16 @@ export default function AddTaskModal() {
                 <InputWithLabel label={"Description:"} addClassName={"w-100 mt-3"}>
                     <textarea className="form-control" value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })} placeholder="Description" aria-label="Description" />
                 </InputWithLabel>
+
+
+                <div className="form-check form-switch mt-3">
+                    <input className="form-check-input p-2" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                        checked={task.notify}
+                        onChange={(e) =>
+                            setTask({ ...task, notify: e.target.checked })
+                        } />
+                    <label className="form-check-label " htmlFor="flexSwitchCheckDefault">Notify me!</label>
+                </div>
 
                 <div className="d-flex align-items-center mt-3 ">
                     <button type="button" className="btn alert alert-light me-2 p-2" id="dismissAddTaskModal" data-bs-dismiss="modal">Close</button>

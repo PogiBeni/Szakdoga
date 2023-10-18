@@ -47,7 +47,7 @@ app.post('/api/login', async (req, res) => {
 
   try {
     const results = await new Promise((resolve, reject) => {
-      // Query for user data
+      
       connection.query("SELECT * FROM user WHERE email = ?", [userData.email], (err, results) => {
         if (err) {
           console.error('Error executing query:', err);
@@ -110,7 +110,6 @@ app.post('/api/login', async (req, res) => {
       });
     }
 
-    // Fetch tasks
     const tasksResults = await new Promise(async (resolve, reject) => {
       connection.query(
         `
@@ -128,7 +127,8 @@ app.post('/api/login', async (req, res) => {
       usertogroup.userId as userId,
       country,
       cityName,
-      streetName
+      streetName,
+      notify
     FROM tasks
     LEFT JOIN usertogroup ON usertogroup.groupId = tasks.groupId
     LEFT JOIN groups ON groups.id = usertogroup.groupId
@@ -143,7 +143,6 @@ app.post('/api/login', async (req, res) => {
             return;
           }
 
-          // Loop through tasks and fetch subtasks for each task
           for (const task of results) {
             task.subtasks = await fetchSubtasks(task.id);
           }
@@ -155,7 +154,6 @@ app.post('/api/login', async (req, res) => {
 
     user.tasks = tasksResults;
 
-    // Query for groups
     const groupsResults = await new Promise((resolve, reject) => {
       connection.query(`SELECT groups.id as id, groupName, creatorUserId, creatorName, description 
                         FROM groups 
@@ -222,11 +220,10 @@ app.post('/api/addTask', async (req, res) => {
 
 
   try {
-    // Check if locationData is null
     if (location == "") {
       connection.query(
-        "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL)",
-        [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description],
+        "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId, notify) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)",
+        [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, task.notify],
         (err, results) => {
           if (err) {
             console.error('Error executing query:', err);
@@ -246,7 +243,6 @@ app.post('/api/addTask', async (req, res) => {
         }
       );
     } else {
-      // Insert location into the locations table
       connection.query(
         "INSERT INTO locations (country, cityName, streetName) VALUES (?, ?, ?)",
         [location.country, location.cityName, location.streetName],
@@ -259,10 +255,9 @@ app.post('/api/addTask', async (req, res) => {
 
           const locationId = locationResults.insertId;
 
-          // Insert task data into the tasks table with the locationId
           connection.query(
-            "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, locationId],
+            "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId, notify) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, locationId, task.notify],
             (err, taskResults) => {
               if (err) {
                 console.error('Error executing query:', err);
