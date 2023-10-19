@@ -1,43 +1,93 @@
-const userModel = require('../models/userModel');
+const { connection } = require('../db');
+const bcrypt = require('bcrypt');
 
-async function login(req, res) {
-  const { email, password } = req.body;
+function checkIfUserIsRegistered(req, res) {
+  const userData = req.body.email;
+  console.log('Received data:', userData);
 
-  try {
-    const user = await userModel.getUserByEmail(email);
-
-    if (!user) {
-      res.status(401).json({ message: 'User not found' });
-    } else {
-      // Check the password
-      const isMatch = await bcrypt.compare(password, user.password);
-
-      if (isMatch) {
-        // User logged in successfully
-        res.json({ id: user.id, fullName: user.fullName, email: user.email });
-      } else {
-        res.status(401).json({ message: 'Invalid password' });
-      }
+  connection.query("SELECT * FROM user WHERE email = ?", [userData], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
     }
-  } catch (error) {
-    console.error('Error in login:', error);
-    res.status(500).json({ message: 'An error occurred during login' });
-  }
+    if (results[0]) {
+      res.json({ exists: true, id: results[0].id });
+    } else {
+      res.json({ exists: false });
+    }
+  });
 }
 
-async function register(req, res) {
-  const { email, password, fullName, linkToPicture } = req.body;
+async function registerUser(req, res) {
+  const userData = req.body;
+  console.log('Received data:', userData);
 
   try {
-    const userId = await userModel.createUser(email, password, fullName, linkToPicture);
-    res.json({ id: userId, email, fullName, linkToPicture });
+    let hashedPassword = "";
+
+    if (userData.password) {
+      hashedPassword = await bcrypt.hash(userData.password, 10);
+    }
+
+    connection.query(
+      "INSERT INTO user (email, password, fullName, linkToPicture) VALUES (?, ?, ?, ?)",
+      [userData.email, hashedPassword, userData.fullName, userData.linkToPicture],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          return res.status(500).json({ error: 'Error registering user' });
+        }
+
+        connection.query("SELECT * FROM user where email = ?", [userData.email], (err, results) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            return res.status(500).json({ error: 'Error registering user' });
+          }
+          res.json(results[0]);
+        });
+      }
+    );
   } catch (error) {
-    console.error('Error in registration:', error);
-    res.status(500).json({ message: 'An error occurred during registration' });
+    console.error('Error hashing password:', error);
+    res.status(500).json({ error: 'Error hashing password' });
   }
 }
 
-module.exports = {
-  login,
-  register,
-};
+async function getUsers(req, res) {
+  console.log(req.body)
+  const userSearchData = req.body;
+  console.log(userSearchData.groupId)
+  try {
+    const searchTerm = `%${userSearchData.query}%`;
+
+    connection.query(
+      `SELECT DISTINCT user.id as id, email, fullName, linkToPicture
+      FROM user
+      LEFT JOIN usertogroup ON usertogroup.userId = user.id
+      WHERE (fullName LIKE ? OR email LIKE ?)
+            AND (usertogroup.groupId IS NULL OR usertogroup.groupId != ?)
+            AND user.id NOT IN (
+                SELECT user.id
+                FROM user
+                LEFT JOIN usertogroup ON usertogroup.userId = user.id
+                WHERE (fullName LIKE ? OR email LIKE ?) AND usertogroup.groupId = ?
+            )`,
+      [searchTerm, searchTerm, userSearchData.groupId, searchTerm, searchTerm, userSearchData.groupId],
+      (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.status(500).json({ error: 'Error executing query' });
+          return;
+        }
+        console.log(results)
+        res.json(results);
+      }
+    );
+  } catch (error) {
+    console.error('Error getting users group', error);
+    res.status(500).json({ error: 'Error getting users group' });
+  }
+}
+
+module.exports = { checkIfUserIsRegistered, registerUser, getUsers };
