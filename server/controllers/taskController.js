@@ -5,30 +5,11 @@ async function addTask(req, res) {
     console.log('Received data:', req.body);
 
     try {
-        let locationId = null;
-
-        if (location !== "") {
-            const locationInsertResult = await new Promise((resolve, reject) => {
-                connection.query(
-                    "INSERT INTO locations (country, cityName, streetName) VALUES (?, ?, ?)",
-                    [location.country, location.cityName, location.streetName],
-                    (err, locationResults) => {
-                        if (err) {
-                            console.error('Error executing query:', err);
-                            return reject('Error adding location');
-                        }
-                        resolve(locationResults.insertId);
-                    }
-                );
-            });
-
-            locationId = locationInsertResult;
-        }
 
         const taskInsertResult = await new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, locationId, notify) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, locationId, task.notify],
+                "INSERT INTO tasks (creatorId, groupId, label, taskName, color, startDate, startTime, description, notify) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [task.creatorId, task.groupId, task.label, task.taskName, task.color, new Date(task.startDate), task.startTime, task.description, task.notify],
                 (err, results) => {
                     if (err) {
                         console.error('Error executing query:', err);
@@ -41,12 +22,28 @@ async function addTask(req, res) {
 
         const insertedTaskId = taskInsertResult;
 
+        if (location !== "") {
+            const locationInsertResult = await new Promise((resolve, reject) => {
+                connection.query(
+                    "INSERT INTO locations (country, cityName, streetName, taskId) VALUES (?, ?, ?, ?)",
+                    [location.country, location.cityName, location.streetName, insertedTaskId],
+                    (err, locationResults) => {
+                        if (err) {
+                            console.error('Error executing query:', err);
+                            return reject('Error adding location');
+                        }
+                        resolve(locationResults.insertId);
+                    }
+                );
+            });
+
+        }
+
         const insertedSubtasks = await insertSubtasks(insertedTaskId, subtasks);
 
         const response = {
             ...task,
             id: insertedTaskId,
-            locationId: locationId,
             subtasks: insertedSubtasks,
         };
 

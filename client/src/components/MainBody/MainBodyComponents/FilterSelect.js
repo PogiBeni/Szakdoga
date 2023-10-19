@@ -14,24 +14,20 @@ export default function FilterSelect({selectedOptions, setSelectedOptions, setFi
     useEffect(() => {
 
       const updatedFilteredTasks = user.tasks.filter((task) => {
-        // Check if both options are selected
         if (selectedValues.length  >= 2) {
           return (
             selectedValues.includes(task.groupId) && selectedValues.includes(task.label)
           );
         }
         
-        // Check if only the group option is selected
         if (selectedValues.includes(task.groupId)) {
           return true;
         }
       
-        // Check if only the label option is selected
         if (selectedValues.includes(task.label)) {
           return true;
         }
       
-        // If none are selected, return false
         return false;
       });
       

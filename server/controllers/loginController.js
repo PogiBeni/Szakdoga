@@ -91,7 +91,7 @@ async function loginUser(req, res) {
     FROM tasks
     LEFT JOIN usertogroup ON usertogroup.groupId = tasks.groupId
     LEFT JOIN groups ON groups.id = usertogroup.groupId
-    LEFT JOIN locations ON locationId = locations.id
+    LEFT JOIN locations ON tasks.id = locations.taskId
     WHERE (usertogroup.userId = ?) OR (creatorId = ? AND tasks.groupId IS NULL)
   `,
         [user.id, user.id],

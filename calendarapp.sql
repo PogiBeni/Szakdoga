@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 06:56 PM
+-- Generation Time: Oct 19, 2023 at 06:51 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -56,32 +56,16 @@ CREATE TABLE `locations` (
   `id` int(11) NOT NULL,
   `country` varchar(50) NOT NULL,
   `cityName` varchar(255) NOT NULL,
-  `streetName` varchar(255) NOT NULL
+  `streetName` varchar(255) NOT NULL,
+  `taskId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `locations`
 --
 
-INSERT INTO `locations` (`id`, `country`, `cityName`, `streetName`) VALUES
-(36, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
-(37, '', '', ''),
-(38, '', '', ''),
-(39, '', '', ''),
-(40, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
-(41, 'Hungary', 'Kecskemét', 'Czollner Köz 45.'),
-(42, '', '', ''),
-(43, '', '', ''),
-(44, '', '', ''),
-(45, '', '', ''),
-(46, '', '', ''),
-(47, '', '', ''),
-(48, '', '', ''),
-(49, '', '', ''),
-(50, '', '', ''),
-(51, '', '', ''),
-(52, '', '', ''),
-(53, 'Hungary', 'Kecskemét', 'Czollner Köz 45.');
+INSERT INTO `locations` (`id`, `country`, `cityName`, `streetName`, `taskId`) VALUES
+(55, 'Hungary', 'Kecskemét', 'Czollner Köz 45.', 206);
 
 -- --------------------------------------------------------
 
@@ -102,7 +86,8 @@ CREATE TABLE `subtasks` (
 --
 
 INSERT INTO `subtasks` (`id`, `taskId`, `subtaskName`, `isCompleted`) VALUES
-(28, 204, 'Szüretelés', 1);
+(28, 204, 'Szüretelés', 1),
+(29, 206, 'asd', 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +106,6 @@ CREATE TABLE `tasks` (
   `startDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` varchar(5) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `locationId` int(11) DEFAULT NULL,
   `notify` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -129,10 +113,11 @@ CREATE TABLE `tasks` (
 -- Dumping data for table `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `locationId`, `notify`) VALUES
-(201, 74, NULL, NULL, 'asd', '#4169E1', '2023-10-18 22:00:00', '1:00', 'asd', 50, 1),
-(203, 74, NULL, NULL, 'Asd', '#4169E1', '2023-10-18 16:31:06', '12:00', 'asd', 52, 0),
-(204, 74, 52, 'Fontos', 'Banana', '#ffe135', '2023-10-18 16:31:06', '13:00', 'Banán teszt', 53, 1);
+INSERT INTO `tasks` (`id`, `creatorId`, `groupId`, `label`, `taskName`, `color`, `startDate`, `startTime`, `description`, `notify`) VALUES
+(201, 74, NULL, NULL, 'asd', '#4169E1', '2023-10-18 22:00:00', '1:00', 'asd', 1),
+(203, 74, NULL, NULL, 'Asd', '#4169E1', '2023-10-18 16:31:06', '12:00', 'asd', 0),
+(204, 74, 52, 'Fontos', 'Banana', '#ffe135', '2023-10-18 16:31:06', '13:00', 'Banán teszt', 1),
+(206, 74, 52, 'Fontos', 'Alma', '#EE4B2B', '2023-10-20 22:00:00', '14:00', 'asd', 1);
 
 -- --------------------------------------------------------
 
@@ -196,7 +181,8 @@ ALTER TABLE `groups`
 -- Indexes for table `locations`
 --
 ALTER TABLE `locations`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `taskId` (`taskId`);
 
 --
 -- Indexes for table `subtasks`
@@ -239,19 +225,19 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `subtasks`
 --
 ALTER TABLE `subtasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -268,6 +254,12 @@ ALTER TABLE `usertogroup`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `locations`
+--
+ALTER TABLE `locations`
+  ADD CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`taskId`) REFERENCES `tasks` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `subtasks`
