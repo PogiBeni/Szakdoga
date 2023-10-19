@@ -2,10 +2,10 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { format } from 'date-fns';
 import { useState, useRef, useContext } from 'react';
-import { changeSubtaskCompletion, deleteTask } from '../../../apiCalls/ApiCalls';
+import { changeSubtaskCompletion } from '../../../apiCalls/ApiCalls';
 import { UserContext } from '../../Context/UserContext';
 
-export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelectedTaskForDelete}) {
+export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelectedTaskForDelete }) {
 
     const [user, setUser] = useContext(UserContext);
     const [show, setShow] = useState(false);
@@ -13,6 +13,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelec
 
     if (!task) return
 
+    console.log(task)
     var placement = "left"
     var helper = task.startDate.getDate() % 7
     if ((helper > 4) || (helper !== 0)) placement = "right"
@@ -69,8 +70,8 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelec
                             />
                             <img style={{ cursor: "pointer" }} src='/icons/delete.svg'
                                 data-bs-toggle="modal"
-                                data-bs-target="#DeleteTaskModal" 
-                                onClick={() => {setShow(false); setSelectedTaskForDelete(task)}}
+                                data-bs-target="#DeleteTaskModal"
+                                onClick={() => { setShow(false); setSelectedTaskForDelete(task) }}
                                 alt="icon" />
                         </div>
                     </Popover.Header>
@@ -113,32 +114,44 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task ,setSelec
                                 {task.description}
                             </div>
                         </div>
-                        {task.subtasks &&
-                            <div className='mb-1 mt-0'>
-                                <div className="d-flex align-items-center">
-                                    <img src="/icons/todo.svg" className='me-2' alt="icon" />
-                                    <div className="form-text mt-0">
-                                        Subtasks:
+                        {task.subtasks.length != 0 ?
+                            <div class="accordion " id="accordionFlushExample">
+                                <div class="accordion-item m-0 p-0">
+                                    <button class="accordion-button collapsed p-0" type="button btn-sm" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <div className="d-flex align-items-center">
+                                            <img src="/icons/todo.svg" className='me-2' alt="icon" />
+                                            <div className="form-text mt-0">
+                                                Subtasks:
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body py-1 ps-1">
+                                            <div className='my-0'>
+                                                <ul>
+                                                    {task.subtasks.map((subtask, index) => (
+                                                        <li key={index} className="list-group-item d-flex justify-content-between ">
+                                                            <div >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={subtask.isCompleted}
+                                                                    onChange={() => handleCheckboxChange(subtask.id, !subtask.isCompleted)}
+                                                                />
+
+                                                                <span className='ms-2' style={{ textDecoration: subtask.isCompleted ? 'line-through' : 'none' }}>
+                                                                    {subtask.subtaskName}
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <ul>
-                                    {task.subtasks.map((subtask, index) => (
-                                        <li key={index} className="list-group-item d-flex justify-content-between">
-                                            <div>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={subtask.isCompleted}
-                                                    onChange={() => handleCheckboxChange(subtask.id, !subtask.isCompleted)}
-                                                />
-
-                                                <span className='ms-2' style={{ textDecoration: subtask.isCompleted ? 'line-through' : 'none' }}>
-                                                    {subtask.subtaskName}
-                                                </span>
-                                            </div>
-                                        </li>
-                                    ))}</ul> </div>
-                        }
+                            : null}
                     </Popover.Body>
                 </Popover>
 

@@ -66,7 +66,7 @@ export default function Calendar() {
                 :
                 <div className="taskGrid m-3">
                     {filteredTasks.map((task) => (
-                        <FilteredDataDiv task={task} key={task.id} />
+                        <FilteredDataDiv task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
                     ))}
                 </div>
             }
