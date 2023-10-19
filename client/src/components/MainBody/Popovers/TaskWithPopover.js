@@ -115,8 +115,8 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelec
                             </div>
                         </div>
                         {task.subtasks.length != 0 ?
-                            <div class="accordion " id="accordionFlushExample">
-                                <div class="accordion-item m-0 p-0">
+                            <div class="accordion border border-0" id="accordionFlushExample">
+                                <div class="accordion-item m-0 p-0 border border-0">
                                     <button class="accordion-button collapsed p-0" type="button btn-sm" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                                         <div className="d-flex align-items-center">
                                             <img src="/icons/todo.svg" className='me-2' alt="icon" />
