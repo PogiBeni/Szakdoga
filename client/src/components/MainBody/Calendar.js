@@ -27,7 +27,6 @@ export default function Calendar() {
     }
     const daysInMonth = eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
 
-
     return (
         <div className='w-100 '>
             <div className="d-flex justify-content-between m-3" >
@@ -41,7 +40,7 @@ export default function Calendar() {
                 <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
 
                 <div className='w-25'>
-                    <FilterSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} setFilteredTasks={setFilteredTasks} />
+                    <FilterSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} setFilteredTasks={setFilteredTasks} currentDate={currentDate}/>
                 </div>
             </div>
 

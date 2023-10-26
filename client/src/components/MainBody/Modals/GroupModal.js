@@ -27,7 +27,7 @@ export default function GroupModal() {
 
 
     useEffect(() => {
-        if (user.loggedIn) {
+        if (user.loggedIn && user.groups) {
             const loadOptions = user.groups.map((group) => ({
                 value: group.id,
                 label: group.groupName

@@ -112,8 +112,8 @@ export async function getUsers(searchData) {
     });
 
     return response.data.map((user) => ({
-      value: user.id,       // Adjust this based on your data
-      name: user.fullName, // Adjust this based on your data
+      value: user.id,       
+      name: user.fullName, 
       email: user.email,
       url: user.linkToPicture
     }));

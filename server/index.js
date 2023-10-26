@@ -1,11 +1,9 @@
 const express = require("express");
-const mysql = require('mysql');
 const app = express();
 const PORT = 3001;
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require("bcrypt")
-const { connection, initDatabase } = require('./db')
+const { initDatabase } = require('./db')
 const { checkIfUserIsRegistered, registerUser, getUsers } = require('./controllers/userController')
 const { loginUser } = require('./controllers/loginController')
 const { addTask, deleteTask, editTask, changeSubtaskCompletion } = require('./controllers/taskController');
