@@ -1,251 +1,91 @@
 import axios from 'axios';
 import { parseISO } from 'date-fns';
-const nodeServerUrl = ""
+
+const nodeServerUrl = 'http://localhost:3001'; 
+
+async function makeRequest(endpoint, data, method = 'post') {
+  try {
+    const response = await axios[method](`${nodeServerUrl}/api/${endpoint}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(`Error in API call to ${endpoint}:`, error);
+    throw error;
+  }
+}
 
 export async function login(email, password) {
   const userData = { email, password };
+  const response = await makeRequest('login', userData);
 
-  try {
-    const response = await axios.post('http://localhost:3001/api/login', userData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+  const tasks = response.tasks.map((task) => ({
+    ...task,
+    startDate: parseISO(task.startDate),
+  }));
 
-    const tasks = response.data.tasks.map(task => ({
-      ...task,
-      startDate: parseISO(task.startDate)
-    }));
-
-    const data = {
-      ...response.data,
-      tasks: tasks 
-    };
-
-    return data;
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      throw new Error('Invalid credentials');
-    } else {
-      throw new Error('Error in API call: ' + error);
-    }
-  }
+  return { ...response, tasks };
 }
 
 export async function pushUserData(email, password, fullName, linkToPicture) {
   const userData = { email, password, fullName, linkToPicture };
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/register', userData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error('Error pushing data:', error);
-    throw error;
-  }
+  return makeRequest('register', userData);
 }
 
 export async function isUserRegistered(email) {
   const userData = { email };
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/isRegistered', userData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const registered = response.data;
-    return registered;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
+  return makeRequest('isRegistered', userData);
 }
 
 export async function addTask(taskData) {
-
-
-  console.log(taskData)
-  try {
-    const response = await axios.post('http://localhost:3001/api/addTask', taskData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    console.log(response.data)
-    return response.data;
-  } catch (error) {
-    console.error('Error adding task:', error);
-    throw error;
-  }
+  return makeRequest('addTask', taskData);
 }
 
 export async function addGroup(group) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/addGroup',group, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error adding group:', error);
-    throw error;
-  }
+  return makeRequest('addGroup', group);
 }
 
 export async function getUsers(searchData) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/getUsers',searchData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data.map((user) => ({
-      value: user.id,       // Adjust this based on your data
-      name: user.fullName, // Adjust this based on your data
-      email: user.email,
-      url: user.linkToPicture
-    }));
-  } catch (error) {
-    console.error('Error getting users:', error);
-    throw error;
-  }
+  const response = await makeRequest('getUsers', searchData);
+  return response.map((user) => ({
+    value: user.id,       
+    name: user.fullName,
+    email: user.email,
+    url: user.linkToPicture,
+  }));
 }
 
 export async function addUserToGroup(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/addUserToGroup',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error adding group:', error);
-    throw error;
-  }
+  return makeRequest('addUserToGroup', data);
 }
 
 export async function getUsersOfGroup(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/getUsersOfGroup',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('getUsersOfGroup', data);
 }
 
 export async function deleteUserFromGroup(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/deleteUserFromGroup',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('deleteUserFromGroup', data);
 }
 
 export async function deleteGroup(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/deleteGroup',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('deleteGroup', data);
 }
 
 export async function deleteTask(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/deleteTask',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('deleteTask', data);
 }
 
 export async function editGroup(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/editGroup',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('editGroup', data);
 }
 
 export async function editTask(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/editTask',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('editTask', data);
 }
+
 export async function changeSubtaskCompletion(data) {
-
-  try {
-    const response = await axios.post('http://localhost:3001/api/changeSubtaskCompletion',data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error getting members of group:', error);
-    throw error;
-  }
+  return makeRequest('changeSubtaskCompletion', data);
 }
