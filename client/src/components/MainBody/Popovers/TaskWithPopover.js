@@ -24,7 +24,6 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelec
     }
 
     function handleCheckboxChange(id, isCompleted) {
-        console.log(isCompleted)
         changeSubtaskCompletion({ id, isCompleted })
         const updatedUser = { ...user };
         updatedUser.tasks.forEach((task) => {

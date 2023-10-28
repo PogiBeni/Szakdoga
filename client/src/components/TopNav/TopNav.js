@@ -15,8 +15,6 @@ export default function TopNav() {
         });
         setTodaysTasks(filteredTasks);
         
-        console.log(filteredTasks)
-        console.log(todaysTasks.length)
     }, [user]);
 
     return (
