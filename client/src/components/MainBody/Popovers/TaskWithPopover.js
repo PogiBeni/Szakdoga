@@ -13,7 +13,6 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelec
 
     if (!task) return
 
-    console.log(task)
     var placement = "left"
     var helper = task.startDate.getDate() % 7
     if ((helper > 4) || (helper !== 0)) placement = "right"
