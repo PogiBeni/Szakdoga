@@ -3,6 +3,7 @@ import { isUserRegistered, pushUserData } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
 import ErrorMsg from "../../basicComponents/ErrorMsg"
 import InputWithLabel from "../../basicComponents/InputWithLabel"
+import Cookies from "js-cookie"
 
 export default function RegisterForm() {
     const [errorMSG, seterrorMSG] = useState(null)
@@ -18,9 +19,7 @@ export default function RegisterForm() {
     function handleSubmit(e) {
         e.preventDefault();
         if (!userLogin.email || !userLogin.password || !userLogin.rePassword || !userLogin.fullName) { seterrorMSG("Fill out the form!"); return }
-        if (userLogin.password.length < 8) { seterrorMSG("Password must be at least 8 characters long.");  return; }
         if (userLogin.password !== userLogin.rePassword) { seterrorMSG("The passwords don't match!"); return }
-
         isUserRegistered(userLogin.email).then((res => {
             if (res.exists) { seterrorMSG("Email already taken!"); return }
             pushUserData(userLogin.email, userLogin.password, userLogin.fullName, "")
@@ -33,6 +32,8 @@ export default function RegisterForm() {
                         email: data.email,
                         loggedIn: true
                     })
+
+                    Cookies.set('userData', JSON.stringify({ email: data.email, id: data.id }));
                 })
             seterrorMSG(null);
             document.querySelector('#btnCloseRegister').click()

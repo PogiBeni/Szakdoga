@@ -30,6 +30,17 @@ export async function login(email, password) {
   return { ...response, tasks };
 }
 
+export async function loadData(data) {
+  const response = await makeRequest('loadData', data);
+
+  const tasks = response.tasks.map((task) => ({
+    ...task,
+    startDate: parseISO(task.startDate),
+  }))
+  
+  return { ...response, tasks };
+}
+
 export async function pushUserData(email, password, fullName, linkToPicture) {
   const userData = { email, password, fullName, linkToPicture };
   return makeRequest('register', userData);

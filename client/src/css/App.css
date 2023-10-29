@@ -112,6 +112,11 @@
   padding: 10px;
   border-radius: 5px;
 }
+.isLoading{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 .SideBar{
   width: 20vw;
   margin-top: 3vh;
