@@ -18,7 +18,9 @@ export default function RegisterForm() {
     function handleSubmit(e) {
         e.preventDefault();
         if (!userLogin.email || !userLogin.password || !userLogin.rePassword || !userLogin.fullName) { seterrorMSG("Fill out the form!"); return }
+        if (userLogin.password.length < 8) { seterrorMSG("Password must be at least 8 characters long.");  return; }
         if (userLogin.password !== userLogin.rePassword) { seterrorMSG("The passwords don't match!"); return }
+
         isUserRegistered(userLogin.email).then((res => {
             if (res.exists) { seterrorMSG("Email already taken!"); return }
             pushUserData(userLogin.email, userLogin.password, userLogin.fullName, "")

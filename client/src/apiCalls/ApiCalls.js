@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { parseISO } from 'date-fns';
 
-const nodeServerUrl = 'http://poganybenedek.asuscomm.com:80'; 
+const nodeServerUrl = 'https://poganybenedek.asuscomm.com'; 
 
 async function makeRequest(endpoint, data, method = 'post') {
   try {
