@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google'
 import { useContext } from "react"
 import BasicModal from "../../basicComponents/BasicModal"
 import { LabelContext } from '../../Context/LabelContext'
+import Cookies from "js-cookie"
 
 export default function LogoutModal() {
 
@@ -21,6 +22,7 @@ export default function LogoutModal() {
         })
         setLabels()
         googleLogout()
+        Cookies.remove('userData');
         document.querySelector('.btn-close ').click()
     }
     return (

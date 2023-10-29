@@ -3,6 +3,7 @@ import { isUserRegistered, pushUserData } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
 import ErrorMsg from "../../basicComponents/ErrorMsg"
 import InputWithLabel from "../../basicComponents/InputWithLabel"
+import Cookies from "js-cookie"
 
 export default function RegisterForm() {
     const [errorMSG, seterrorMSG] = useState(null)
@@ -31,6 +32,8 @@ export default function RegisterForm() {
                         email: data.email,
                         loggedIn: true
                     })
+
+                    Cookies.set('userData', JSON.stringify({ email: data.email, id: data.id }));
                 })
             seterrorMSG(null);
             document.querySelector('#btnCloseRegister').click()

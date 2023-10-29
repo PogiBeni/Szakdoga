@@ -89,3 +89,14 @@ export async function editTask(data) {
 export async function changeSubtaskCompletion(data) {
   return makeRequest('changeSubtaskCompletion', data);
 }
+
+export async function loadData(data) {
+  const response = await makeRequest('loadData', data);
+
+  const tasks = response.tasks.map((task) => ({
+    ...task,
+    startDate: parseISO(task.startDate),
+  }))
+  
+  return { ...response, tasks };
+}

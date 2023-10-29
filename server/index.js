@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { initDatabase } = require('./db')
 const { checkIfUserIsRegistered, registerUser, getUsers } = require('./controllers/userController')
-const { loginUser } = require('./controllers/loginController')
+const { loginUser,loadData } = require('./controllers/loginController')
 const { addTask, deleteTask, editTask, changeSubtaskCompletion } = require('./controllers/taskController');
 const { addGroup, addUserToGroup, deleteUserFromGroup, getUsersOfGroup, deleteGroup, editGroup } = require('./controllers/groupController');
 
@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 
 
 app.post('/api/isRegistered', checkIfUserIsRegistered);
+
+app.post('/api/loadData', loadData);
 
 app.post('/api/login', loginUser);
 

@@ -4,6 +4,7 @@ import { UserContext } from '../../Context/UserContext';
 import jwt_decode from 'jwt-decode';
 import { login, isUserRegistered, pushUserData } from '../../../apiCalls/ApiCalls';
 import { LabelContext } from "../../Context/LabelContext"
+import Cookies from "js-cookie"
 
 export default function GoogleLoginButton() {
 
@@ -28,6 +29,8 @@ export default function GoogleLoginButton() {
                                     groups: data.groups
                                 });
                                 setLabels([...new Set(data.tasks.map(task => task.label))])
+
+                                Cookies.set('userData', JSON.stringify({email:data.email,id:data.id}));
                                 
                                 document.querySelector('.btn-close').click()
                             })
@@ -51,7 +54,8 @@ export default function GoogleLoginButton() {
                                     email: data.email,
                                     loggedIn: true
                                 })
-
+                                Cookies.set('userData', JSON.stringify({email:data.email,id:data.id}));
+                                
                             })
                     }
                     document.querySelector('.btn-close').click()

@@ -4,6 +4,7 @@ import { UserContext } from "../../Context/UserContext"
 import ErrorMsg from "../../basicComponents/ErrorMsg"
 import InputWithLabel from "../../basicComponents/InputWithLabel"
 import { LabelContext } from "../../Context/LabelContext"
+import Cookies from "js-cookie"
 
 export default function LoginForm() {
 
@@ -36,6 +37,8 @@ export default function LoginForm() {
                 
                 seterrorMSG(null);
                 setLabels([...new Set(data.tasks.map(task => task.label))])
+                Cookies.set('userData', JSON.stringify({email:data.email,id:data.id}));
+
                 document.querySelector('#closeLogin').click()
             })
             .catch((error) => {
