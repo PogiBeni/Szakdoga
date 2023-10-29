@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { LabelContext } from '../../Context/LabelContext';
 
