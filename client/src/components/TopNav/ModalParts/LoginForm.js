@@ -42,11 +42,10 @@ export default function LoginForm() {
                 document.querySelector('#closeLogin').click()
             })
             .catch((error) => {
-                if (error.message === 'Invalid credentials') {
+                if (error.message) {
                     seterrorMSG("Invalid email or password");
                     return
                 } else {
-                    seterrorMSG('Error:' + error);
                     return
                 }
             });
