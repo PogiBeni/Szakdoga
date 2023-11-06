@@ -46,7 +46,6 @@ export default function AddTaskModal() {
     function handleTaskSubmit(e) {
         e.preventDefault()
 
-        console.log(task)
         if (task.taskName === "") { setErrorMSG("Fill out the name!"); return }
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
         if (task.startTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }
