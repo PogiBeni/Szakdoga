@@ -7,7 +7,7 @@ import { LabelContext } from './Context/LabelContext';
 import { useState, useContext } from 'react';
 import Cookies from "js-cookie"
 
-function App() {
+export default function App() {
   const [user, setUser] = useContext(UserContext)
   const [isLoading, setIsLoading] = useState(true)
   const [labels, setLabels] = useContext(LabelContext)
@@ -24,7 +24,6 @@ function App() {
     else setIsLoading(false)
   }
 
-
   return (
       <div className="App bg-body">
         <TopNav />
@@ -38,5 +37,3 @@ function App() {
       </div>
   );
 }
-
-export default App;
