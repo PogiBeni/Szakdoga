@@ -18,17 +18,12 @@ export default function AddGroupForm({onHide}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(user)
         if (!group.groupName) { seterrorMSG("Group name empty!"); return }
-        console.log(group)
         var newId
         addGroup(group).then((data => {
 
-            console.log(data)
-            console.log(newId)
             seterrorMSG(null)
             const groupWithId = ({...group, id: data })
-            console.log(groupWithId)
             setUser({ ...user, groups: [...user.groups, groupWithId] })
             setGroup({
                 groupName: "",

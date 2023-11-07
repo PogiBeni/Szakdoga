@@ -96,6 +96,13 @@ export default function GroupModal() {
             onClick={(e) => { handleShowAddPeoplePopover(e) }} />
     ) : null;
 
+    const showPeopleButton = selectedGroup && user.id === selectedGroup.creatorUserId ? (
+        <img 
+        className="icon" 
+        src="/icons/people.svg" 
+        onClick={(e) => { handleShowPeoplePopover(e) }} />
+    ) : null;
+
     return (
         <>
             <BasicModal name={"addGroupModal"} title={"Groups:"}  >
@@ -117,7 +124,7 @@ export default function GroupModal() {
                         </button>
                     </div>
                     <div className="mt-4 ms-2"  >
-                        <img className="icon" src="/icons/people.svg" onClick={(e) => { handleShowPeoplePopover(e) }} />
+                        {showPeopleButton}
                         {addPersonButton}
                         {editGroupButton}
                         {deleteButton}
@@ -127,7 +134,8 @@ export default function GroupModal() {
                         <div className="mt-3 ms-1">
                             <h4 className="mb-4">{selectedGroup.groupName} </h4>
                             <div>
-                                <span className="fw-bold">Created by: </span> {selectedGroup.creatorName} <br />
+                                <span className="fw-bold">Created by: </span>
+                                <p className="mb-1">{selectedGroup.creatorName} </p>
                                 <span className="fw-bold">Description:</span>
                                 <p className="lh-1">{selectedGroup.description}</p>
 

@@ -60,7 +60,8 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelec
                 <Popover >
                     <Popover.Header style={{ backgroundColor: task.color, color: "white", minWidth: "12rem", fontSize: "1.5rem", fontWeight: "bold" }} className='d-flex justify-content-between'>
                         {"" + task.taskName}
-                        <div>
+                        {user.id == task.creatorId ?
+                            <div>
                             <img style={{ cursor: "pointer" }} className='me-2' src='/icons/pencilSquareWhite.svg' alt="icon"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editTaskModal"
@@ -72,6 +73,7 @@ export default function TaskWithPopover({ setSelectedTaskForEdit, task, setSelec
                                 onClick={() => { setShow(false); setSelectedTaskForDelete(task) }}
                                 alt="icon" />
                         </div>
+                        : null}
                     </Popover.Header>
                     <Popover.Body>
                         <div className="d-flex align-items-center mb-1">

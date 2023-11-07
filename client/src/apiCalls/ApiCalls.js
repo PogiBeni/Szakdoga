@@ -13,7 +13,6 @@ async function makeRequest(endpoint, data, method = 'post') {
 
     return response.data;
   } catch (error) {
-    console.error(`Error in API call to ${endpoint}:`, error);
     throw error;
   }
 }
