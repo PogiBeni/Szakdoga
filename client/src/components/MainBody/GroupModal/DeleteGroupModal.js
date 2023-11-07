@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import BasicModal from "../../basicComponents/BasicModal";
+import BasicModal from "../../BasicComponents/BasicModal";
 import { deleteGroup } from "../../../apiCalls/ApiCalls";
 import { UserContext } from "../../Context/UserContext";
 

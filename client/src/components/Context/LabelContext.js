@@ -1,11 +1,9 @@
-import { useState,createContext } from "react"
+import React from "react"
 
-export const LabelContext = createContext();
-
+export const LabelContext = React.createContext();
 export const LabelProvider = props => {
 
-    const [labels,setLabels] = useState()
-    
+    const [labels,setLabels] = React.useState()
     return(
         <LabelContext.Provider value={[labels,setLabels]}>
              {props.children}

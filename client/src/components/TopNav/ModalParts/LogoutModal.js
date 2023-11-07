@@ -1,7 +1,7 @@
 import { UserContext } from '../../Context/UserContext'
 import { googleLogout } from '@react-oauth/google'
 import { useContext } from "react"
-import BasicModal from "../../basicComponents/BasicModal"
+import BasicModal from "../../BasicComponents/BasicModal"
 import { LabelContext } from '../../Context/LabelContext'
 import Cookies from "js-cookie"
 

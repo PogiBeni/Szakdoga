@@ -1,7 +1,7 @@
 import { useState, useContext,useEffect } from "react"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../basicComponents/ErrorMsg";
-import InputWithLabel from "../../basicComponents/InputWithLabel";
+import ErrorMsg from "../../BasicComponents/ErrorMsg";
+import InputWithLabel from "../../BasicComponents/InputWithLabel";
 import { addGroup } from "../../../apiCalls/ApiCalls";
 
 export default function AddGroupForm({onHide}) {
