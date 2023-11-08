@@ -29,21 +29,6 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
         setSelectedTaskForEdit(task)
     }
 
-    function handleCheckboxChange(id, isCompleted) {
-        changeSubtaskCompletion({ id, isCompleted })
-        const updatedUser = { ...user };
-        updatedUser.tasks.forEach((task) => {
-            if (task.subtasks) {
-                task.subtasks.forEach((subtask) => {
-                    if (subtask.id === id) {
-                        subtask.isCompleted = isCompleted;
-                    }
-                });
-            }
-        });
-        setUser(updatedUser);
-    }
-
     return (
         <div className={bodyClass} style={{ width: "13rem" }}>
             <div className='d-flex justify-content-between card-title m-0 rounded-top-1 p-2 ps-3' style={{ backgroundColor: task.color, color: "white" }}>
