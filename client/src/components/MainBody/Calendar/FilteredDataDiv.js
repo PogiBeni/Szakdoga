@@ -10,7 +10,6 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
     const [show, setShow] = useState(false);
 
     function handleCheckboxChange(id, isCompleted) {
-        console.log(isCompleted)
         changeSubtaskCompletion({ id, isCompleted })
         const updatedUser = { ...user };
         updatedUser.tasks.forEach((task) => {
@@ -25,14 +24,12 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
         setUser(updatedUser);
     }
 
-
     function handleEdit() {
         setShow(false)
         setSelectedTaskForEdit(task)
     }
 
     function handleCheckboxChange(id, isCompleted) {
-        console.log(isCompleted)
         changeSubtaskCompletion({ id, isCompleted })
         const updatedUser = { ...user };
         updatedUser.tasks.forEach((task) => {
@@ -63,27 +60,22 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
                         onClick={() => { setShow(false); setSelectedTaskForDelete(task) }}
                         alt="icon" />
                 </div>
-
             </div>
             <div className="card-body p-2" >
-
                 <div className="d-flex align-items-center mb-1 mt-2">
                     <img src="/icons/calendarDark.svg" className='me-3' />
                     <div className="form-text mt-0 " >
                         <span > <strong>{format(task.startDate, 'MMMM dd')}: </strong></span>
                         <span>{task.startTime}</span>
                     </div>
-
                 </div>
                 <div className="d-flex align-items-center mb-1">
                     <img src="/icons/location.svg" className='me-3' />
                     <div className="form-text mt-0">
-                        {task.country ? (
-                            <span>{task.country}, {task.cityName}<br />{task.streetName}</span>
-                        ) : (
-                            <span>No location</span>
-                        )}
-
+                        {task.country 
+                        ?<span>{task.country}, {task.cityName}<br />{task.streetName}</span>
+                        : <span>No location</span>
+                        }
                     </div>
                 </div>
                 <div className="d-flex align-items-center mb-1">
@@ -127,7 +119,6 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
                                                             checked={subtask.isCompleted}
                                                             onChange={() => handleCheckboxChange(subtask.id, !subtask.isCompleted)}
                                                         />
-
                                                         <span className='ms-2' style={{ textDecoration: subtask.isCompleted ? 'line-through' : 'none' }}>
                                                             {subtask.subtaskName}
                                                         </span>
@@ -139,7 +130,6 @@ export default function FilteredDataDiv({ setSelectedTaskForEdit, task, setSelec
                             </div>
                         </div>
                     </div>
-
                     : null}
             </div>
         </div>

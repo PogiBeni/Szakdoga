@@ -2,8 +2,8 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { useState, useContext, useEffect } from "react"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../basicComponents/ErrorMsg";
-import InputWithLabel from "../../basicComponents/InputWithLabel";
+import ErrorMsg from "../../BasicComponents/ErrorMsg";
+import InputWithLabel from "../../BasicComponents/InputWithLabel";
 import { editGroup } from '../../../apiCalls/ApiCalls';
 
 

@@ -1,7 +1,7 @@
-import { useState, useContext,useEffect } from "react"
+import { useState, useContext } from "react"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../basicComponents/ErrorMsg";
-import InputWithLabel from "../../basicComponents/InputWithLabel";
+import ErrorMsg from "../../BasicComponents/ErrorMsg";
+import InputWithLabel from "../../BasicComponents/InputWithLabel";
 import { addGroup } from "../../../apiCalls/ApiCalls";
 
 export default function AddGroupForm({onHide}) {
@@ -19,9 +19,8 @@ export default function AddGroupForm({onHide}) {
     function handleSubmit(e) {
         e.preventDefault()
         if (!group.groupName) { seterrorMSG("Group name empty!"); return }
-        var newId
-        addGroup(group).then((data => {
 
+        addGroup(group).then((data => {
             seterrorMSG(null)
             const groupWithId = ({...group, id: data })
             setUser({ ...user, groups: [...user.groups, groupWithId] })

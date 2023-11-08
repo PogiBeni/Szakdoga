@@ -1,8 +1,8 @@
 import { useState, useContext } from "react"
 import { isUserRegistered, pushUserData } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../basicComponents/ErrorMsg"
-import InputWithLabel from "../../basicComponents/InputWithLabel"
+import ErrorMsg from "../../BasicComponents/ErrorMsg"
+import InputWithLabel from "../../BasicComponents/InputWithLabel"
 import Cookies from "js-cookie"
 
 export default function RegisterForm() {
@@ -81,7 +81,6 @@ export default function RegisterForm() {
                 <button type="button" className="btn alert alert-light me-5 p-2" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
                 <button type="submit" className="btn alert alert-success me-2 p-2">Register</button>
             </div>
-
         </form>
     )
 }

@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import React from "react";
 import { UserContext } from "../../Context/UserContext";
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { deleteUserFromGroup } from "../../../apiCalls/ApiCalls";
 
 export default function ShowPeoplePopover({ show, target, onHide, group, refresh }) {
-    const [user, setUser] = useContext(UserContext)
+    const [user, setUser] = React.useContext(UserContext)
 
     if (!group || !group.users) {
         return null;

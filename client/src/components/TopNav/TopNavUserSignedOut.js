@@ -1,4 +1,4 @@
-import BasicModal from '../basicComponents/BasicModal';
+import BasicModal from '../BasicComponents/BasicModal';
 import GoogleLoginButton from './ModalParts/GoogleLoginButton';
 import LoginForm from './ModalParts/LoginForm';
 import RegisterForm from './ModalParts/RegisterForm';

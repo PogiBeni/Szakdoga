@@ -1,9 +1,7 @@
 import { useState,createContext } from "react"
 
 export const UserContext = createContext();
-
 export const UserProvider = props => {
-
     const [user,setUser] = useState(
         {
             id:null,
@@ -14,7 +12,6 @@ export const UserProvider = props => {
             tasks:[],
             groups:[]
         })
-
     return(
         <UserContext.Provider value={[user,setUser]}>
              {props.children}

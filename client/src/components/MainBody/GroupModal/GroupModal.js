@@ -1,13 +1,13 @@
-import BasicModal from "../../basicComponents/BasicModal";
+import BasicModal from "../../BasicComponents/BasicModal";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Select from "react-select";
-import ShowPeoplePopover from "../Popovers/ShowPeoplePopover";
-import AddPeoplePopover from "../Popovers/AddPeoplePopover";
+import ShowPeoplePopover from "./ShowPeoplePopover";
+import AddPeoplePopover from "./AddPeoplePopover";
 import { getUsersOfGroup } from "../../../apiCalls/ApiCalls";
-import AddGroupPopover from "../Popovers/AddGroupPopover";
+import AddGroupPopover from "./AddGroupPopover";
 import DeleteGroupModal from "./DeleteGroupModal";
-import EditGroupPopover from "../Popovers/EditGroupPopover";
+import EditGroupPopover from "./EditGroupPopover";
 
 export default function GroupModal() {
     const [user, setUser] = useContext(UserContext)
@@ -96,7 +96,7 @@ export default function GroupModal() {
             onClick={(e) => { handleShowAddPeoplePopover(e) }} />
     ) : null;
 
-    const showPeopleButton = selectedGroup && user.id === selectedGroup.creatorUserId ? (
+    const showPeopleButton = selectedGroup ? (
         <img 
         className="icon" 
         src="/icons/people.svg" 

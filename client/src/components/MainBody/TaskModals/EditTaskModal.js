@@ -1,14 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import { editTask } from "../../../apiCalls/ApiCalls";
-import ColorPicker from "../../basicComponents/ColorPicker";
-import ErrorMsg from "../../basicComponents/ErrorMsg";
-import InputWithLabel from "../../basicComponents/InputWithLabel";
-import Datepicker from "../../basicComponents/DatePicker";
-import TimeInput from "../../basicComponents/TimeInput";
-import BasicModal from "../../basicComponents/BasicModal";
-import LabelSelect from "../MainBodyComponents/LableSelect";
-import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
+import ColorPicker from "./ColorPicker"
+import Datepicker from "./DatePicker";
+import LabelSelect from "./LableSelect";
+import SelectGroupInput from "./SelectGroupInput";
+
+import ErrorMsg from "../../BasicComponents/ErrorMsg";
+import InputWithLabel from "../../BasicComponents/InputWithLabel";
+import TimeInput from "./TimeInput";
+import BasicModal from "../../BasicComponents/BasicModal";
 import { UserContext } from "../../Context/UserContext";
+import "./TaskModal.css"
 
 export default function EditTaskModal({ selectedTaskForEdit }) {
 

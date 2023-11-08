@@ -1,15 +1,16 @@
 import { useState, useContext } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
-import TaskPopover from './Popovers/TaskPopover';
-import AddTaskModal from './Modals/AddTaskModal';
-import { UserContext } from '../Context/UserContext';
-import BasicDay from '../basicComponents/BasicDay';
-import GroupModal from './Modals/GroupModal';
-import FilterSelect from './MainBodyComponents/FilterSelect';
-import TaskWithPopover from './Popovers/TaskWithPopover';
-import FilteredDataDiv from './MainBodyComponents/FilteredDataDiv';
-import EditTaskModal from './Modals/EditTaskModal';
-import DeleteTaskVerification from './Modals/DeleteTaskVerification';
+import { UserContext } from '../../Context/UserContext';
+import AddTaskModal from '../TaskModals/AddTaskModal';
+import EditTaskModal from '../TaskModals/EditTaskModal';
+import GroupModal from '../GroupModal/GroupModal';
+
+import BasicDay from './BasicDay';
+import TaskPopover from './TaskPopover';
+import FilterSelect from './FilterSelect';
+import TaskWithPopover from './TaskWithPopover';
+import FilteredDataDiv from './FilteredDataDiv';
+import DeleteTaskVerification from './DeleteTaskVerification';
 
 export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -36,25 +37,21 @@ export default function Calendar() {
                     <button className='btn btn-success btn-sm me-1' data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
                     <button className='btn btn-light me-1' data-bs-toggle="modal" data-bs-target="#addGroupModal"><img src="/icons/group.svg" /></button>
                 </div>
-
                 <h2 >{format(currentDate, 'MMMM yyyy')}</h2>
-
                 <div className='w-25'>
-                    <FilterSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} setFilteredTasks={setFilteredTasks} currentDate={currentDate}/>
+                    <FilterSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} setFilteredTasks={setFilteredTasks} currentDate={currentDate} />
                 </div>
             </div>
-
             {selectedOptions.length == 0
-                ?
-                <div className="calendarGrid m-3">
+                ? <div className="calendarGrid m-3">
                     {daysInMonth.map((day) => (
                         <BasicDay key={day} day={day}>
                             {
                                 user.tasks.filter((task) => isSameDay(task.startDate, day)).length > 2
-                                    ? <TaskPopover tasks={user.tasks} day={day} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
+                                    ? <TaskPopover tasks={user.tasks} day={day} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete} />
                                     : user.tasks.map((task) => (
                                         isSameDay(task.startDate, day) && (
-                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
+                                            <TaskWithPopover task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete} />
                                         )
                                     ))
                             }
@@ -62,17 +59,16 @@ export default function Calendar() {
                     ))
                     }
                 </div>
-                :
-                <div className="taskGrid m-3">
+                : <div className="taskGrid m-3">
                     {filteredTasks.map((task) => (
-                        <FilteredDataDiv task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete}/>
+                        <FilteredDataDiv task={task} key={task.id} setSelectedTaskForEdit={setSelectedTaskForEdit} setSelectedTaskForDelete={setSelectedTaskForDelete} />
                     ))}
                 </div>
             }
             <GroupModal />
             <AddTaskModal />
-            <EditTaskModal selectedTaskForEdit={selectedTaskForEdit}/>
-            <DeleteTaskVerification task={selectedTaskForDelete}/>
+            <EditTaskModal selectedTaskForEdit={selectedTaskForEdit} />
+            <DeleteTaskVerification task={selectedTaskForDelete} />
         </div>
     );
 }

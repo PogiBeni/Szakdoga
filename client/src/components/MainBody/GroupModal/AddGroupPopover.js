@@ -1,6 +1,6 @@
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
-import AddGroupForm from '../Modals/AddGroupForm'
+import AddGroupForm from './AddGroupForm'
 
 export default function AddGroupPopover({ show, target, onHide }) {
 

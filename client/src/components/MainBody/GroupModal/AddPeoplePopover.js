@@ -3,7 +3,7 @@ import Popover from 'react-bootstrap/Popover';
 import AsyncSelect from 'react-select/async';
 import { useState } from 'react';
 import { getUsers,addUserToGroup } from '../../../apiCalls/ApiCalls';
-import ErrorMsg from '../../basicComponents/ErrorMsg';
+import ErrorMsg from '../../BasicComponents/ErrorMsg';
 
 export default function AddPeoplePopover({ show, target, onHide, group, refresh }) {
     const [selectedUser, setSelectedUser] = useState(null);

@@ -1,13 +1,12 @@
 import { useState, useContext } from "react"
 import { login } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../basicComponents/ErrorMsg"
-import InputWithLabel from "../../basicComponents/InputWithLabel"
+import ErrorMsg from "../../BasicComponents/ErrorMsg"
+import InputWithLabel from "../../BasicComponents/InputWithLabel"
 import { LabelContext } from "../../Context/LabelContext"
 import Cookies from "js-cookie"
 
 export default function LoginForm() {
-
 
     const [labels, setLabels] = useContext(LabelContext)
     const [user, setUser] = useContext(UserContext)
@@ -20,7 +19,6 @@ export default function LoginForm() {
 
     function handleSubmit(e) {
         e.preventDefault()
-
         if (!userLogin.email && !userLogin.password) { seterrorMSG("Email or password empty!"); return }
 
         login(userLogin.email, userLogin.password)
@@ -33,8 +31,7 @@ export default function LoginForm() {
                     loggedIn: true,
                     tasks: data.tasks,
                     groups: data.groups
-                });
-                
+                }); 
                 seterrorMSG(null);
                 setLabels([...new Set(data.tasks.map(task => task.label))])
                 Cookies.set('userData', JSON.stringify({email:data.email,id:data.id}));
