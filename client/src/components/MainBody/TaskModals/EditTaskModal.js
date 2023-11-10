@@ -5,10 +5,10 @@ import Datepicker from "./DatePicker";
 import LabelSelect from "./LableSelect";
 import SelectGroupInput from "./SelectGroupInput";
 
-import ErrorMsg from "../../BasicComponents/ErrorMsg";
-import InputWithLabel from "../../BasicComponents/InputWithLabel";
+import ErrorMsg from "../../basicComponents/ErrorMsg";
+import InputWithLabel from "../../basicComponents/InputWithLabel";
 import TimeInput from "./TimeInput";
-import BasicModal from "../../BasicComponents/BasicModal";
+import BasicModal from "../../basicComponents/BasicModal";
 import { UserContext } from "../../Context/UserContext";
 import "./TaskModal.css"
 
@@ -45,7 +45,6 @@ export default function EditTaskModal({ selectedTaskForEdit }) {
         if (task.desc === "") { setErrorMSG("Give a description!"); return }
 
         if (!task.country) setTask({ ...task, locationId: null })
-        console.log(task)
         editTask(task).then(() => {
 
             setErrorMSG(null)
@@ -61,7 +60,6 @@ export default function EditTaskModal({ selectedTaskForEdit }) {
                 });
                 return { ...prevUser, tasks: updatedTasks };
             });
-            console.log(user)
         })
     }
 

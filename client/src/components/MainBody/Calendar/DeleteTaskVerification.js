@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { deleteTask } from "../../../apiCalls/ApiCalls";
-import BasicModal from "../../BasicComponents/BasicModal";
+import BasicModal from "../../basicComponents/BasicModal";
 import { UserContext } from "../../Context/UserContext";
 
 

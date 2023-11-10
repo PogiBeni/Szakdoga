@@ -1,13 +1,11 @@
 import { useState, useContext } from "react";
-import BasicModal from "../../BasicComponents/BasicModal";
+import BasicModal from "../../basicComponents/BasicModal";
 import { deleteGroup } from "../../../apiCalls/ApiCalls";
 import { UserContext } from "../../Context/UserContext";
 
 export default function DeleteGroupModal({ selectedGroup, onGroupRemoved }) {
     const [deleteConfirmation, setDeleteConfirmation] = useState("");
     const [user, setUser] = useContext(UserContext);
-
-    if (!selectedGroup) return null;
 
     function handleDeleteGroup() {
         if (deleteConfirmation === "DELETE") {

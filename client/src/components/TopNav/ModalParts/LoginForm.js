@@ -1,8 +1,8 @@
 import { useState, useContext } from "react"
 import { login } from "../../../apiCalls/ApiCalls"
 import { UserContext } from "../../Context/UserContext"
-import ErrorMsg from "../../BasicComponents/ErrorMsg"
-import InputWithLabel from "../../BasicComponents/InputWithLabel"
+import ErrorMsg from "../../basicComponents/ErrorMsg"
+import InputWithLabel from "../../basicComponents/InputWithLabel"
 import { LabelContext } from "../../Context/LabelContext"
 import Cookies from "js-cookie"
 

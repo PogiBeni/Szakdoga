@@ -8,7 +8,7 @@ export default function MainBody() {
     return (
         <>
             <div className={` ${user.loggedIn === false ? "blur" : ""}`}>
-                    <Calendar />
+                    <Calendar id="Calendar" />
             </div>
             {!user.loggedIn && (
                 <h2 className="notLoggedInText">Please log in to view your calendar!</h2>

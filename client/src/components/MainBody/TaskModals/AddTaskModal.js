@@ -7,10 +7,10 @@ import Datepicker from "./DatePicker";
 import LabelSelect from "./LableSelect";
 import SelectGroupInput from "./SelectGroupInput";
 
-import ErrorMsg from "../../BasicComponents/ErrorMsg";
-import InputWithLabel from "../../BasicComponents/InputWithLabel";
+import ErrorMsg from "../../basicComponents/ErrorMsg";
+import InputWithLabel from "../../basicComponents/InputWithLabel";
 import TimeInput from "./TimeInput";
-import BasicModal from "../../BasicComponents/BasicModal";
+import BasicModal from "../../basicComponents/BasicModal";
 import TodoList from "./TodoList";
 
 
