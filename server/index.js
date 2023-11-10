@@ -33,14 +33,11 @@ app.post('/api/editTask', editTask);
 app.post('/api/changeSubtaskCompletion', changeSubtaskCompletion);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
-
 const httpsOptions = {
     key: fs.readFileSync('C:/Certbot/live/poganybenedek.asuscomm.com/privkey.pem'), 
     cert: fs.readFileSync('C:/Certbot/live/poganybenedek.asuscomm.com/fullchain.pem') 
 };
-
 const httpsServer = https.createServer(httpsOptions, app);
-
 httpsServer.listen(3001, () => {
     console.log('HTTPS Server listening on port 3001');
 });

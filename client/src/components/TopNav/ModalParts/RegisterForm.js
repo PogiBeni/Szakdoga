@@ -20,6 +20,7 @@ export default function RegisterForm() {
         e.preventDefault();
         if (!userLogin.email || !userLogin.password || !userLogin.rePassword || !userLogin.fullName) { seterrorMSG("Fill out the form!"); return }
         if (userLogin.password !== userLogin.rePassword) { seterrorMSG("The passwords don't match!"); return }
+        if (userLogin.password.length < 8) { seterrorMSG("The password must be 8 or more characters long!"); return }
         isUserRegistered(userLogin.email).then((res => {
             if (res.exists) { seterrorMSG("Email already taken!"); return }
             pushUserData(userLogin.email, userLogin.password, userLogin.fullName, "")
