@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { LabelContext } from '../../Context/LabelContext';
 
@@ -19,7 +19,6 @@ export default function LabelSelect({ setLabel, selectedOption, setSelectedOptio
             label: inputValue,
             value: inputValue
         };
-
         setSelectedOption((prevSelected) => {
             if (Array.isArray(prevSelected)) {
                 return [...prevSelected, newOption];
@@ -31,14 +30,12 @@ export default function LabelSelect({ setLabel, selectedOption, setSelectedOptio
         setLabels([...labels, newOption.value])
     };
 
-
     function setValues(selected) {
         if (selected) {
             setLabel(selected.value)
             setSelectedOption(selected)
         }
         else {
-
             setLabel(null)
             setSelectedOption(null)
         }

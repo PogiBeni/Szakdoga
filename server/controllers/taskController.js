@@ -112,7 +112,7 @@ async function editTask(req, res) {
     try {
         connection.query(
             `UPDATE tasks
-       SET groupId = ?, label = ?, taskName = ?, color = ?, startDate = ?, startTime = ?, description = ?, locationId = ?
+       SET groupId = ?, label = ?, taskName = ?, color = ?, startDate = ?, startTime = ?, description = ?
        WHERE id = ?`,
             [
                 data.groupId,
@@ -122,7 +122,6 @@ async function editTask(req, res) {
                 data.startDate,
                 data.startTime,
                 data.description,
-                data.locationId,
                 data.id,
             ],
             (err, results) => {
@@ -136,8 +135,8 @@ async function editTask(req, res) {
                     connection.query(
                         `UPDATE locations
              SET country = ?, cityName = ?, streetName = ?
-             WHERE id = ?`,
-                        [data.country, data.cityName, data.streetName, data.locationId],
+             WHERE taskId = ?`,
+                        [data.country, data.cityName, data.streetName, data.taskId],
                         (err, locationResults) => {
                             if (err) {
                                 console.error('Error updating locations table:', err);

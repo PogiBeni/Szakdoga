@@ -1,24 +1,25 @@
-import { useState, useContext, useEffect } from "react";
+import React from "react";
 import { parseISO } from 'date-fns';
 import { addTask } from "../../../apiCalls/ApiCalls";
 import { UserContext } from "../../Context/UserContext";
-import ColorPicker from "../../basicComponents/ColorPicker";
+import ColorPicker from "./ColorPicker"
+import Datepicker from "./DatePicker";
+import LabelSelect from "./LableSelect";
+import SelectGroupInput from "./SelectGroupInput";
+
 import ErrorMsg from "../../basicComponents/ErrorMsg";
 import InputWithLabel from "../../basicComponents/InputWithLabel";
-import Datepicker from "../../basicComponents/DatePicker";
-import TimeInput from "../../basicComponents/TimeInput";
+import TimeInput from "./TimeInput";
 import BasicModal from "../../basicComponents/BasicModal";
-import LabelSelect from "../MainBodyComponents/LableSelect";
-import SelectGroupInput from "../MainBodyComponents/SelectGroupInput";
-import TodoList from "../MainBodyComponents/TodoList";
+import TodoList from "./TodoList";
 
 
 export default function AddTaskModal() {
-    const [user, setUser] = useContext(UserContext)
-    const [errorMSG, setErrorMSG] = useState(null)
-    const [selectedGroupOption, setSelectedGroupOption] = useState(null)
-    const [selectedLabelOption, setSelectedLabelOption] = useState(null)
-    const [task, setTask] = useState({
+    const [user, setUser] = React.useContext(UserContext)
+    const [errorMSG, setErrorMSG] = React.useState(null)
+    const [selectedGroupOption, setSelectedGroupOption] = React.useState(null)
+    const [selectedLabelOption, setSelectedLabelOption] = React.useState(null)
+    const [task, setTask] = React.useState({
         id: null,
         creatorId: null,
         taskName: "",
@@ -32,21 +33,20 @@ export default function AddTaskModal() {
         locationId: null,
         notify: true
     })
-    const [location, setLocation] = useState({
+    const [location, setLocation] = React.useState({
         country: "",
         cityName: "",
         streetName: "",
     });
-    const [subtasks, setSubtasks] = useState([]);
+    const [subtasks, setSubtasks] = React.useState([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setTask({ ...task, creatorId: user.id })
     }, [user]);
 
     function handleTaskSubmit(e) {
         e.preventDefault()
 
-        console.log(task)
         if (task.taskName === "") { setErrorMSG("Fill out the name!"); return }
         if (task.startTime === "") { setErrorMSG("Set a start time!"); return }
         if (task.startTime.split(':')[0] > 25) { setErrorMSG("Time hours must be between 0-24!"); return }

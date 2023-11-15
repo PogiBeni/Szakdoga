@@ -7,8 +7,6 @@ export default function DeleteGroupModal({ selectedGroup, onGroupRemoved }) {
     const [deleteConfirmation, setDeleteConfirmation] = useState("");
     const [user, setUser] = useContext(UserContext);
 
-    if (!selectedGroup) return null;
-
     function handleDeleteGroup() {
         if (deleteConfirmation === "DELETE") {
             deleteGroup(selectedGroup)

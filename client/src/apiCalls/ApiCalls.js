@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { parseISO } from 'date-fns';
 
-const nodeServerUrl = 'http://localhost:3001'; 
+const nodeServerUrl = 'https://poganybenedek.asuscomm.com'; 
 
 async function makeRequest(endpoint, data, method = 'post') {
   try {
@@ -13,7 +13,6 @@ async function makeRequest(endpoint, data, method = 'post') {
 
     return response.data;
   } catch (error) {
-    console.error(`Error in API call to ${endpoint}:`, error);
     throw error;
   }
 }
@@ -27,6 +26,17 @@ export async function login(email, password) {
     startDate: parseISO(task.startDate),
   }));
 
+  return { ...response, tasks };
+}
+
+export async function loadData(data) {
+  const response = await makeRequest('loadData', data);
+
+  const tasks = response.tasks.map((task) => ({
+    ...task,
+    startDate: parseISO(task.startDate),
+  }))
+  
   return { ...response, tasks };
 }
 

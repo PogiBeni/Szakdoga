@@ -14,7 +14,6 @@ export default function SelectGroupInput({ setVariable, selectedOptions, setSele
         setOptions(loadOptions);
     }, [user.groups]);
 
-
     const handleSelectChange = (selectedValue) => {
         if (selectedValue) {
             setVariable(selectedValue)
@@ -25,6 +24,7 @@ export default function SelectGroupInput({ setVariable, selectedOptions, setSele
             setVariable(0)
         }
     }
+    
     const CustomArrow = () => {
         return (
             <div className="m-2">

@@ -8,7 +8,6 @@ import Cookies from "js-cookie"
 
 export default function LoginForm() {
 
-
     const [labels, setLabels] = useContext(LabelContext)
     const [user, setUser] = useContext(UserContext)
     const [errorMSG, seterrorMSG] = useState(null)
@@ -20,7 +19,6 @@ export default function LoginForm() {
 
     function handleSubmit(e) {
         e.preventDefault()
-
         if (!userLogin.email && !userLogin.password) { seterrorMSG("Email or password empty!"); return }
 
         login(userLogin.email, userLogin.password)
@@ -33,8 +31,7 @@ export default function LoginForm() {
                     loggedIn: true,
                     tasks: data.tasks,
                     groups: data.groups
-                });
-                
+                }); 
                 seterrorMSG(null);
                 setLabels([...new Set(data.tasks.map(task => task.label))])
                 Cookies.set('userData', JSON.stringify({email:data.email,id:data.id}));
@@ -42,11 +39,10 @@ export default function LoginForm() {
                 document.querySelector('#closeLogin').click()
             })
             .catch((error) => {
-                if (error.message === 'Invalid credentials') {
+                if (error.message) {
                     seterrorMSG("Invalid email or password");
                     return
                 } else {
-                    seterrorMSG('Error:' + error);
                     return
                 }
             });

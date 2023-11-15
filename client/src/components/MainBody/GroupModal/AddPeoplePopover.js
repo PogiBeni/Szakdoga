@@ -1,11 +1,11 @@
-import Overlay from 'react-bootstrap/Overlay';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import AsyncSelect from 'react-select/async';
 import { useState } from 'react';
-import { getUsers,addUserToGroup } from '../../../apiCalls/ApiCalls';
+import { getUsers, addUserToGroup } from '../../../apiCalls/ApiCalls';
 import ErrorMsg from '../../basicComponents/ErrorMsg';
 
-export default function AddPeoplePopover({ show, target, onHide, group, refresh }) {
+export default function AddPeoplePopover({ group, refresh }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [errorMSG, seterrorMSG] = useState(null)
 
@@ -26,10 +26,8 @@ export default function AddPeoplePopover({ show, target, onHide, group, refresh 
                         </div>
                     </div>
                 )
-
             }));
             callback(options);
-            console.log(users[0].url)
         } catch (error) {
             console.error('Error fetching user options:', error);
         }
@@ -37,32 +35,20 @@ export default function AddPeoplePopover({ show, target, onHide, group, refresh 
 
     function handleSubmit(e) {
         e.preventDefault();
-        var id = {value: group.id, label: group.groupName}
-        addUserToGroup({userId:selectedUser.value,groupId: group.id })
+        var id = { value: group.id, label: group.groupName }
+        addUserToGroup({ userId: selectedUser.value, groupId: group.id })
         refresh(id)
         setSelectedUser(null)
-        onHide()
+        document.body.click()
         seterrorMSG(null);
     }
-
-    return (
-
-        <Overlay
-            show={show}
-            target={target}
-            placement={"right"}
-            containerPadding={20}
-            rootClose="true"
-            onHide={onHide}
-            transition={false}
-            container={document.getElementById('addGroupModal')}
-        >
-            <Popover >
-                <Popover.Header as="h3">{`Add user to group:`}</Popover.Header>
-                <Popover.Body  >
-                    <form onSubmit={handleSubmit}>
-                        <ErrorMsg errorMSG={errorMSG} />
-                        <div className='d-flex'>
+    const popover = (
+        <Popover >
+            <Popover.Header as="h3">{`Add user to group:`}</Popover.Header>
+            <Popover.Body  >
+                <form onSubmit={handleSubmit}>
+                    <ErrorMsg errorMSG={errorMSG} />
+                    <div className='d-flex'>
 
                         <AsyncSelect
                             cacheOptions
@@ -76,11 +62,22 @@ export default function AddPeoplePopover({ show, target, onHide, group, refresh 
                             className='addUserPopover'
                             required={true}
                         />
-                        <button type='submit' className="btn btn-success ms-2 bt-sm "><img src="/icons/personFillAdd.svg" className='icon'/></button>
-                        </div>
-                    </form>
-                </Popover.Body>
-            </Popover>
-        </Overlay>
+                        <button type='submit' className="btn btn-success ms-2 bt-sm "><img src="/icons/personFillAdd.svg" className='icon' /></button>
+                    </div>
+                </form>
+            </Popover.Body>
+        </Popover>
+    )
+    return (
+
+        <OverlayTrigger trigger="click"
+            placement="right"
+            rootClose="true"
+            overlay={popover}
+            container={document.getElementById('addGroupModal')}>
+            <img
+                className="icon ms-3"
+                src="/icons/addPerson.svg"/>
+        </OverlayTrigger>
     )
 }
