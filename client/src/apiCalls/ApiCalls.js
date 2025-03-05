@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { parseISO } from 'date-fns';
 
-const nodeServerUrl = 'https://poganybenedek.asuscomm.com'; 
+const nodeServerUrl = 'http://localhost:3002'; 
 
 async function makeRequest(endpoint, data, method = 'post') {
   try {
@@ -29,7 +29,7 @@ export async function login(email, password) {
   return { ...response, tasks };
 }
 
-export async function loadData(data) {
+export async function loadStartingData(data) {
   const response = await makeRequest('loadData', data);
 
   const tasks = response.tasks.map((task) => ({

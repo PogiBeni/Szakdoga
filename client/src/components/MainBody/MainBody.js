@@ -7,7 +7,7 @@ export default function MainBody() {
 
     return (
         <>
-            <div className={` ${user.loggedIn === false ? "blur" : ""}`}>
+            <div className={user.loggedIn === false && "blur"}>
                     <Calendar id="Calendar" />
             </div>
             {!user.loggedIn && (

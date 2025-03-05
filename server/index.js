@@ -3,12 +3,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const https = require('https');
-const fs = require('fs');
 
 const { initDatabase } = require('./db');
 const { checkIfUserIsRegistered, registerUser, getUsers } = require('./controllers/userController');
-const { loginUser,loadData } = require('./controllers/loginController');
+const { loginUser, loadData } = require('./controllers/loginController');
 const { addTask, deleteTask, editTask, changeSubtaskCompletion } = require('./controllers/taskController');
 const { addGroup, addUserToGroup, deleteUserFromGroup, getUsersOfGroup, deleteGroup, editGroup } = require('./controllers/groupController');
 
@@ -33,11 +31,9 @@ app.post('/api/editTask', editTask);
 app.post('/api/changeSubtaskCompletion', changeSubtaskCompletion);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
-const httpsOptions = {
-    key: fs.readFileSync('C:/Certbot/live/poganybenedek.asuscomm.com/privkey.pem'), 
-    cert: fs.readFileSync('C:/Certbot/live/poganybenedek.asuscomm.com/fullchain.pem') 
-};
-const httpsServer = https.createServer(httpsOptions, app);
-httpsServer.listen(3001, () => {
-    console.log('HTTPS Server listening on port 3001');
+
+// Start a simple HTTP server
+const PORT = 3002;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
